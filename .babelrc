@@ -1,0 +1,9 @@
+{
+    "presets": ["env","react","es2015"],
+    "plugins": ["transform-async-to-generator","babel-plugin-transform-object-rest-spread",
+        ["transform-runtime", {
+              "polyfill": false,
+              "regenerator": true
+            }]
+        ]
+}
