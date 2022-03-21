@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import Config from './config';
 import axios from 'axios';
 
+
 export class studentInfoApi {
-   static getSampleSudentData(){
+   
+    static getSampleSudentData(){
         let serviceUrl  = '';
         serviceUrl = Config.REST_URL +"api/StudentEntryData/getStudentInformationDataTop25Rows";
          console.log(serviceUrl);
@@ -27,6 +29,8 @@ export class studentInfoApi {
         });     
     }
 
+
+    
    async  getSampleSudentDataAxios(){
        var url = Config.REST_URL + '/api/StudentEntryData/getStudentInformationDataTop25Rows/'
        return await axios.get(url)
@@ -35,6 +39,44 @@ export class studentInfoApi {
         });
 
     }
+
+    async  getAllSudentDataAxios(){
+        var url = Config.REST_URL + '/api/StudentEntryData/getAllStudentInformationData/'
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
+
+     async  getAllSudentDataTEMPIDSAxios(){
+        var url = Config.REST_URL + '/api/StudentEntryData/getAllStudentInformationDataTEMPIDS/'
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
+
+     async  getAttachmentsAxios(){
+        var url = Config.REST_URL + '/api/StudentEntryData/getAttachments/'
+        console.log(url)
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
+
+     async  fetchblFoodsToBeOmmitedData(){
+        var url = Config.REST_URL + '/api/Admin/fetchFoodsToBeOmmited/'
+        //console.log(url)
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
 }
 
 export default studentInfoApi

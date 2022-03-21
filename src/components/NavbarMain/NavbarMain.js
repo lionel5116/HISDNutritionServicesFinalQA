@@ -17,26 +17,24 @@ class NavbarMain extends React.Component {
       return (
         <div id="MasterContainer">
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="/Home">Financial Assets</Navbar.Brand>
+            <Navbar.Brand href="/">Nutrition Services</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                
-                <NavDropdown title="Actions" id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#">Add Institutions</NavDropdown.Item>
-                    <NavDropdown.Item href="#">Expenses</NavDropdown.Item>
-                    <NavDropdown.Item href="#">Stocks-Investments</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+
+                <NavDropdown title="Student Records" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="#/">Search</NavDropdown.Item>
+                  <NavDropdown.Item href="#/">Add</NavDropdown.Item>
+
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="#action/3.4"></NavDropdown.Item>
                 </NavDropdown>
                 
-                <Nav.Link href="#link">About Us</Nav.Link>
-                <Nav.Link href="#/Login">Login</Nav.Link>
+                <Nav.Link href="#">Notes</Nav.Link>
+                <Nav.Link href="#">Administrtion</Nav.Link>
+                <Nav.Link href="#/HISDReportsMenu">Reports</Nav.Link>
                 </Nav>
-                <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Button variant="outline-success">Search</Button>
-                </Form>
+             
             </Navbar.Collapse>
             </Navbar>
         </div>

@@ -14,7 +14,7 @@ import {BootstrapTable,TableHeaderColumn,Grid,Row,Col} from "react-bootstrap-tab
   };
   
 
-export class StudentInformation extends Component {
+export class StudentInformationReport extends Component {
    /*
     static propTypes = {
 
@@ -31,35 +31,11 @@ export class StudentInformation extends Component {
    
 
     componentDidMount(){
-        //this.loadStudentSampleData();
         this.fetchStudentSampleData();
     }
 
 
-    /*
-    loadStudentSampleDataOLD()
-    {
-        axios.get(`http://appsdev.houstonisd.org/HISDDevAppsWEBAPI/api/StudentEntryData/getStudentInformationDataTop25Rows/`)
-          .then(res => {
-
-            let studentSampleData = [];
-                studentSampleData = res.data
-           
-            let studentRecords = studentSampleData.map(studRecItem =><ListGroup.Item key={uniqueid()} 
-              action  onClick={() => this.selectHcadRecordItem(studRecItem.FirstName)}>
-               School: {studRecItem.School} <br /> 
-               LastName: {studRecItem.LastName}  <br /> 
-               FirstName: {studRecItem.FirstName } <br /> 
-               Medical_Condition: {studRecItem.Medical_Condition} 
-              </ListGroup.Item>)
-
-             this.setState({
-                    axiosRecsStudent: studentRecords,
-                     done: true
-                    });
-          });
-    }
-    */
+ 
 
     renderShowsTotal(start, to, total) {
         return (
@@ -92,7 +68,7 @@ export class StudentInformation extends Component {
     {
         let studentSampleData = [];
          var myAPI = new studentInfoApi;
-        studentSampleData = await myAPI.getSampleSudentDataAxios()
+        studentSampleData = await myAPI.getAllSudentDataAxios()
       
  
        this.setState({
@@ -117,7 +93,7 @@ export class StudentInformation extends Component {
             saveText: 'Save',
             closeText: 'Close',
         
-            sizePerPage: 50,
+            sizePerPage: 25,
             sortOrder: 'desc',
             prePage: 'Prev',
             nextPage: 'Next',
@@ -136,32 +112,26 @@ export class StudentInformation extends Component {
             return (
               <div id="MasterContainer">
                 <Container>
-                  {/*
-                  <h1>HCAD Records</h1>
-                  <Form>
-                    <Form.Group controlId="spacer">
-                      <hr></hr>
-                    </Form.Group>
-  
-                    <Form.Group controlId="StudentList">
-                      <ListGroup>{this.state.axiosRecsStudent}</ListGroup>
-                    </Form.Group>
-                  </Form>
-                  */}
                   <div ref={this.wrapper}>
-                            <h2>Boot Strap Table Example</h2>
+                            <h2>Student Information Report</h2>
                             <BootstrapTable data={this.state.axiosRecsStudent} striped hover options={options}
+                                pagination
                                 deleteRow={true} selectRow={selectRowProp}
                                 insertRow
                                 exportCSV
-                                searchPlaceholder= {'Search by School, Last,First Name'}
+                                searchPlaceholder= {'Filter Your Search'}
                             >
-                                <TableHeaderColumn row="1" width="4%" editable={false} isKey dataField="id" >ID</TableHeaderColumn>
-                                {/*<TableHeaderColumn row="1" width="45%" dataField="School" dataFormat={this.CustomInputFormatterProductPrice.bind(this)}>Product Name</TableHeaderColumn>*/}
-                                <TableHeaderColumn row="1" width="24%" dataField="School" filter={{ type: 'TextFilter', delay: 1000}} dataSort>School</TableHeaderColumn>
-                                <TableHeaderColumn row="1" width="24%" dataField="LastName" filter={{ type: 'TextFilter', delay: 1000}} dataSort>LastName</TableHeaderColumn>
-                                <TableHeaderColumn row="1" width="24%" dataField="FirstName" filter={{ type: 'TextFilter', delay: 1000}} dataSort>FirstName</TableHeaderColumn>
-                                <TableHeaderColumn row="1" width="24%" dataField="Medical_Condition" >Medical Condition</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="1%" editable={false} isKey dataField="id" hidden="true">ID</TableHeaderColumn>
+                                {/*<TableHeaderColumn row="1" width="6%" dataField="Student_ID">Student_ID</TableHeaderColumn>*/}
+                                <TableHeaderColumn row="1" width="10%" dataField="LastName">LastName</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="10%" dataField="FirstName" >FirstName</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="5%" dataField="Menu_Color" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Menu Color</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="5%" dataField="Menu_Code" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Menu Code</TableHeaderColumn>            
+                                <TableHeaderColumn row="1" width="10%" dataField="School" filter={{ type: 'TextFilter', delay: 1000}} dataSort>School</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="15%" dataField="SupplementName" filter={{ type: 'TextFilter', delay: 1000}} dataSort>SupplementName</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="15%" dataField="Substitution" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Substitution</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="15%" dataField="Foods_to_be_Omitted" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Omitted Foods</TableHeaderColumn>
+                                <TableHeaderColumn row="1" width="15%" dataField="Texture_Modification" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Texture Mod</TableHeaderColumn>
                             </BootstrapTable>
                         </div>
                 </Container>
@@ -171,4 +141,4 @@ export class StudentInformation extends Component {
     }
 }
 
-export default StudentInformation
+export default StudentInformationReport

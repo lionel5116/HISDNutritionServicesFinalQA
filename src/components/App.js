@@ -4,31 +4,47 @@ import { BrowserRouter,Route,HashRouter } from 'react-router-dom'
 import {Form,FormControl,NavDropdown,Container} from 'react-bootstrap';
 import NavbarMain from './NavbarMain/NavbarMain';
 import Login from './Login/Login';
-import StudentInformation from './StudentInformation/StudentInformation';
+import StudentInformationReport from './Reports/StudentInformationReport';
+import StudentInformationTempIDSReport from './Reports/StudentInformationTempIDSReport'
 import './App.css';
+import NutritionLogin from './Login/NutritionLogin';
+import HISDReportsMenu from './Reports/HISDReportsMenu';
 
 function App() {
     return (
       <div id="MasterContainer">                    
         <HashRouter>
           <NavbarMain />
+          {/*
           <Route
             exact
             path='/'
             component={Login}
           />
+        */}
+        <Route
+            exact
+            path='/'
+            component={NutritionLogin}
+          />  
+
+        <Route
+            exact
+            path='/HISDReportsMenu'
+            component={HISDReportsMenu}
+          />
+
           <Route
             exact
-            path='/Login'
-            component={Login}
+            path='/StudentInformationReport'
+            component={StudentInformationReport}
           />
-
-
-            <Route
+           <Route
             exact
-            path='/StudentInformation'
-            component={StudentInformation}
+            path='/StudentInformationTempIDSReport'
+            component={StudentInformationTempIDSReport}
           />
+         
         </HashRouter>
       </div>     
     );

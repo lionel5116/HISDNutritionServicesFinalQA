@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux'
 import redLogin from './redLogin';
+import userReducer from './userReducer';
 
 const allReducers = combineReducers({
-    redLogin
+    redLogin,
+    userReducer
 })
  
 export default allReducers;

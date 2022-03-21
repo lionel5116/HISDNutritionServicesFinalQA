@@ -7,6 +7,9 @@ module.exports = {
       filename: 'bundle.js',
       path: path.resolve(__dirname, 'dist'),
     },
+    performance: {
+        hints: false
+      },
     module: {
         rules: [
             {
@@ -14,9 +17,13 @@ module.exports = {
                 exclude: /node_modules/,
                 use :{
                     loader: 'babel-loader',
-                }
+                },
+
             },
             { test: /\.css$/, use: 'css-loader' },
+            { test: /\.(png|jpg)$/, use: 'url-loader?limit=8192' },
+            
+            
         ]
     },
     devServer: {
@@ -30,5 +37,6 @@ module.exports = {
       },
       devtool: 'source-map',
       plugins: [new webpack.SourceMapDevToolPlugin({})],
+      mode: 'production'
 
 }
