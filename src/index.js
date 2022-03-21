@@ -10,7 +10,7 @@ import configureStore from './store/configureStore';
 import { loadUser } from './actions/sharedActions';
 
 const store = configureStore(initialState);
-store.dispatch(loadUser());
+//store.dispatch(loadUser());
 ReactDOM.render(
     <Provider store={store}>
         <App />
