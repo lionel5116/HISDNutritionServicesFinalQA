@@ -9,6 +9,7 @@ import StudentInformationTempIDSReport from './Reports/StudentInformationTempIDS
 import './App.css';
 import NutritionLogin from './Login/NutritionLogin';
 import HISDReportsMenu from './Reports/HISDReportsMenu';
+import Search from './Search/Search';
 
 function App() {
     return (
@@ -43,6 +44,12 @@ function App() {
             exact
             path='/StudentInformationTempIDSReport'
             component={StudentInformationTempIDSReport}
+          />
+
+          <Route
+            exact
+            path='/Search'
+            component={Search}
           />
          
         </HashRouter>

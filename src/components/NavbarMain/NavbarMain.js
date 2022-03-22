@@ -23,7 +23,7 @@ class NavbarMain extends React.Component {
                 <Nav className="mr-auto">
 
                 <NavDropdown title="Student Records" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="#/">Search</NavDropdown.Item>
+                  <NavDropdown.Item href="#/Search">Search</NavDropdown.Item>
                   <NavDropdown.Item href="#/">Add</NavDropdown.Item>
 
                   <NavDropdown.Divider />

@@ -70,7 +70,15 @@ export class studentInfoApi {
 
      async  fetchblFoodsToBeOmmitedData(){
         var url = Config.REST_URL + '/api/Admin/fetchFoodsToBeOmmited/'
-        //console.log(url)
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
+
+     async  fetchSchoolListings(){
+        var url = Config.REST_URL + '/api/StudentEntryData/fetchSchoolListings/'
         return await axios.get(url)
          .then(res => {
                return res.data;
