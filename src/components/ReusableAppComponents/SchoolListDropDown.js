@@ -3,7 +3,7 @@ import studentInfoApi from '../../api/studentInfoApi';
 
 function SchoolListDropDown() {
 
-const [dropDownSchoolListingData, setdropDownSchoolListingData] = useState([])
+//const [dropDownSchoolListingData, setdropDownSchoolListingData] = useState([])
 
 useEffect(() => {
     fetchSchoolListingData();
@@ -16,13 +16,15 @@ async function fetchSchoolListingData() {
      
       var _DDSchoolListingSelect = document.getElementById('ddSchoolListings'); 
 
+      /*USE THIS .MAP WHEN FETCHING DATA FOR MAIN FORM
       const _dropDownValues = _SCHOOL_LISTING_DATA.map((response) => ({
         "EducationOrgNaturalKey" : response.EducationOrgNaturalKey,
         "label" : response.NameOfInstitution
       }))
-      
-      setdropDownSchoolListingData(_dropDownValues)
+      */
 
+      //setdropDownSchoolListingData(_dropDownValues)
+      _DDSchoolListingSelect.options[_DDSchoolListingSelect.options.length] = new Option('--Select--');
       for(const key in _SCHOOL_LISTING_DATA) {     
          _DDSchoolListingSelect.options[_DDSchoolListingSelect.options.length] = new Option(_SCHOOL_LISTING_DATA[key].NameOfInstitution);
       }

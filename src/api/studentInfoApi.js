@@ -85,6 +85,15 @@ export class studentInfoApi {
          });
  
      }
+
+     async  fetchSchoolYears(){
+        var url = Config.REST_URL + '/api/Admin/fetchSchoolYears/'
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
 }
 
 export default studentInfoApi
