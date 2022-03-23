@@ -8,7 +8,7 @@ function SchoolYearDropDown() {
     },[]);
   
 
-  async function fetchSchoolYears() {        
+  async function fetchSchoolYears() {         
     let _SCHOOL_YEAR_DATA = [];
     var myAPI = new studentInfoApi;
     _SCHOOL_YEAR_DATA = await myAPI.fetchSchoolYears()
@@ -20,7 +20,7 @@ function SchoolYearDropDown() {
         _DDSchoolYearSelect.options[_DDSchoolYearSelect.options.length] = new Option(_SCHOOL_YEAR_DATA[key]);
     }
  
-}
+   }
 
  return (
     <div>

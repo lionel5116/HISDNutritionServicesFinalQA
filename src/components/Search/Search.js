@@ -8,16 +8,32 @@ import {Button,
 import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
+import studentInfoApi from '../../api/studentInfoApi';
   
 
 function Search() {
+    
+  
+  async function fetchSearchData(_SEARCH_STRING_) {         
+      let _SEARCH_DATA = [];
+      var myAPI = new studentInfoApi;
+      _SEARCH_DATA = await myAPI.fetchSearchData(_SEARCH_STRING_)
+      console.log(_SEARCH_DATA)
+ }
 
+ async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {         
+  let _SEARCH_DATA = [];
+  var myAPI = new studentInfoApi;
+  _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_)
+  console.log(_SEARCH_DATA)
+}
 
+     //only three values FirstName,LastName,School
      const searchMixed =()=>
      {
           
            var _SEARCH_STRING = '';
-           
+
            var studentID = document.getElementById('txtStudentID');
            var FirstName = document.getElementById('txtFirstName');
            var LastName = document.getElementById('txtLastName');
@@ -30,9 +46,15 @@ function Search() {
                SchoolYear.value == "--Select--" &&
                School.value == "--Select--")
             {
-                //Search By Student ID
-                console.log('Search By Student ID')
-          
+                //Search By Student ID  - WORKS!!!
+                 console.log('Search By Student ID')
+                _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+                _SEARCH_STRING +="'";
+                _SEARCH_STRING +=studentID.value;
+                _SEARCH_STRING +="'";
+                console.log(_SEARCH_STRING);
+                fetchSearchData(_SEARCH_STRING);
+                
 
             }
             else if (studentID.value == "" &&
@@ -42,7 +64,17 @@ function Search() {
                    School.value == "--Select--")
             {
                 //Search By First Name 
+                //only three values FirstName,LastName,School
                 console.log('Search By First Name')
+                _SEARCH_STRING += FirstName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="-"
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="-"
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="FIRST_NAME"
+                console.log("SEARCH_TYPE : FIRST_NAME");
+                fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
               
    
             }
@@ -55,6 +87,16 @@ function Search() {
             {
                 //Search By Last Name 
                 console.log('Search By Last Name ')
+                _SEARCH_STRING += "-"
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +=LastName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="-"
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="LAST_NAME"
+               
+                console.log("SEARCH_TYPE : LAST_NAME");
+                fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
              
 
             }
@@ -64,8 +106,14 @@ function Search() {
                    SchoolYear.value != "--Select--" &&
                    School.value == "--Select--")
             {
-                //Search By School Year
+                //Search By School Year - WORKS!!!
                 console.log('Search By School Year ')
+                _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
+                _SEARCH_STRING +="'";
+                _SEARCH_STRING +=SchoolYear.value;
+                _SEARCH_STRING +="'";
+                console.log(_SEARCH_STRING);
+                fetchSearchData(_SEARCH_STRING);
 
             }
             else if (studentID.value == "" &&
@@ -74,8 +122,14 @@ function Search() {
                    SchoolYear.value == "--Select--" &&
                    School.value != "--Select--")
             {
-                //Search By School Name
+                //Search By School Name  - WORKS!!!
                 console.log('Search By School Name')
+                _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+                _SEARCH_STRING +="'";
+                _SEARCH_STRING +=School.value;
+                _SEARCH_STRING +="'";
+                console.log(_SEARCH_STRING);
+                fetchSearchData(_SEARCH_STRING);
 
             }
             else if (studentID.value == "" &&
@@ -86,6 +140,15 @@ function Search() {
             {
                 //Search By Last Name and First Name
                 console.log('Search By Last Name and First Name')
+                _SEARCH_STRING += FirstName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +=LastName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="-"
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="LAST_FIRST_NAME"
+                console.log("SEARCH_TYPE : LAST_FIRST_NAME");
+                fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
             }
             else if (studentID.value == "" &&
@@ -96,6 +159,17 @@ function Search() {
             {
                 //Search By Last Name and First Name and School Name
                 console.log('Search By Last Name and First Name and School Name')
+                _SEARCH_STRING += FirstName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +=LastName.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +=School.value
+                _SEARCH_STRING +="|"
+                _SEARCH_STRING +="LAST_FIRST_NAME_SCHOOL"
+                
+                console.log("SEARCH_TYPE : LAST_FIRST_NAME_SCHOOL");
+                fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+
             }
         }
 
