@@ -7,7 +7,7 @@ import {Button,
     Col,
     Image} from 'react-bootstrap';
 import { Glyphicon } from 'react-bootstrap';
-import { ArrowRight  } from 'react-bootstrap-icons';
+import {BinocularsFill} from 'react-bootstrap-icons';
 import { Pencil  } from 'react-bootstrap-icons';
 import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
@@ -201,7 +201,7 @@ function Search() {
           search: '?query=' + row.id,
         }
       )}
-    ><Pencil /></Button></div>);
+    ><BinocularsFill /></Button></div>);
     
   
   }
@@ -235,7 +235,6 @@ function Search() {
     <div>
     <main>
        <Container>  
-       <Pencil />
            <h1>Search Student Records</h1>   
            <br></br>    
          <Row>
