@@ -6,10 +6,22 @@ import {Button,
         Col,
         Image} from 'react-bootstrap';
 import HISDNutritionServicesLogo from '../../images/HISDNutritionServicesLogo.png';
-
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 
 function NutritionLogin() {
+
+  const location = useLocation();
+
+    useEffect(() => {
+       console.log(location.pathname); // result: '/secondpage'
+       console.log(location.search); // result: '?query=abc'
+       var arrParams = location.search.split("=")
+       console.log(arrParams[1])
+    }, [location]);
+
+
   return (
     <div className='SampleReactBootStapWebPage'>
     <main>
