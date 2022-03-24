@@ -6,6 +6,9 @@ import {Button,
     Row,
     Col,
     Image} from 'react-bootstrap';
+import { Glyphicon } from 'react-bootstrap';
+import { ArrowRight  } from 'react-bootstrap-icons';
+import { Pencil  } from 'react-bootstrap-icons';
 import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
@@ -16,11 +19,7 @@ function Search() {
   const history = useHistory();
   const [tblSearchResults, setSearchResults] = useState([])
     
-  function showRowDetailInfo(_id){
-   // console.log("Data from row from an external function",_id )
-      let history = useHistory();
-      history.push("/");
-  }
+  
   
   async function fetchSearchData(_SEARCH_STRING_) {         
       let _SEARCH_DATA = [];
@@ -194,14 +193,17 @@ function Search() {
   }
 
   function CellFormatter(cell, row) {
-    return (<div><Button variant='warning'
+    
+    return (<div><Button variant='warning' 
       onClick={() => history.push(
         {
           pathname: '/',
           search: '?query=' + row.id,
         }
       )}
-    >Select</Button></div>);
+    ><Pencil /></Button></div>);
+    
+  
   }
 
         const options = {
@@ -233,6 +235,7 @@ function Search() {
     <div>
     <main>
        <Container>  
+       <Pencil />
            <h1>Search Student Records</h1>   
            <br></br>    
          <Row>
