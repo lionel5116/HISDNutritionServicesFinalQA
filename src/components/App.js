@@ -16,14 +16,6 @@ function App() {
       <div id="MasterContainer">                    
         <HashRouter>
           <NavbarMain />
-          {/*
-          <Route
-            exact
-            path='/'
-            component={Login}
-          />
-        */}
-        
         <Route 
             path='/NutritionLogin'
             exact component={NutritionLogin}
