@@ -7,20 +7,19 @@ import {Button,
     Col,Form,Tabs,Tab} from 'react-bootstrap';
 import GenericMultipleSelect from '../ReusableAppComponents/GenericMultipleSelect';
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
+import { Pencil  } from 'react-bootstrap-icons';
     
-let optionsForMultiselect = ['Dairy Products', 'Eggs as an Ingredient', 'Fluid Dairy Milk', 'Foods Processed in a Facility that Contains Nuts', 'Milk Protein', 'Peanuts', 'Seafood', 'Soy', 'Tree Nuts', 'Wheat/Gluten', 'Whole Egg ']
+
 let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
 var itemTypeSelected = ''
+import studentInfoApi from '../../api/studentInfoApi';
 
 function Administration() {
-
-  const [itemTypeSelected, setitemTypeSelected] = useState('')
-  //document.getElementById('selDDSelections').addEventListener("change", onDDChanged);
+  const [tblSearchResults, setSearchResults] = useState([])
   
   const onDDChanged = () =>
   {
     var _ItemTypeelect = document.getElementById('selDDSelections');
-    setitemTypeSelected(_ItemTypeelect.value) 
     fetchSearchDDListData(_ItemTypeelect.value)
   }
   
@@ -28,17 +27,58 @@ function Administration() {
     let _DD_LIST_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_LIST_DATA = await myAPI.fetchSearchDDListData(itemTypeSelected)
+    setSearchResults(_DD_LIST_DATA)
    
-    var _DDSSelect = document.getElementById('selDDSelections'); 
-
+    /*  I CAN USE THIS CODE FOR SOME OTHER COMPOENT **
+    var _DDSSelect = document.getElementById('selAdminDD'); 
+    //clear list to add new ones
+    _DDSSelect.innerHTML = "";
   
    
     for(const key in _DD_LIST_DATA) {     
       _DDSSelect.options[_DDSSelect.options.length] = new Option(_DD_LIST_DATA[key]);
     }
- 
+   */
+
 }
 
+const callModal =(item) =>{
+  console.log("Item Selected:" + item)
+}
+
+function CellFormatter(cell, row) {
+    
+  return (<div><Button variant='warning' 
+      onClick={() => callModal(row.ItemName)}
+  ><Pencil /></Button></div>);
+  
+
+}
+
+      const options = {
+        exportCSVText: 'Export CSV',
+        insertText: 'Insert',
+        deleteText: 'Delete',
+        saveText: 'Save',
+        closeText: 'Close',
+    
+        sizePerPage: 25,
+        sortOrder: 'desc',
+        prePage: 'Prev',
+        nextPage: 'Next',
+        firstPage: 'First',
+        lastPage: 'Last',
+        paginationShowsTotal: renderShowsTotal
+      };
+
+
+      function renderShowsTotal(start, to, total) {
+        return (
+            <p style={{color: 'black'}}>
+            From {start} to {to}. Total: {total}&nbsp;&nbsp;
+            </p>
+        );
+    }
 
   return (
     <div>
@@ -58,21 +98,34 @@ function Administration() {
                                   <Col sm={4}>
                                   <label>Select List</label>
                                   <GenericDDSelect 
-                                        onChange={() =>onDDChanged()}
+                                        handleOnChange={onDDChanged}
                                         items = {optionsDDSelections}
                                         name = "selDDSelections"
                                />
                                   </Col>                           
                               </Row>
-                               <hr />
+                               {/* I CAN USE THIS CODE FOR SOME OTHER COMPOENT **}
                                <Row>
                                   <Col sm={6}>
                                      <GenericMultipleSelect 
-                                        itemType = {itemTypeSelected}
                                         name = "selAdminDD"
                                         />
                                   </Col>                           
                               </Row>
+                              */}
+                              <hr></hr>
+                            <Row>
+                              <Col sm={12}> 
+                                <h2>Items</h2>
+                                <BootstrapTable data={tblSearchResults} striped hover options={options}
+                                  pagination           
+                                >
+                                  <TableHeaderColumn row="1" width="2%" editable={false} isKey dataField="ItemName" dataFormat={CellFormatter}></TableHeaderColumn>
+                                  <TableHeaderColumn row="1" width="98%" dataField="ItemName">Item Name</TableHeaderColumn>
+                                    
+                                </BootstrapTable>
+                              </Col>
+                             </Row>
                           </Tab>
 
                           <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">

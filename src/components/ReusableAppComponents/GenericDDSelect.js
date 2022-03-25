@@ -22,6 +22,7 @@ function GenericDDSelect(props) {
        <select class="form-select form-select-sm" 
               aria-label=".form-select-sm example" 
               style={{ width: 250 }} id={props.name}
+              onChange={props.handleOnChange}
               >
         
       </select>
