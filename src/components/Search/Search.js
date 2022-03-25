@@ -50,7 +50,7 @@ function Search() {
   }
   
   setSearchResults(_SEARCH_DATA)
-  console.log(_SEARCH_DATA)
+  //console.log(_SEARCH_DATA)
 }
 
      //only three values FirstName,LastName,School
