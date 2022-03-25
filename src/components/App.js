@@ -23,12 +23,17 @@ function App() {
             component={Login}
           />
         */}
-        <Route
-            exact
-            path='/'
-            component={NutritionLogin}
+        
+        <Route 
+            path='/NutritionLogin'
+            exact component={NutritionLogin}
           />  
-
+        
+         <Route
+            
+            path='/'
+            exact component={NutritionLogin}
+          />  
         <Route
             exact
             path='/HISDReportsMenu'

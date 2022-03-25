@@ -17,7 +17,7 @@ class NavbarMain extends React.Component {
       return (
         <div id="MasterContainer">
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand href="/">Nutrition Services</Navbar.Brand>
+            <Navbar.Brand href="#/NutritionLogin">Nutrition Services</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
