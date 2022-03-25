@@ -10,6 +10,7 @@ import './App.css';
 import NutritionLogin from './Login/NutritionLogin';
 import HISDReportsMenu from './Reports/HISDReportsMenu';
 import Search from './Search/Search';
+import Administration from './Administration/Administration';
 
 function App() {
     return (
@@ -47,6 +48,12 @@ function App() {
             exact
             path='/Search'
             component={Search}
+          />
+
+       <Route
+            exact
+            path='/Administration'
+            component={Administration}
           />
          
         </HashRouter>
