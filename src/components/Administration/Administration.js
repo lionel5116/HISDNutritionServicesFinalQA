@@ -4,7 +4,7 @@ import {Button,
     Card,
     Container,
     Row,
-    Col,Form,Tabs,Tab} from 'react-bootstrap';
+    Col,Form,Tabs,Tab,Modal} from 'react-bootstrap';
 import GenericMultipleSelect from '../ReusableAppComponents/GenericMultipleSelect';
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
@@ -16,6 +16,9 @@ import studentInfoApi from '../../api/studentInfoApi';
 
 function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
+  const [show, setShow] = useState(false);
+  const [_nSequenceID,setSequenceID]  = useState(0)
+    const [_ItemName,setItemName]  = useState("")
   
   const onDDChanged = () =>
   {
@@ -49,11 +52,19 @@ const callModal =(item) =>{
 function CellFormatter(cell, row) {
     
   return (<div><Button variant='warning' 
-      onClick={() => callModal(row.ItemName)}
+      onClick={()=>showRowDetailInfo(row.ItemName)}
   ><Pencil /></Button></div>);
   
 
 }
+
+function showRowDetailInfo(_name){
+  console.log("Data from row from an external function",_name)
+  //setSequenceID(_id);
+  setItemName(_name)
+  setShow(true)
+}
+
 
       const options = {
         exportCSVText: 'Export CSV',
@@ -126,6 +137,48 @@ function CellFormatter(cell, row) {
                                 </BootstrapTable>
                               </Col>
                              </Row>
+                              <Row>
+                                <Col sm={12}>
+                                  <Modal
+                                    show={show}
+                                    size="lg"
+                                    aria-labelledby="contained-modal-title-vcenter"
+                                    centered
+                                  >
+                                    <Modal.Header closeButton>
+                                      <Modal.Title id="contained-modal-title-vcenter">
+                                        Modify Item
+                                      </Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                      <h4>Edit Item</h4>
+                                      <Row>
+                                        <Col sm={2}>
+                                          <label>Item</label>
+                                        </Col>
+
+                                        <Col sm={4}>
+                                          <input value={_ItemName}>
+                                          </input>
+                                        </Col>
+
+                                        <Col sm={2}>
+                                          <label>New Value</label>
+                                        </Col>
+
+                                        <Col sm={4}>
+                                          <input id='newValue'>
+                                          </input>
+                                        </Col>
+                                      </Row>
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                      <Button variant="warning" onClick={() => setShow(false)}>Submit</Button>
+                                      <Button onClick={() => setShow(false)}>Close</Button>
+                                    </Modal.Footer>
+                                  </Modal>
+                                </Col>
+                              </Row>
                           </Tab>
 
                           <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
