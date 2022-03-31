@@ -18,12 +18,12 @@ function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
   const [show, setShow] = useState(false);
   const [_nSequenceID,setSequenceID]  = useState(0)
-    const [_ItemName,setItemName]  = useState("")
+  const [_ItemName,setItemName]  = useState("")
   
   const onDDChanged = () =>
   {
-    var _ItemTypeelect = document.getElementById('selDDSelections');
-    fetchSearchDDListData(_ItemTypeelect.value)
+    var _ItemTypeSelect = document.getElementById('selDDSelections');
+    fetchSearchDDListData(_ItemTypeSelect.value)
   }
   
   async function fetchSearchDDListData(itemTypeSelected) {        
@@ -65,6 +65,40 @@ function showRowDetailInfo(_name){
   setShow(true)
 }
 
+async function updateDDItem(){
+  var _ItemTypeSelect = document.getElementById('selDDSelections');
+  var _ItemNameNew = document.getElementById('newValue');
+  var oldValue = _ItemName
+  var DDType = '';
+  //Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types
+
+  switch (_ItemTypeelect) {
+    case 'Foods To Be Ommitted':
+      DDType = 'FTBO'
+      break;
+    case 'Nutrition Supplement':
+      DDType = 'NUTR_SUB'
+      break;
+    case 'Milk Substitute':
+      DDType = 'MMILK_SUB'
+      break;
+      case 'Training Types':
+        DDType = 'TRAINING'
+        break;
+    default:
+      break;
+  }
+
+  var argument = oldValue;
+  argument += "|";
+  argument += _ItemNameNew
+  argument += "|";
+  argument += DDType
+
+  var myAPI = new studentInfoApi;
+  await myAPI.fetchSearchDDListData(itemTypeSelected)
+    
+}
 
       const options = {
         exportCSVText: 'Export CSV',
