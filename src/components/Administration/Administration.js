@@ -19,11 +19,14 @@ function Administration() {
   const [show, setShow] = useState(false);
   const [_nSequenceID,setSequenceID]  = useState(0)
   const [_ItemName,setItemName]  = useState("")
+  const [_ItemNameSelected,setItemNameSelected]  = useState("")
   
   const onDDChanged = () =>
   {
     var _ItemTypeSelect = document.getElementById('selDDSelections');
+
     fetchSearchDDListData(_ItemTypeSelect.value)
+    setItemNameSelected(_ItemTypeSelect.value);
   }
   
   async function fetchSearchDDListData(itemTypeSelected) {        
@@ -66,13 +69,14 @@ function showRowDetailInfo(_name){
 }
 
 async function updateDDItem(){
+  //var _ItemTypeSelect = _ItemNameSelected;
   var _ItemTypeSelect = document.getElementById('selDDSelections');
   var _ItemNameNew = document.getElementById('newValue');
   var oldValue = _ItemName
   var DDType = '';
-  //Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types
+ 
 
-  switch (_ItemTypeelect) {
+  switch (_ItemTypeSelect.value) {
     case 'Foods To Be Ommitted':
       DDType = 'FTBO'
       break;
@@ -91,12 +95,14 @@ async function updateDDItem(){
 
   var argument = oldValue;
   argument += "|";
-  argument += _ItemNameNew
+  argument += _ItemNameNew.value
   argument += "|";
   argument += DDType
 
   var myAPI = new studentInfoApi;
-  await myAPI.fetchSearchDDListData(itemTypeSelected)
+  await myAPI.UpdateDDListItem(argument)
+  setShow(false);
+  onDDChanged();
     
 }
 
@@ -207,7 +213,7 @@ async function updateDDItem(){
                                       </Row>
                                     </Modal.Body>
                                     <Modal.Footer>
-                                      <Button variant="warning" onClick={() => setShow(false)}>Submit</Button>
+                                      <Button variant="warning" onClick={() => updateDDItem(false)}>Submit</Button>
                                       <Button onClick={() => setShow(false)}>Close</Button>
                                     </Modal.Footer>
                                   </Modal>
