@@ -8,6 +8,10 @@ import {Button,
 import GenericMultipleSelect from '../ReusableAppComponents/GenericMultipleSelect';
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
+
+//react bootstrap table next
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
     
 
 let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
@@ -52,32 +56,35 @@ const callModal =(item) =>{
   console.log("Item Selected:" + item)
 }
 
-function CellFormatter(cell, row) {
-    
-  return (<div><Button variant='warning' 
-      onClick={()=>showRowDetailInfo(row.ItemName)}
-  ><Pencil /></Button></div>);
-  
 
-}
 
 function showRowDetailInfo(_name){
   console.log("Data from row from an external function",_name)
-  //setSequenceID(_id);
-  setItemName(_name)
+
+  setItemName(_name)  // const [_ItemName,setItemName]  = useState("")
+
   setShow(true)
   //pause the thread for 1/2 second to give the modal time to render
-  setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_name); }, 500);
+  // we don't use const [_ItemName,setItemName], but we refer to the _ItemName on edit
+  setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_name); }, 500); 
 }
 
 async function updateDDItem(){
-  //function updateDDItem(){
-  var _ItemTypeSelect = document.getElementById('selDDSelections');
-  var _ItemNameNew = document.getElementById('newValue');
 
-  //var oldValue = _ItemName (this is because we are using this method to handle adding/editing .. deleting)
-  var oldValue = document.getElementById('oldValue').value;
-  //console.log(oldValue);
+  //this is for the item DD type we are updating
+  var _ItemTypeSelect = document.getElementById('selDDSelections');
+
+  //var _ItemNameNew = document.getElementById('newValue');
+  //var oldValue = document.getElementById('oldValue').value;
+
+  //grab the old value from what was set when the item was selected - DEBBI CHANGE
+  var oldValue = _ItemName;  //const [_ItemName,setItemName]  = useState("")
+  console.log("Old Value:" + oldValue)
+
+  //Whatever they overwrite from the single field (is the new value)
+  var _ItemNameNew  = document.getElementById('oldValue').value;
+  console.log("New Value:" + _ItemNameNew)
+  
 
   var DDType = '';
  
@@ -100,31 +107,22 @@ async function updateDDItem(){
   }
 
 
+  console.log("Drop Down Type :" + DDType)
+
   var argument  = '';
 
-   if (_ItemNameNew.value.length > 0 && 
-        oldValue.length > 0
+   if (_ItemNameNew.length > 0
    )
    {
       argument = oldValue;
       argument += "|";
-      argument += _ItemNameNew.value
+      argument += _ItemNameNew
       argument += "|";
       argument += DDType
    } 
-   else if ( oldValue.length == 0 &&  
-            _ItemNameNew.value.length > 0 )
-    {
-       //means that we are adding a new value
-       argument = 'ADD';
-       argument += "|";
-       argument += _ItemNameNew.value
-       argument += "|";
-       argument += DDType
-    }
-    else {
-      return
-    }
+   
+
+   console.log("SQL Statement :" + argument)
 
 
   var myAPI = new studentInfoApi;
@@ -137,11 +135,12 @@ async function updateDDItem(){
 async function DeleteDDListItem(){
   //function updateDDItem(){
   var _ItemTypeSelect = document.getElementById('selDDSelections');
-  var _ItemNameNew = document.getElementById('newValue');
+  
+  //NEVER USED ****
+  //var _ItemNameNew = document.getElementById('newValue');
 
-  //var oldValue = _ItemName;
+
   var oldValue = document.getElementById('oldValue').value;
-  //console.log(oldValue);
 
   var DDType = '';
  
@@ -183,6 +182,7 @@ async function DeleteDDListItem(){
     
 }
 
+/*
       const options = {
         exportCSVText: 'Export CSV',
         insertText: 'Insert',
@@ -207,6 +207,26 @@ async function DeleteDDListItem(){
             </p>
         );
     }
+*/
+      const rowStyle = {  height: '10px', padding: '2px 0' };
+      const columns = [{
+        dataField: 'ItemName',
+        text: 'Edit',
+        formatter: CellFormatter,
+        style: { width: '10px' }
+      }, {
+        dataField: 'ItemName',
+        text: 'Item Name',
+      }, ];
+
+      function CellFormatter(cell, row) {
+        return (
+          <div>
+            <Pencil 
+              onClick={()=>showRowDetailInfo(row.ItemName)}/>
+          </div>
+        );
+      }
 
   return (
     <div>
@@ -242,9 +262,13 @@ async function DeleteDDListItem(){
                               </Row>
                               */}
                               <hr></hr>
+
                             <Row>
-                              <Col sm={12}> 
+                              
+                              <Col sm={6}> 
+                               
                                 <h2>Items</h2>
+                                {/*
                                 <BootstrapTable data={tblSearchResults} striped hover options={options}
                                   pagination           
                                 >
@@ -252,10 +276,26 @@ async function DeleteDDListItem(){
                                   <TableHeaderColumn row="1" width="98%" dataField="ItemName">Item Name</TableHeaderColumn>
                                     
                                 </BootstrapTable>
+                              */}
+                              <BootstrapTable   
+                                striped
+                                hover
+                                keyField='ItemName'
+                                data={tblSearchResults}
+                                columns={columns}
+                                pagination={ paginationFactory()}
+                                rowStyle={rowStyle}
+                              
+                              />
+
                               </Col>
+                             
                              </Row>
+
                               <Row>
+                                
                                 <Col sm={12}>
+                                 
                                   <Modal
                                     show={show}
                                     size="lg"
@@ -270,37 +310,11 @@ async function DeleteDDListItem(){
                                     <Modal.Body>
                                       <h4>Edit Item</h4>
                                       <Row>
-                                        
-                                        {/*
-                                        <Col sm={1}>
-                                          <label>Item</label>
-                                        </Col>
-                                      */}
-
-                                        {/* cannot use this method, because it makes the field readonly}
-                                        <Col sm={4}>
-                                          <input value={_ItemName}>
-                                          </input>
-                                        </Col>
-                                      */}
-
-                                        <Col sm={5}>
+                                        <Col sm={12}>
                                           <label>Item</label>
                                           <input id='oldValue' style={styles.modalInputSyle}>
                                           </input>
-                                        </Col>
-
-                                         {/*
-                                        <Col sm={1}>
-                                          <label>New Value</label>
-                                        </Col>
-                                       */}
-
-                                        <Col sm={5}>
-                                          <label>New Value</label>
-                                          <input id='newValue' style={styles.modalInputSyle}>
-                                          </input>
-                                        </Col>
+                                        </Col>                             
                                       </Row>
                                     </Modal.Body>
                                     <Modal.Footer>
@@ -309,7 +323,9 @@ async function DeleteDDListItem(){
                                       <Button variant="danger" onClick={() => DeleteDDListItem(false)}>Delete</Button>
                                     </Modal.Footer>
                                   </Modal>
+                               
                                 </Col>
+
                               </Row>
                           </Tab>
 
@@ -330,7 +346,7 @@ async function DeleteDDListItem(){
 
 const styles = {
   modalInputSyle: {
-    width:300
+    width:600
   }
 };
 
