@@ -1,17 +1,18 @@
 import React from 'react';
-import {useState,useEffect} from 'react';
+import {useState} from 'react';
 import {Button,
-    Card,
     Container,
     Row,
-    Col,Form,Tabs,Tab,Modal} from 'react-bootstrap';
-import GenericMultipleSelect from '../ReusableAppComponents/GenericMultipleSelect';
+    Col,Form,Tabs,Tab} from 'react-bootstrap';
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
 
 //react bootstrap table next
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+
+//for modal
+import GenericModal from '../GenericModal/GenericModal';
     
 
 let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
@@ -20,7 +21,11 @@ import studentInfoApi from '../../api/studentInfoApi';
 
 function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
+
   const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
+  const [disableAddNewDDItem,setDisableAddNewDDItem] = useState(true);
+
   const [_nSequenceID,setSequenceID]  = useState(0)
   const [_ItemName,setItemName]  = useState("")
   const [_ItemNameSelected,setItemNameSelected]  = useState("")
@@ -31,6 +36,32 @@ function Administration() {
 
     fetchSearchDDListData(_ItemTypeSelect.value)
     setItemNameSelected(_ItemTypeSelect.value);
+
+    toggleAddNewDDItem();
+    console.log("Button State is" + disableAddNewDDItem)
+  }
+
+  const onDDChangedAddNewItem = () =>
+  {
+    var _ItemTypeSelect = document.getElementById('selDDSelections');
+
+    fetchSearchDDListData(_ItemTypeSelect.value)
+
+    toggleAddNewDDItem();
+
+    //setItemNameSelected(_ItemTypeSelect.value);
+  }
+  
+  const toggleAddNewDDItem = () =>
+  {
+    var _ItemTypeSelect = document.getElementById('selDDSelections');
+    if(_ItemTypeSelect.value != "--Select--")
+    {
+      setDisableAddNewDDItem(false)
+    }
+    else{
+      setDisableAddNewDDItem(true)
+    }
   }
   
   async function fetchSearchDDListData(itemTypeSelected) {        
@@ -52,10 +83,6 @@ function Administration() {
 
 }
 
-const callModal =(item) =>{
-  console.log("Item Selected:" + item)
-}
-
 
 
 function showRowDetailInfo(_name){
@@ -73,9 +100,6 @@ async function updateDDItem(){
 
   //this is for the item DD type we are updating
   var _ItemTypeSelect = document.getElementById('selDDSelections');
-
-  //var _ItemNameNew = document.getElementById('newValue');
-  //var oldValue = document.getElementById('oldValue').value;
 
   //grab the old value from what was set when the item was selected - DEBBI CHANGE
   var oldValue = _ItemName;  //const [_ItemName,setItemName]  = useState("")
@@ -97,7 +121,7 @@ async function updateDDItem(){
       DDType = 'NUTR_SUB'
       break;
     case 'Milk Substitute':
-      DDType = 'MMILK_SUB'
+      DDType = 'MILK_SUB'
       break;
       case 'Training Types':
         DDType = 'TRAINING'
@@ -133,13 +157,10 @@ async function updateDDItem(){
 }
 
 async function DeleteDDListItem(){
-  //function updateDDItem(){
+
   var _ItemTypeSelect = document.getElementById('selDDSelections');
   
-  //NEVER USED ****
-  //var _ItemNameNew = document.getElementById('newValue');
-
-
+ 
   var oldValue = document.getElementById('oldValue').value;
 
   var DDType = '';
@@ -153,7 +174,7 @@ async function DeleteDDListItem(){
       DDType = 'NUTR_SUB'
       break;
     case 'Milk Substitute':
-      DDType = 'MMILK_SUB'
+      DDType = 'MILK_SUB'
       break;
       case 'Training Types':
         DDType = 'TRAINING'
@@ -182,32 +203,68 @@ async function DeleteDDListItem(){
     
 }
 
-/*
-      const options = {
-        exportCSVText: 'Export CSV',
-        insertText: 'Insert',
-        deleteText: 'Delete',
-        saveText: 'Save',
-        closeText: 'Close',
+async function ADD_New_DDItem(){
+
+  //this is for the item DD type we are updating
+  var _ItemTypeSelect = document.getElementById('selDDSelections');
+
+  var _ItemNameNew  = document.getElementById('oldValue').value;
+
+  if(_ItemTypeSelect.value != "--Select--")
+  {
+     
+  }
+  else{
+    toggleAddNewDDItem();
+    return;
+  }
+
+  var DDType = '';
+ 
+
+  switch (_ItemTypeSelect.value) {
+    case 'Foods To Be Ommitted':
+      DDType = 'FTBO'
+      break;
+    case 'Nutrition Supplement':
+      DDType = 'NUTR_SUB'
+      break;
+    case 'Milk Substitute':
+      DDType = 'MILK_SUB'
+      break;
+      case 'Training Types':
+        DDType = 'TRAINING'
+        break;
+    default:
+      break;
+  }
+
+
+  console.log("Drop Down Type :" + DDType)
+
+  var argument  = '';
+
+   if (_ItemNameNew.length > 0
+   )
+   {
+      argument += _ItemNameNew
+      argument += "|";
+      argument += DDType
+   } 
+   
+
+   console.log("SQL Statement :" + argument)
+   console.log("Inside of the ADD_New_DDItem method")
+
+
+  var myAPI = new studentInfoApi;
+  await myAPI.ADD_DDListItem(argument)
+  
+  setShow2(false);
+  onDDChangedAddNewItem();
     
-        sizePerPage: 25,
-        sortOrder: 'desc',
-        prePage: 'Prev',
-        nextPage: 'Next',
-        firstPage: 'First',
-        lastPage: 'Last',
-        paginationShowsTotal: renderShowsTotal
-      };
+}
 
-
-      function renderShowsTotal(start, to, total) {
-        return (
-            <p style={{color: 'black'}}>
-            From {start} to {to}. Total: {total}&nbsp;&nbsp;
-            </p>
-        );
-    }
-*/
       const rowStyle = {  height: '10px', padding: '2px 0' };
       const columns = [{
         dataField: 'ItemName',
@@ -228,6 +285,19 @@ async function DeleteDDListItem(){
         );
       }
 
+  /* MODAL ACTIONS */
+  const closeModalPrimary = () =>
+  {
+      setShow(false)
+  }
+
+  const closeModalSecondary = () =>
+  {
+      setShow2(false)
+  }
+
+  
+
   return (
     <div>
     <main>
@@ -242,6 +312,18 @@ async function DeleteDDListItem(){
 
                           <Tab eventKey="ManageDropdownLists" title="Manage Dropdown Lists">
                             <br></br>
+
+                            <Row>
+                              <Col sm={4}>
+                              <Button variant="primary"
+                                onClick={()=>setShow2(true)}
+                                 disabled = {disableAddNewDDItem}
+                                 >Add New Item</Button>
+                              </Col>
+                            </Row>
+
+                            <br></br>
+
                             <Row>
                                   <Col sm={4}>
                                   <label>Select List</label>
@@ -268,15 +350,7 @@ async function DeleteDDListItem(){
                               <Col sm={6}> 
                                
                                 <h2>Items</h2>
-                                {/*
-                                <BootstrapTable data={tblSearchResults} striped hover options={options}
-                                  pagination           
-                                >
-                                  <TableHeaderColumn row="1" width="2%" editable={false} isKey dataField="ItemName" dataFormat={CellFormatter}></TableHeaderColumn>
-                                  <TableHeaderColumn row="1" width="98%" dataField="ItemName">Item Name</TableHeaderColumn>
-                                    
-                                </BootstrapTable>
-                              */}
+                              
                               <BootstrapTable   
                                 striped
                                 hover
@@ -295,35 +369,38 @@ async function DeleteDDListItem(){
                               <Row>
                                 
                                 <Col sm={12}>
-                                 
-                                  <Modal
-                                    show={show}
-                                    size="lg"
-                                    aria-labelledby="contained-modal-title-vcenter"
-                                    centered
-                                  >
-                                    <Modal.Header closeButton>
-                                      <Modal.Title id="contained-modal-title-vcenter">
-                                        Modify Item
-                                      </Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                      <h4>Edit Item</h4>
-                                      <Row>
-                                        <Col sm={12}>
-                                          <label>Item</label>
-                                          <input id='oldValue' style={styles.modalInputSyle}>
-                                          </input>
-                                        </Col>                             
-                                      </Row>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                      <Button variant="warning" onClick={() => updateDDItem(false)}>Submit</Button>
-                                      <Button onClick={() => setShow(false)}>Close</Button>
-                                      <Button variant="danger" onClick={() => DeleteDDListItem(false)}>Delete</Button>
-                                    </Modal.Footer>
-                                  </Modal>
-                               
+                              
+                                <GenericModal 
+                                   id="oldValue"
+                                   title="Edit DropDown List Item"
+                                   actionLabel='Edit Item'
+                                   showPrimaryModal= {show}
+                                   close = 'Close'
+                                   Submit = 'Submit'
+                                   delete = 'Delete Item'
+ 
+                                   handleClosePrimary = {()=>closeModalPrimary}
+                                   handleClickOne = {()=>updateDDItem}
+                                   handleClickTwo = {()=>DeleteDDListItem}
+
+                                   handleClickTwoVisable = 'block' />
+
+                                  <GenericModal 
+                                   id="oldValue"
+                                   title = "New DropDown List Item"
+                                   actionLabel='Add New Item'
+                                   showPrimaryModal= {show2}
+                                   close = 'Close'
+                                   Submit = 'Submit'
+                                
+                                   handleClosePrimary = {()=>closeModalSecondary}
+                                   handleClickOne = {()=>ADD_New_DDItem}
+
+                                   //we will hide these in this dialog
+                                   delete = 'Delete Item'
+                                   handleClickTwo = {()=>DeleteDDListItem}
+                                   handleClickTwoVisable = 'none' />
+
                                 </Col>
 
                               </Row>

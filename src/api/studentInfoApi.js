@@ -163,6 +163,25 @@ export class studentInfoApi {
  
      }
 
+     async  ADD_DDListItem(strFieldValues){
+        var url = Config.REST_URL + '/api/Admin/ADD_DDListItem/'
+        url +=strFieldValues;
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
+     //ADD_DDListItem
+
      async  DeleteDDListItem(strFieldValues){
         var url = Config.REST_URL + '/api/Admin/DeleteDDListItem/'
         url +=strFieldValues;
