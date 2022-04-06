@@ -13,6 +13,11 @@ import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectFo
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 import studentInfoApi from '../../api/studentInfoApi';
+
+//react bootstrap table next
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+
   
 
 function Search() {
@@ -194,18 +199,16 @@ function Search() {
 
   function CellFormatter(cell, row) {
     
-    return (<div><Button variant='warning' 
-      onClick={() => history.push(
-        {
-          pathname: '/',
-          search: '?query=' + row.id,
-        }
-      )}
-    ><BinocularsFill /></Button></div>);
-    
-  
+    return (<div><BinocularsFill 
+        onClick={() => history.push(
+          {
+            pathname: '/',
+            search: '?query=' + row.id,
+          }
+        )}/></div>);
   }
 
+      /*
         const options = {
           exportCSVText: 'Export CSV',
           insertText: 'Insert',
@@ -230,6 +233,34 @@ function Search() {
               </p>
           );
       }
+      */
+
+  //for the row height fix
+  const rowStyle = {  height: '10px', padding: '2px 0' };
+
+  const columns = [{
+    dataField: 'id',
+    text: 'id',
+    formatter: CellFormatter,
+    style: { width: '10px' }
+  },
+  {
+    dataField: 'LastName',
+    text: 'Last Name',
+  },
+  {
+    dataField: 'FirstName',
+    text: 'First Name',
+  },
+  {
+    dataField: 'School',
+    text: 'School',
+  },
+  {
+    dataField: 'currStudentYesNo',
+    text: 'Current',
+  },
+  ];
 
   return (
     <div>
@@ -312,6 +343,8 @@ function Search() {
         <Row>
           <Col sm={12}> 
             <h2>Search Results</h2>
+          
+            {/*
             <BootstrapTable data={tblSearchResults} striped hover options={options}
               pagination           
             >
@@ -321,6 +354,19 @@ function Search() {
               <TableHeaderColumn row="1" width="30%" dataField="School">School</TableHeaderColumn> 
               <TableHeaderColumn row="1" width="20%" dataField="currStudentYesNo">Current</TableHeaderColumn>      
             </BootstrapTable>
+          */}
+              <BootstrapTable
+                striped
+                hover
+                keyField='id'
+                data={tblSearchResults}
+                columns={columns}
+                pagination={paginationFactory()}
+                rowStyle={rowStyle}
+
+              />
+
+
           </Col>
         </Row>
 

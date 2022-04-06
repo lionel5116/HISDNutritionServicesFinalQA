@@ -266,6 +266,7 @@ async function ADD_New_DDItem(){
 }
 
       const rowStyle = {  height: '10px', padding: '2px 0' };
+      
       const columns = [{
         dataField: 'ItemName',
         text: 'Edit',
