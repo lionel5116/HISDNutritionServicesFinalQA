@@ -24,7 +24,7 @@ class NavbarMain extends React.Component {
 
                 <NavDropdown title="Student Records" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#/Search">Search</NavDropdown.Item>
-                  <NavDropdown.Item href="#/">Add</NavDropdown.Item>
+                  <NavDropdown.Item href="#/StudentDataEntry">Add</NavDropdown.Item>
 
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="#action/3.4"></NavDropdown.Item>

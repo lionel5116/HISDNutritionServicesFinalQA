@@ -266,7 +266,7 @@ async function ADD_New_DDItem(){
 }
 
       const rowStyle = {  height: '10px', padding: '2px 0' };
-      
+
       const columns = [{
         dataField: 'ItemName',
         text: 'Edit',
@@ -297,7 +297,7 @@ async function ADD_New_DDItem(){
       setShow2(false)
   }
 
-  
+ 
 
   return (
     <div>
@@ -387,6 +387,7 @@ async function ADD_New_DDItem(){
                                    handleClickTwoVisable = 'block' />
 
                                   <GenericModal 
+                                   
                                    id="oldValue"
                                    title = "New DropDown List Item"
                                    actionLabel='Add New Item'
@@ -400,7 +401,11 @@ async function ADD_New_DDItem(){
                                    //we will hide these in this dialog
                                    delete = 'Delete Item'
                                    handleClickTwo = {()=>DeleteDDListItem}
-                                   handleClickTwoVisable = 'none' />
+                                   handleClickTwoVisable = 'none' 
+                                   
+                                   
+                                   />
+                                   
 
                                 </Col>
 

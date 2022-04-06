@@ -11,6 +11,7 @@ import NutritionLogin from './Login/NutritionLogin';
 import HISDReportsMenu from './Reports/HISDReportsMenu';
 import Search from './Search/Search';
 import Administration from './Administration/Administration';
+import StudentDataEntry from './StudentDataEntry/StudentDataEntry';
 
 
 function App() {
@@ -56,6 +57,13 @@ function App() {
             path='/Administration'
             component={Administration}
           />
+
+          <Route
+            exact
+            path='/StudentDataEntry'
+            component={StudentDataEntry}
+          />
+         
          
         </HashRouter>
       </div>     

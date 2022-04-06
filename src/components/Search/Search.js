@@ -202,8 +202,10 @@ function Search() {
     return (<div><BinocularsFill 
         onClick={() => history.push(
           {
-            pathname: '/',
+            pathname: '/StudentDataEntry',
             search: '?query=' + row.id,
+            fullName: row.FirstName + ' ' + row.LastName
+
           }
         )}/></div>);
   }
