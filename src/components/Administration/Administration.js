@@ -21,14 +21,20 @@ import studentInfoApi from '../../api/studentInfoApi';
 
 function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
+  const [tblSearchTempIDS, setSearchResultsTempIDs] = useState([]);
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
+  const [show3, setShow3] = useState(false);
+
   const [disableAddNewDDItem,setDisableAddNewDDItem] = useState(true);
 
   const [_nSequenceID,setSequenceID]  = useState(0)
   const [_ItemName,setItemName]  = useState("")
   const [_ItemNameSelected,setItemNameSelected]  = useState("")
+
+
+  const [_studentIDTemp,setstudentIDTemp]  = useState("")
   
   const onDDChanged = () =>
   {
@@ -83,6 +89,21 @@ function Administration() {
 
 }
 
+async function fetchStudentTempIDRecords() {         
+  let _SEARCH_DATA = [];
+
+  var myAPI = new studentInfoApi;
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchStudentTempIDRecords()
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  setSearchResultsTempIDs(_SEARCH_DATA)
+  console.log(_SEARCH_DATA)
+}
 
 
 function showRowDetailInfo(_name){
@@ -94,6 +115,14 @@ function showRowDetailInfo(_name){
   //pause the thread for 1/2 second to give the modal time to render
   // we don't use const [_ItemName,setItemName], but we refer to the _ItemName on edit
   setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_name); }, 500); 
+}
+
+function showRowDetailInfoTempIDS(_studentID){
+  console.log("TempIDS  - Data from row from an external function",_studentID)
+  setstudentIDTemp(_studentID)//const [_studentIDTemp,setstudentIDTemp]  = useState("")
+  setShow3(true)
+  setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_studentID); }, 500);
+ 
 }
 
 async function updateDDItem(){
@@ -203,6 +232,7 @@ async function DeleteDDListItem(){
     
 }
 
+
 async function ADD_New_DDItem(){
 
   //this is for the item DD type we are updating
@@ -264,6 +294,32 @@ async function ADD_New_DDItem(){
   onDDChangedAddNewItem();
     
 }
+async function EditStudentID(){
+
+
+  var _ItemNameNew  = document.getElementById('oldValue').value;
+
+
+  var argument  = '';
+
+   if (_ItemNameNew.length > 0
+   )
+   {
+     
+      argument += _studentIDTemp
+      argument += "|";
+      argument += _ItemNameNew
+   } 
+   
+
+
+  var myAPI = new studentInfoApi;
+  await myAPI.UpdateStudentTempID(argument)
+  
+  setShow3(false);
+  fetchStudentTempIDRecords();
+    
+}
 
       const rowStyle = {  height: '10px', padding: '2px 0' };
 
@@ -277,11 +333,51 @@ async function ADD_New_DDItem(){
         text: 'Item Name',
       }, ];
 
+      const columnsTempIDS = [{
+        dataField: 'Student_ID',
+        text: 'ID',
+        formatter: CellFormatterTempIDS,
+       
+      }, 
+      {
+        dataField: 'Student_ID',
+        text: 'Student ID',
+        style: { width: '200px' }
+       
+      }, 
+      {
+        dataField: 'LastName',
+        text: 'Last Name',
+      }, 
+      {
+        dataField: 'FirstName',
+        text: 'First Name',
+      }, 
+      {
+        dataField: 'School',
+        text: 'School',
+      }, 
+      {
+        dataField: 'SchoolYear',
+        text: 'School Year',
+      }, 
+    ];
+
+
       function CellFormatter(cell, row) {
         return (
           <div>
             <Pencil 
               onClick={()=>showRowDetailInfo(row.ItemName)}/>
+          </div>
+        );
+      }
+
+      function CellFormatterTempIDS(cell, row) {
+        return (
+          <div>
+            <Pencil 
+              onClick={()=>showRowDetailInfoTempIDS(row.Student_ID)}/>
           </div>
         );
       }
@@ -297,7 +393,16 @@ async function ADD_New_DDItem(){
       setShow2(false)
   }
 
- 
+  const closeModalThird = () =>
+  {
+      setShow3(false)
+  }
+
+ const showTempIDRecords = () =>{
+    
+ }
+
+
 
   return (
     <div>
@@ -309,6 +414,32 @@ async function ADD_New_DDItem(){
                       <Tabs>
                           <Tab eventKey="TempStudentIDS" title="Temp Student IDS">
                             <h2>Temp Student IDS</h2>
+                            <Row>
+                              <Col sm={6}>
+                              <Button variant="primary"
+                                onClick={()=>fetchStudentTempIDRecords(true)}
+                               
+                                 >Show Temp IDs</Button>
+                              </Col>
+                            </Row>
+
+                            <br></br>
+
+                            <Row>
+                              <Col sm={12}>
+                              <BootstrapTable   
+                                striped
+                                hover
+                                keyField='Student_ID'
+                                data={tblSearchTempIDS}
+                                columns={columnsTempIDS}
+                                pagination={ paginationFactory()}
+                                rowStyle={rowStyle}
+                              
+                              />
+                              </Col>
+                            </Row>
+
                           </Tab>
 
                           <Tab eventKey="ManageDropdownLists" title="Manage Dropdown Lists">
@@ -387,7 +518,6 @@ async function ADD_New_DDItem(){
                                    handleClickTwoVisable = 'block' />
 
                                   <GenericModal 
-                                   
                                    id="oldValue"
                                    title = "New DropDown List Item"
                                    actionLabel='Add New Item'
@@ -402,8 +532,23 @@ async function ADD_New_DDItem(){
                                    delete = 'Delete Item'
                                    handleClickTwo = {()=>DeleteDDListItem}
                                    handleClickTwoVisable = 'none' 
-                                   
-                                   
+                                   />
+
+                                 <GenericModal 
+                                   id="oldValue"
+                                   title = "Edit Temp ID"
+                                   actionLabel='Set Student ID'
+                                   showPrimaryModal= {show3}
+                                   close = 'Close'
+                                   Submit = 'Submit'
+                                
+                                   handleClosePrimary = {()=>closeModalThird}
+                                   handleClickOne = {()=>EditStudentID}
+
+                                   //we will hide these in this dialog
+                                   delete = 'Delete Item'
+                                   handleClickTwo = {()=>DeleteDDListItem}
+                                   handleClickTwoVisable = 'none' 
                                    />
                                    
 

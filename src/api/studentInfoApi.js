@@ -129,6 +129,22 @@ export class studentInfoApi {
  
      }
 
+     async  fetchStudentTempIDRecords(){
+        var url = Config.REST_URL + '/api/Admin/fetchStudentTempIDRecords/'
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
      async  fetchSearchDDListData(_SEARCH_STRING_){
         var url = Config.REST_URL + '/api/Admin/fetchSearchDDListData/'
         url +=_SEARCH_STRING_;
@@ -180,7 +196,23 @@ export class studentInfoApi {
  
      }
 
-     //ADD_DDListItem
+     async  UpdateStudentTempID(strFieldValues){
+        var url = Config.REST_URL + '/api/Admin/UpdateStudentTempID/'
+        url +=strFieldValues;
+        console.log(url)
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
 
      async  DeleteDDListItem(strFieldValues){
         var url = Config.REST_URL + '/api/Admin/DeleteDDListItem/'

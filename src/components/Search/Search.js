@@ -38,7 +38,7 @@ function Search() {
         console.log(err)
       }
       setSearchResults(_SEARCH_DATA)
-      console.log(_SEARCH_DATA)
+      //console.log(_SEARCH_DATA)
  }
 
  async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {         
@@ -76,7 +76,7 @@ function Search() {
       School.value == "--Select--") {
       //Search By Student ID  - WORKS!!!
       console.log('Search By Student ID')
-      _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += studentID.value;
       _SEARCH_STRING += "'";
@@ -132,7 +132,7 @@ function Search() {
       School.value == "--Select--") {
       //Search By School Year - WORKS!!!
       console.log('Search By School Year ')
-      _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
+      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += SchoolYear.value;
       _SEARCH_STRING += "'";
@@ -147,7 +147,7 @@ function Search() {
       School.value != "--Select--") {
       //Search By School Name  - WORKS!!!
       console.log('Search By School Name')
-      _SEARCH_STRING += "SELECT id,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += School.value;
       _SEARCH_STRING += "'";
@@ -241,7 +241,7 @@ function Search() {
   const rowStyle = {  height: '10px', padding: '2px 0' };
 
   const columns = [{
-    dataField: 'id',
+    dataField: 'Student_ID',
     text: 'id',
     formatter: CellFormatter,
     style: { width: '10px' }
@@ -360,7 +360,7 @@ function Search() {
               <BootstrapTable
                 striped
                 hover
-                keyField='id'
+                keyField='Student_ID'
                 data={tblSearchResults}
                 columns={columns}
                 pagination={paginationFactory()}

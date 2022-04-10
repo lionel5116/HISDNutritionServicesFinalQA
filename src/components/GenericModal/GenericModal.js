@@ -23,7 +23,7 @@ function GenericModal(props) {
          
           <Row>
             <Col sm={12}>
-              <label>{props.actionLabel}</label>
+              <label style={{marginRight:15}}>{props.actionLabel}</label>
               <input id={props.id} style={styles.modalInputSyle}>
               </input>
             </Col>
