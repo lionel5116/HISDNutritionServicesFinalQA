@@ -13,15 +13,18 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 
 //for modal
 import GenericModal from '../GenericModal/GenericModal';
+import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
     
 
 let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
+
 var itemTypeSelected = ''
 import studentInfoApi from '../../api/studentInfoApi';
 
 function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
   const [tblSearchTempIDS, setSearchResultsTempIDs] = useState([]);
+  const [tblSearchResultsLogs, setSearchResultsLogs] = useState([]);
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -102,7 +105,43 @@ async function fetchStudentTempIDRecords() {
     console.log(err)
   }
   setSearchResultsTempIDs(_SEARCH_DATA)
-  console.log(_SEARCH_DATA)
+  //console.log(_SEARCH_DATA)
+}
+
+async function archiveSchoolYear(){
+  console.log("Archving school year....")
+  var SchoolYear = document.getElementById('ddSchoolYears');
+  var myAPI = new studentInfoApi;
+  if (SchoolYear.value != "--Select--" &&
+     SchoolYear.value != "")
+  {
+    try
+    {
+       await myAPI.archiveSchoolYear(SchoolYear.value)
+       SchoolYear.value = "--Select--";
+    }
+    catch(err)
+    {
+      console.log(err)
+    }
+  }
+  
+}
+
+async function fetchLogs() {         
+  let _SEARCH_DATA = [];
+
+  var myAPI = new studentInfoApi;
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchLogs()
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  setSearchResultsLogs(_SEARCH_DATA)
+  //console.log(_SEARCH_DATA)
 }
 
 
@@ -363,6 +402,31 @@ async function EditStudentID(){
       }, 
     ];
 
+    const columnsLogs = [
+    {
+      dataField: 'Student_ID',
+      text: 'Student ID',
+      style: { width: '200px' }
+    }, 
+    {
+      dataField: 'LogDate',
+      text: 'Log Date',
+    }, 
+    {
+      dataField: 'ChangeType',
+      text: 'ChangeType',
+    }, 
+    {
+      dataField: 'ChangeNotes',
+      text: 'ChangeNotes',
+    }, 
+    {
+      dataField: 'UserMakingChange',
+      text: 'User',
+    }, 
+  ];
+
+
 
       function CellFormatter(cell, row) {
         return (
@@ -559,10 +623,45 @@ async function EditStudentID(){
 
                           <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
                                 <h2>Archive School Year</h2>
+                                <Row>
+                                  <Col sm={4}>
+                                  <SchoolYearDropDown />
+                                  </Col>
+                                  
+                                  <Col sm={3}>
+                                  <Button variant="danger"
+                                    onClick={()=>archiveSchoolYear()}
+                                    >Archive School Year</Button>
+                                  </Col>
+                
+                                </Row>
                           </Tab>
 
                           <Tab eventKey="ActivityLogs" title="Activity Logs">
                                <h2>Activity Logs</h2>
+                                  <Row>
+                                    <Col>
+                                    <Button variant="primary"
+                                    onClick={()=>fetchLogs()}
+                                    >View Logs</Button>
+                                    </Col>
+                                  </Row>
+                                  <br></br>
+                                  <Row>
+                                    <Col sm={12}>
+                                     
+                                      <BootstrapTable
+                                        striped
+                                        hover
+                                        keyField='LogDate'
+                                        data={tblSearchResultsLogs}
+                                        columns={columnsLogs}
+                                        pagination={paginationFactory()}
+                                        rowStyle={rowStyle}
+                                      />
+                                    </Col>
+                                  </Row>
+                               
                           </Tab>
                       </Tabs>
                   </Form>

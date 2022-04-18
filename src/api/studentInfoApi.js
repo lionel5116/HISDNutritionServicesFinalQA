@@ -231,6 +231,40 @@ export class studentInfoApi {
  
      }
 
+     async  archiveSchoolYear(SchoolYear){
+        var url = Config.REST_URL + '/api/Admin/ArchiveSchoolYear/'
+        url +=SchoolYear;
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue completeting request to Archive School Year.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
+     async  fetchLogs(){
+        var url = Config.REST_URL + '/api/Admin/fetchLogs/'
+        
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
 }
 
 export default studentInfoApi
