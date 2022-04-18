@@ -30,7 +30,7 @@ class NavbarMain extends React.Component {
                   <NavDropdown.Item href="#action/3.4"></NavDropdown.Item>
                 </NavDropdown>
                 
-                <Nav.Link href="#">Notes</Nav.Link>
+                <Nav.Link href="#/Communications">Communications</Nav.Link>
                 <Nav.Link href="#/Administration">Administration</Nav.Link>
                 <Nav.Link href="#/HISDReportsMenu">Reports</Nav.Link>
                 </Nav>

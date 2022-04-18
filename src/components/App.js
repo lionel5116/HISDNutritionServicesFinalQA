@@ -12,6 +12,7 @@ import HISDReportsMenu from './Reports/HISDReportsMenu';
 import Search from './Search/Search';
 import Administration from './Administration/Administration';
 import StudentDataEntry from './StudentDataEntry/StudentDataEntry';
+import Communications from './Communications/Communications';
 
 
 function App() {
@@ -64,6 +65,11 @@ function App() {
             component={StudentDataEntry}
           />
          
+         <Route
+            exact
+            path='/Communications'
+            component={Communications}
+          />
          
         </HashRouter>
       </div>     
