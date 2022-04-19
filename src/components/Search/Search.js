@@ -58,6 +58,12 @@ function Search() {
   //console.log(_SEARCH_DATA)
 }
 
+function handleChange (e){
+  const { name, value } = e.target;
+  e.preventDefault();
+  
+}
+
      //only three values FirstName,LastName,School
   const searchMixed = () => {
 
@@ -316,7 +322,8 @@ function Search() {
                <BootStrapSelectForSearch />
            </Col>
            <Col sm={2}>
-               <SchoolListDropDown />
+               <SchoolListDropDown 
+                 handleChange = {(e) =>handleChange(e)}/>
            </Col>
          </Row>
 

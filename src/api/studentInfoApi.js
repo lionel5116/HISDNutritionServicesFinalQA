@@ -265,6 +265,19 @@ export class studentInfoApi {
  
      }
 
+     async  writeTrainingRecord(trainingRecord){
+        console.log(url)
+       var url = Config.REST_URL + '/api/Communications/saveTrainingNotes/';
+
+       try {
+        return await axios.post(url, trainingRecord)
+        .then(res => console.log(res.data));
+       } catch(err) {
+        console.log("Issue fetching data.. possible url invalid character sent: " + err)
+       }
+      
+    }
+
 }
 
 export default studentInfoApi

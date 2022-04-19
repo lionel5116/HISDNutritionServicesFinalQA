@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import studentInfoApi from '../../api/studentInfoApi';
 
-function SchoolListDropDown() {
+function SchoolListDropDown(props) {
 
 //const [dropDownSchoolListingData, setdropDownSchoolListingData] = useState([])
 
@@ -35,7 +35,10 @@ async function fetchSchoolListingData() {
     <div>
       <select class="form-select form-select-sm" 
               aria-label=".form-select-sm example" 
-              style={{ width: 300 }} id='ddSchoolListings'>
+              style={{ width: 300 }} 
+              name='ddSchoolListings'
+              id='ddSchoolListings'
+              onChange={props.handleChange}>
         
       </select>
     </div>
