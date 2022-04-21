@@ -625,7 +625,8 @@ async function EditStudentID(){
                                 <h2>Archive School Year</h2>
                                 <Row>
                                   <Col sm={4}>
-                                  <SchoolYearDropDown />
+                                  <SchoolYearDropDown 
+                                  name='ddSchoolListings'/>
                                   </Col>
                                   
                                   <Col sm={3}>

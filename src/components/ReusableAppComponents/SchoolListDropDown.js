@@ -14,7 +14,7 @@ async function fetchSchoolListingData() {
       var myAPI = new studentInfoApi;
       _SCHOOL_LISTING_DATA = await myAPI.fetchSchoolListings()
      
-      var _DDSchoolListingSelect = document.getElementById('ddSchoolListings'); 
+      var _DDSchoolListingSelect = document.getElementById(props.name); 
 
       /*USE THIS .MAP WHEN FETCHING DATA FOR MAIN FORM
       const _dropDownValues = _SCHOOL_LISTING_DATA.map((response) => ({
@@ -36,8 +36,8 @@ async function fetchSchoolListingData() {
       <select class="form-select form-select-sm" 
               aria-label=".form-select-sm example" 
               style={{ width: 300 }} 
-              name='ddSchoolListings'
-              id='ddSchoolListings'
+              name={props.name}
+              id={props.name}
               onChange={props.handleChange}>
         
       </select>

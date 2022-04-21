@@ -10,15 +10,22 @@ import studentInfoApi from '../../api/studentInfoApi';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { ArrowLeftSquare } from 'react-bootstrap-icons';
 
+//react bootstrap table next
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import {BinocularsFill} from 'react-bootstrap-icons';
 
 
 function Communications() {
   const [SchoolTraining, setSchoolTraining] = useState({});
+  const [tblSearchStudents, setSearchStudents] = useState([]);
+  const [showNotesAndSaveButton, setshowNotesAndSaveButton] = useState('none');
 
 
     useEffect(() => {
         fetchSearchDDListData();
       },[]);
+
 
 
     async function fetchSearchDDListData() {        
@@ -41,7 +48,10 @@ function Communications() {
     }
 
 
-   
+   const dummyHandleChange = (e) =>
+   {
+    e.preventDefault();
+   }
 
   const handleClickRight = (e) =>
   {
@@ -114,7 +124,8 @@ function Communications() {
     var TrainingObj = {NoteType: 'Training', 
                        Note: _Note.value,
                        SchoolName:_SchoolName.value,
-                       DateEntered:newDate};//vanilla object
+                       DateEntered:newDate,
+                       Student_ID:''};//vanilla object
                       
    
     var _TrainingObj = {};
@@ -134,6 +145,36 @@ function Communications() {
     removeOptions(_mySelect2);
   }
 
+  const saveCommuNotes = (e) =>
+  {
+    
+    e.preventDefault();
+
+    var isValid = validateFormCommunication(e)
+    console.log(isValid);
+ 
+
+   if(isValid){} else {return;}
+
+    var newDate = new Date().toLocaleString();
+    var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
+    var _studentID = document.getElementById('txtStudentID');
+    var _Note = document.getElementById('CommNotes');
+
+    var TrainingObj = {NoteType: 'Communication', 
+                       Note: _Note.value,
+                       SchoolName:_SchoolName.value,
+                       DateEntered:newDate,
+                       TrainingType:'',
+                       Student_ID:_studentID};//vanilla object
+                      
+                       writeTrainingRecord(TrainingObj)
+
+    _SchoolName.value = '--Select--';
+    _Note.value = '';
+
+  }
+
   const validateForm =(e) =>
   {
     e.preventDefault();
@@ -146,6 +187,26 @@ function Communications() {
       _SchoolName.value != '--Select--' &&
       _Note.value !='' &&
       lengthOfListOptions > 0)
+      {
+        bIsValid =  true;
+      }
+      
+      return bIsValid;
+  }
+
+  const validateFormCommunication =(e) =>
+  {
+    e.preventDefault();
+    var bIsValid = false;
+    var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
+    var _Note = document.getElementById('CommNotes');
+    var _studentID = document.getElementById('txtStudentID');
+
+
+    if(_SchoolName.value != '' &&
+      _SchoolName.value != '--Select--' &&
+      _Note.value !='' && 
+      _studentID.value !='')
       {
         bIsValid =  true;
       }
@@ -179,6 +240,145 @@ function Communications() {
 
   }
 
+const showInfoStudentSearch = () =>
+{
+
+}
+
+  //for the row height fix
+  const rowStyle = {  height: '10px', padding: '2px 0' };
+
+  const columns = [{
+    dataField: 'Student_ID',
+    text: 'id',
+    formatter: CellFormatterSearchStudent,
+    style: { width: '10px' }
+  },
+  {
+    dataField: 'LastName',
+    text: 'Last Name',
+  },
+  {
+    dataField: 'FirstName',
+    text: 'First Name',
+  },
+  {
+    dataField: 'School',
+    text: 'School',
+  },
+  {
+    dataField: 'currStudentYesNo',
+    text: 'Current',
+  },
+  ];
+
+const selectedStudentRecord = (e,studentID) =>
+{
+  e.preventDefault();
+  console.log('You selected ' + studentID)
+  var studentID = document.getElementById('txtStudentID');
+  studentID.value = studentID;
+  setshowNotesAndSaveButton('block');
+  setSearchStudents([]);
+}
+
+function CellFormatterSearchStudent(cell, row) {
+  return (<div><BinocularsFill 
+        onClick={(e) => selectedStudentRecord(e,row.Student_ID)}/>
+    </div>);
+}
+
+
+  async function fetchSearchData(_SEARCH_STRING_) {
+    let _SEARCH_DATA = [];
+    var myAPI = new studentInfoApi;
+    try {
+      _SEARCH_DATA = await myAPI.fetchSearchData(_SEARCH_STRING_)
+    }
+    catch (err) {
+      console.log(err)
+    }
+    setSearchStudents(_SEARCH_DATA)
+
+  }
+
+  async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {
+    let _SEARCH_DATA = [];
+    var myAPI = new studentInfoApi;
+
+    try {
+      _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_)
+    }
+    catch (err) {
+      console.log(err)
+    }
+
+    setSearchStudents(_SEARCH_DATA)
+
+  }
+
+
+const searchMixed = (e) => {
+
+  setshowNotesAndSaveButton('none');
+
+  e.preventDefault();
+
+  var _SEARCH_STRING = '';
+
+  var studentID = document.getElementById('txtStudentID');
+  var LastName = document.getElementById('txtLastName');
+  var School = document.getElementById('ddSchoolListings_SearchStudent');
+
+
+  if (studentID.value != "" &&
+    LastName.value == "" &&
+    School.value == "--Select--") {
+    //Search By Student ID  - WORKS!!!
+    console.log('Search By Student ID')
+    _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+    _SEARCH_STRING += "'";
+    _SEARCH_STRING += studentID.value;
+    _SEARCH_STRING += "'";
+    //console.log(_SEARCH_STRING);
+    fetchSearchData(_SEARCH_STRING);
+
+  }
+  else if (studentID.value == "" &&
+    LastName.value != "" &&
+    School.value == "--Select--") {
+    //Search By Last Name 
+    console.log('Search By Last Name ')
+    _SEARCH_STRING += "-"
+    _SEARCH_STRING += "|"
+    _SEARCH_STRING += LastName.value
+    _SEARCH_STRING += "|"
+    _SEARCH_STRING += "-"
+    _SEARCH_STRING += "|"
+    _SEARCH_STRING += "LAST_NAME"
+
+    //console.log("SEARCH_TYPE : LAST_NAME");
+    fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+
+  }
+  else if (studentID.value == "" &&
+    LastName.value == "" &&
+    School.value != "--Select--") {
+    //Search By School Name  - WORKS!!!
+    console.log('Search By School Name')
+    _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+    _SEARCH_STRING += "'";
+    _SEARCH_STRING += School.value;
+    _SEARCH_STRING += "'";
+    //console.log(_SEARCH_STRING);
+    fetchSearchData(_SEARCH_STRING);
+
+  }
+  else {
+    setSearchStudents([])
+  }
+}
+
   return (
     <div>
      <main>
@@ -196,42 +396,11 @@ function Communications() {
                         <Col sm={2}>
                             <SchoolListDropDown 
                               handleChange = {(e) =>handleChange(e)}
+                              name='ddSchoolListings'
                             />
                         </Col>
                     </Row>
                 <br></br>
-
-                {/*
-                 <Row>
-                     <Col  sm={3}> 
-                       <GenericMultipleSelect
-                         name='ddTrainingList'
-                       />
-                     </Col>
-                   
-                     <Col sm={.5} style={{padding:0}}>
-                      <button
-                        style={{display:'block'}}
-                        id='btnTrainingType'
-                        name='btnTrainingType'>
-                        {'>'}
-                      </button>
-                      <button
-                        style={{display:'block'}}
-                        id='btnRemoveTrainingType'
-                        name='btnRemoveTrainingType'>
-                       {'<'}
-                      </button>
-                     </Col>
-
-                     <Col  sm={3}> 
-                       <GenericMultipleSelect
-                         name='ddTrainingList_Selected'
-                       />
-                     </Col>
-                 </Row>
-              */}
-    
            
                  <GenericMultiSelectCombo 
                    name_ddLeft = 'ddTrainingList'
@@ -271,6 +440,90 @@ function Communications() {
 
                 <Tab eventKey="StudentCommunication" title="Student Communication">
                   <h2>Student Communication</h2>
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 10 }}>
+                    Student ID
+                  </Col>
+               
+                  <Col sm={2}>
+                    <input type='text' id='txtStudentID' />
+                  </Col>
+                </Row>
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 10 }}>
+                    Last Name
+                  </Col>
+              
+                  <Col sm={2}>
+                    <input type='text' id='txtLastName' />
+                  </Col>
+                </Row>
+
+
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 40 }}>
+                    School
+                  </Col>
+
+                  <Col sm={2}>
+                    <SchoolListDropDown
+                      handleChange={(e) => dummyHandleChange(e)}
+                      name='ddSchoolListings_SearchStudent' />
+                  </Col>
+                </Row>
+
+                <br></br>
+
+                <Row>
+                  <Col sm={12}>
+                    <Button variant="outline-primary" onClick={(e) => searchMixed(e)}>Search</Button>
+                  </Col>
+                </Row>
+
+                <br></br>
+
+                  <Row>
+                    <Col sm={12}>
+                    <BootstrapTable   
+                      striped
+                      hover
+                      keyField='Student_ID'
+                      data={tblSearchStudents}
+                      columns={columns}
+                      pagination={ paginationFactory()}
+                      rowStyle={rowStyle}
+                    
+                    />
+                    </Col>
+                  </Row>
+          
+                  <br></br>
+                   <Row className="mb-3"
+                        style={{display:showNotesAndSaveButton}}
+                        >
+                        <Form.Group className="mb-3">
+                            <Form.Label>Communication Notes</Form.Label>
+                            <Form.Control
+                            as="textarea"
+                            name='CommNotes'
+                            id='CommNotes'
+                            style={{ height: '100px',width:1000 }}
+                            
+                        />
+                        </Form.Group>
+                    </Row>
+
+                    <Row 
+                      style={{display:showNotesAndSaveButton}}>
+                    <Col sm={12}
+                        >
+                      <Button variant="outline-primary" onClick={(e) => saveCommuNotes(e)}>Save</Button>
+                    </Col>
+                    </Row>
+   
                 </Tab>
               </Tabs>
           </Form>

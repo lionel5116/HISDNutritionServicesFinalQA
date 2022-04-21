@@ -209,7 +209,7 @@ function handleChange (e){
         onClick={() => history.push(
           {
             pathname: '/StudentDataEntry',
-            search: '?query=' + row.id,
+            search: '?query=' + row.Student_ID,
             fullName: row.FirstName + ' ' + row.LastName
 
           }
@@ -323,7 +323,8 @@ function handleChange (e){
            </Col>
            <Col sm={2}>
                <SchoolListDropDown 
-                 handleChange = {(e) =>handleChange(e)}/>
+                 handleChange = {(e) =>handleChange(e)}
+                 name='ddSchoolListings'/>
            </Col>
          </Row>
 
