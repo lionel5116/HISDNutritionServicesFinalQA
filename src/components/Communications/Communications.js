@@ -3,7 +3,7 @@ import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import {Button,
     Container,
     Row,
-    Col,Form,Tabs,Tab} from 'react-bootstrap';
+    Col,Form,Tabs,Tab,Label} from 'react-bootstrap';
 import GenericMultipleSelect from '../ReusableAppComponents/GenericMultipleSelect';
 import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelectCombo';
 import studentInfoApi from '../../api/studentInfoApi';
@@ -20,6 +20,7 @@ function Communications() {
   const [SchoolTraining, setSchoolTraining] = useState({});
   const [tblSearchStudents, setSearchStudents] = useState([]);
   const [showNotesAndSaveButton, setshowNotesAndSaveButton] = useState('none');
+  const [studentInfo, setstudentInfo] = useState('');
 
 
     useEffect(() => {
@@ -145,7 +146,7 @@ function Communications() {
     removeOptions(_mySelect2);
   }
 
-  const saveCommuNotes = (e) =>
+  const saveCommNotes = (e) =>
   {
     
     e.preventDefault();
@@ -158,7 +159,7 @@ function Communications() {
 
     var newDate = new Date().toLocaleString();
     var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
-    var _studentID = document.getElementById('txtStudentID');
+    var _studentID = document.getElementById('txtStudentIDHidden');
     var _Note = document.getElementById('CommNotes');
 
     var TrainingObj = {NoteType: 'Communication', 
@@ -166,7 +167,7 @@ function Communications() {
                        SchoolName:_SchoolName.value,
                        DateEntered:newDate,
                        TrainingType:'',
-                       Student_ID:_studentID};//vanilla object
+                       Student_ID:_studentID.value};//vanilla object
                       
                        writeTrainingRecord(TrainingObj)
 
@@ -200,7 +201,7 @@ function Communications() {
     var bIsValid = false;
     var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
     var _Note = document.getElementById('CommNotes');
-    var _studentID = document.getElementById('txtStudentID');
+    var _studentID = document.getElementById('txtStudentIDHidden');
 
 
     if(_SchoolName.value != '' &&
@@ -240,10 +241,7 @@ function Communications() {
 
   }
 
-const showInfoStudentSearch = () =>
-{
 
-}
 
   //for the row height fix
   const rowStyle = {  height: '10px', padding: '2px 0' };
@@ -272,19 +270,29 @@ const showInfoStudentSearch = () =>
   },
   ];
 
-const selectedStudentRecord = (e,studentID) =>
+const selectedStudentRecord = (e,_studentID,_setstudentInfo) =>
 {
   e.preventDefault();
-  console.log('You selected ' + studentID)
-  var studentID = document.getElementById('txtStudentID');
-  studentID.value = studentID;
+  console.log('You selected ' + _studentID)
+  var studentID = document.getElementById('txtStudentIDHidden');
+  var lblStudentInfoField = document.getElementById('lblStudentInfo');
+  lblStudentInfoField.innerHTML = _setstudentInfo;
+  studentID.value = _studentID;
   setshowNotesAndSaveButton('block');
   setSearchStudents([]);
 }
 
 function CellFormatterSearchStudent(cell, row) {
+  var _setstudentInfo = row.Student_ID;
+      _setstudentInfo += ":";
+      _setstudentInfo += row.LastName;
+      _setstudentInfo += ",";
+      _setstudentInfo += row.FirstName;
+     
+  //setstudentInfo(_setstudentInfo);
+
   return (<div><BinocularsFill 
-        onClick={(e) => selectedStudentRecord(e,row.Student_ID)}/>
+        onClick={(e) => selectedStudentRecord(e,row.Student_ID,_setstudentInfo)}/>
     </div>);
 }
 
@@ -441,6 +449,13 @@ const searchMixed = (e) => {
                 <Tab eventKey="StudentCommunication" title="Student Communication">
                   <h2>Student Communication</h2>
                 <br></br>
+
+                <Row>
+                  <Col style={{display:'none'}}>
+                  <input type='text' id='txtStudentIDHidden' />
+                  </Col>
+                </Row>
+
                 <Row>
                   <Col sm={1.75} style={{ paddingRight: 10 }}>
                     Student ID
@@ -487,6 +502,7 @@ const searchMixed = (e) => {
 
                   <Row>
                     <Col sm={12}>
+                     <label id="lblStudentInfo"></label> 
                     <BootstrapTable   
                       striped
                       hover
@@ -520,7 +536,7 @@ const searchMixed = (e) => {
                       style={{display:showNotesAndSaveButton}}>
                     <Col sm={12}
                         >
-                      <Button variant="outline-primary" onClick={(e) => saveCommuNotes(e)}>Save</Button>
+                      <Button variant="outline-primary" onClick={(e) => saveCommNotes(e)}>Save</Button>
                     </Col>
                     </Row>
    
