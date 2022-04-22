@@ -117,9 +117,18 @@ function Communications() {
    //if all entries are filled in.. proceed, otherwise exit
    if(isValid){} else {return;}
 
+   
+
     var newDate = new Date().toLocaleString();
     var _SchoolName = document.getElementById('ddSchoolListings');
     var _Note = document.getElementById('Notes');
+
+  /*YOU COUL WRAP ALL OF THIS INSIDE OF A USE EFFECT CALL AND YOUR ONCHANGE
+  EVENT WOULD WORK ALONG WITH THIS
+  setSchoolTraining({ ...SchoolTraining, NoteType: 'Training' });
+  setSchoolTraining({ ...SchoolTraining, DateEntered: newDate });
+  setSchoolTraining({ ...SchoolTraining, Student_ID: '' });
+ */
     //had to use an vanilla object because of the dropdown selected action when looping
     //does not work with useState very well
     var TrainingObj = {NoteType: 'Training', 
@@ -137,7 +146,11 @@ function Communications() {
       let option_value = option_element.value;
       
       _TrainingObj = {...TrainingObj,TrainingType:option_value} 
-      console.log(_TrainingObj);
+      //console.log(_TrainingObj);
+
+      //HOWEVER SINCE THIS IS INSIDE OF A LOOP AND NEEDSTO GET CALLED EVERY N TIMES (O-n), useEffect would not work
+      //setSchoolTraining({ ...SchoolTraining, TrainingType: option_value });
+
       writeTrainingRecord(_TrainingObj)
     });
 
