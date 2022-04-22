@@ -226,11 +226,13 @@ async function updateDDItem(){
 
 async function DeleteDDListItem(){
 
-  var _ItemTypeSelect = document.getElementById('selDDSelections');
-  
- 
-  var oldValue = document.getElementById('oldValue').value;
+  const confirmBox = window.confirm(
+    "Do you really want to delete this item?"
+  )
+  if (confirmBox === true) {} else {return;}
 
+  var _ItemTypeSelect = document.getElementById('selDDSelections');
+  var oldValue = document.getElementById('oldValue').value;
   var DDType = '';
  
 
