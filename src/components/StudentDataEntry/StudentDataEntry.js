@@ -7,6 +7,10 @@ import {Button,
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
 
+import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelectCombo';
+
+import studentInfoApi from '../../api/studentInfoApi';
+
 //react bootstrap table next
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -26,6 +30,132 @@ function StudentDataEntry() {
     const location  = useLocation();
     const [storeFullNameFromSearch, setFullNameFromSearch] = useState([])
     const [student, setStudent] = useState({});
+
+  
+
+    var objStudent= {
+          id  :'',  //id is an identity column (for fetching)
+          Student_ID  :'',
+          LastName :'',
+          FirstName  :'',
+          School  :'',
+          WF  :'',
+          Menu  :'',
+          Disabled  :'',
+          Supplement  :'',
+          LTA  :'',
+          SupplementName  :'',
+          CurrentOrderDate  :'',
+          CurrentOrder  :'',
+          Notes  :'',
+          BabyFoodName  :'',
+          OneCans_D  :'',
+          OneCans_6Wk  :'',
+          NeedsF_U  :'',
+          Baby_Food_Types  :'',
+          Date_Processed  :'',
+          Date_Received  :'',
+          Current_Student  :'',
+          Accommodation_ON_HOLD  :'',
+          Milk_Sub  :'',
+          Allergy  :'',
+          Medical_Condition  :'',
+          Foods_to_be_Omitted  :'',
+          Substitution  :'',
+          Texture_Modification  :'',
+          BK_Menu  :'',
+          Lu_Menu  :'',
+          Milk_Sub_Name  :'',
+          Waiting_on_Menu_Approval  :'',
+          Nurse  :'',
+          Diet_Order_Notes  :'',
+          POS_alert  :'',
+          Menu_Code  :'',
+          Birthday  :'',
+          Production_Record  :'',
+          NPO  :'',
+          Tray_Yes  :'',
+          Tray_No  :'',
+          Menu_Color  :'',
+          Inactive  :'',
+          SchoolYear  :'',
+          SupplementNameMore  :'',
+          Texture_Modification2  :'',
+          Archive  :''
+   };//plain ol vanilla object
+
+
+   useEffect(() => {
+    const _queryID = location.search;
+    if(_queryID != '')
+    {
+        console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
+        setFullNameFromSearch(location.fullName)
+        console.log("Full Name from search " + location.fullName);
+    }
+    
+   }, [location]);
+
+
+  useEffect(() => {
+    fetchSearchDDListDataFTBO();
+  },[]);
+
+  useEffect(() => {
+    fetchSearchDDListDataNutSub();
+  },[]);
+
+  useEffect(() => {
+    fetchSearchDDListDataMilkSub();
+  },[]);
+  
+   //let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute'];
+   async function fetchSearchDDListDataFTBO() {        
+    let _DD_LIST_DATA = [];
+    var myAPI = new studentInfoApi;
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Foods To Be Ommitted')
+
+    var _DDSSelect = document.getElementById('ddFTBOList'); 
+      //clear list to add new ones
+    _DDSSelect.innerHTML = "";
+      
+    _DDSSelect.options[_DDSSelect.options.length] = new Option('--Select--');
+    for(const key in _DD_LIST_DATA) {     
+          _DDSSelect.options[_DDSSelect.options.length] = new Option(_DD_LIST_DATA[key].ItemName);
+    }
+   }
+
+   async function fetchSearchDDListDataNutSub() {        
+    let _DD_LIST_DATA = [];
+    var myAPI = new studentInfoApi;
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Nutrition Supplement')
+
+    var _DDSSelect = document.getElementById('ddNutSubList'); 
+      //clear list to add new ones
+    _DDSSelect.innerHTML = "";
+      
+    _DDSSelect.options[_DDSSelect.options.length] = new Option('--Select--');
+    for(const key in _DD_LIST_DATA) {     
+          _DDSSelect.options[_DDSSelect.options.length] = new Option(_DD_LIST_DATA[key].ItemName);
+    }
+   }
+
+   async function fetchSearchDDListDataMilkSub() {        
+    let _DD_LIST_DATA = [];
+    var myAPI = new studentInfoApi;
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Milk Substitute')
+
+    var _DDSSelect = document.getElementById('ddMilkSubList'); 
+      //clear list to add new ones
+    _DDSSelect.innerHTML = "";
+      
+    _DDSSelect.options[_DDSSelect.options.length] = new Option('--Select--');
+    for(const key in _DD_LIST_DATA) {     
+          _DDSSelect.options[_DDSSelect.options.length] = new Option(_DD_LIST_DATA[key].ItemName);
+    }
+   }
+
+   
 
     async function AddStudentDataRecord() {
       //var myAPI = new studentInfoApi;
@@ -69,84 +199,214 @@ function StudentDataEntry() {
           //TAB Student Information
           case 'Student_ID':
               setStudent({ ...student, Student_ID: value });
-
               break;
           case 'Current_Student':
-
               setStudent({ ...student, Current_Student: value });
               break;
           case 'School':
               setStudent({ ...student, School: value });
-
               break;
           case 'FirstName':
               setStudent({ ...student, FirstName: value });
-
               break;
           case 'LastName':
               setStudent({ ...student, LastName: value });
-
               break;
 
           case 'Birthday':
               setStudent({ ...student, Birthday: value });
-
               break;
 
           case 'SchoolYear':
               setStudent({ ...student, SchoolYear: value });
-
               break;
 
           case 'Date_Received':
               setStudent({ ...student, Date_Received: value });
-
               break;
-
-
           case 'Notes':
               setStudent({ ...student, Notes: value });
-
               break;
           
           //TAB Dietary Accommodations
-        case 'Disabled':
-          setStudent({ ...student, Disabled: value });
-
+          case 'Disabled':
+            setStudent({ ...student, Disabled: value });
+            break;
+          case 'LTA':
+            setStudent({ ...student, LTA: value });
+            break;
+          case 'NeedsF_U':
+            setStudent({ ...student, NeedsF_U: value });
+            break;
+          case 'Medical_Condition':
+            setStudent({ ...student, Medical_Condition: value });  
+            
+              //*****RESERVE FOR FOODS TO BE OMMITTED ***
+          
+          case 'Substitution':
+            setStudent({ ...student, Substitution: value });
+          break;
+          case 'ddMenuColor':
+            setStudent({ ...student, Menu_Color: value });
+          break;
+          case 'ddMenuCode':
+            setStudent({ ...student, Menu_Code: value });
+          break;
+          case 'Texture_Modification':
+            setStudent({ ...student, Texture_Modification: value });
+          break;
+          case 'Texture_Modification2':
+            setStudent({ ...student, Texture_Modification2: value });
           break;
 
-        case 'LTA':
-          setStudent({ ...student, LTA: value });
+            //****Nutrition Supplement ***
 
+            //*****Milk Substitute ***
+
+          case 'NPO':
+            setStudent({ ...student, NPO: value });
           break;
 
-        case 'NeedsF_U':
-          setStudent({ ...student, NeedsF_U: value });
-
+          case 'SupplementNameMore':
+            setStudent({ ...student, SupplementNameMore: value });
           break;
 
-        case 'Medical_Condition':
-          setStudent({ ...student, Medical_Condition: value });
-
-          break;
               default:
-              break;
+              break;  
       }
 
      // console.log(user)
     }
    
 
-    useEffect(() => {
-        const _queryID = location.search;
-        if(_queryID != '')
-        {
-            console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
-            setFullNameFromSearch(location.fullName)
-            console.log("Full Name from search " + location.fullName);
-        }
+   
+     const handleClickRightFTBO = (e) =>
+     {
+       e.preventDefault();
+   
+        var _mySelect = document.getElementById('ddFTBOList');
+        var _mySelect2 = document.getElementById('ddFTBOList_Selected');
         
-     }, [location]);
+        Array.from(_mySelect.options).forEach(function(option_element) {
+            let option_text = option_element.text;
+            let option_value = option_element.value;
+            let is_option_selected = option_element.selected;
+        
+    
+            var bDuplicate = false;
+   
+            if(is_option_selected)
+            {
+              
+             for (var i = 0; i < _mySelect2.length; ++i){
+               if (_mySelect2.options[i].value == option_value){
+                  bDuplicate = true;
+                  break;
+               }
+             }
+   
+              if(option_value !='--Select--' &&
+                 bDuplicate == false) {
+                _mySelect2.options[_mySelect2.options.length] = new Option( option_text, option_value);
+              }  
+            }
+        
+        });
+        
+     }
+   
+     const handleClickLeftFTBO = (e) =>
+     {
+       e.preventDefault();
+       var _mySelect2 = document.getElementById('ddFTBOList_Selected');
+       _mySelect2.remove(_mySelect2.selectedIndex); 
+     }
+
+     const handleClickRightNutSub = (e) =>
+     {
+       e.preventDefault();
+   
+        var _mySelect = document.getElementById('ddNutSubList');
+        var _mySelect2 = document.getElementById('ddNutSubList_Selected');
+        
+        Array.from(_mySelect.options).forEach(function(option_element) {
+            let option_text = option_element.text;
+            let option_value = option_element.value;
+            let is_option_selected = option_element.selected;
+        
+    
+            var bDuplicate = false;
+   
+            if(is_option_selected)
+            {
+              
+             for (var i = 0; i < _mySelect2.length; ++i){
+               if (_mySelect2.options[i].value == option_value){
+                  bDuplicate = true;
+                  break;
+               }
+             }
+   
+              if(option_value !='--Select--' &&
+                 bDuplicate == false) {
+                _mySelect2.options[_mySelect2.options.length] = new Option( option_text, option_value);
+              }  
+            }
+        
+        });
+        
+     }
+   
+     const handleClickLeftNutSub = (e) =>
+     {
+       e.preventDefault();
+       var _mySelect2 = document.getElementById('ddNutSubList_Selected');
+       _mySelect2.remove(_mySelect2.selectedIndex); 
+     }
+
+     const handleClickRightMilkSub = (e) =>
+     {
+       e.preventDefault();
+   
+        var _mySelect = document.getElementById('ddMilkSubList');
+        var _mySelect2 = document.getElementById('ddMilkSubList_Selected');
+        
+        Array.from(_mySelect.options).forEach(function(option_element) {
+            let option_text = option_element.text;
+            let option_value = option_element.value;
+            let is_option_selected = option_element.selected;
+        
+    
+            var bDuplicate = false;
+   
+            if(is_option_selected)
+            {
+              
+             for (var i = 0; i < _mySelect2.length; ++i){
+               if (_mySelect2.options[i].value == option_value){
+                  bDuplicate = true;
+                  break;
+               }
+             }
+   
+              if(option_value !='--Select--' &&
+                 bDuplicate == false) {
+                _mySelect2.options[_mySelect2.options.length] = new Option( option_text, option_value);
+              }  
+            }
+        
+        });
+        
+     }
+   
+     const handleClickLeftMilkSub = (e) =>
+     {
+       e.preventDefault();
+       var _mySelect2 = document.getElementById('ddMilkSubList_Selected');
+       _mySelect2.remove(_mySelect2.selectedIndex); 
+     }
+
+     
 
   return (
     <div>
@@ -312,7 +572,7 @@ function StudentDataEntry() {
 
                <Row className="mb-3"> 
 
-               <Form.Group as={Col} >
+                  <Form.Group as={Col} >
 
                     <Form.Label style={{ marginTop: 30 }}>Disabled</Form.Label>
                     <input
@@ -361,6 +621,177 @@ function StudentDataEntry() {
                   </Form.Group>
                </Row>
 
+               <Row>
+               <Form.Group as={Col} >
+               <Form.Label>Foods to be Ommitted</Form.Label>
+               <GenericMultiSelectCombo 
+                   name_ddLeft = 'ddFTBOList'
+                   name_ddRight = 'ddFTBOList_Selected'
+                   buttonRight = 'btnSelectRightFTBO'
+                   buttonLeft = 'btnSelectLeftFTBO'
+                   label_ddLeft = 'Available Trainings'
+                   label_ddRight = 'Selected Trainings'
+                   handleClickRight = {(e) =>handleClickRightFTBO(e)}
+                   handleClickLeft = {(e) =>handleClickLeftFTBO(e)}
+                />
+                
+               </Form.Group >
+               </Row>
+  
+                    <br></br>
+                    <Row className="mb-6">
+                        
+                        <Form.Group as={Col}>
+                            <Form.Label>Substitution</Form.Label>
+                            <Form.Control
+                            as="textarea"
+                            name='Substitution'
+                            id='Substitution'
+                            style={{ height: '100px',width:350 }}
+                            onChange={handleChange}
+                            
+                        />
+                        </Form.Group>
+
+                        <Form.Group as={Col} >
+                            <Form.Label>Menu Color</Form.Label>
+                            <Form.Control as="select"
+                                name='ddMenuColor'
+                                id='ddMenuColor'
+                                style={{ width:200 }}
+                                onChange={handleChange}
+                            >
+                                <option></option>
+                                <option>Blue</option>
+                                <option>Red</option>
+                                <option>Green</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group as={Col} >
+                            <Form.Label>Menu Code</Form.Label>
+                            <Form.Control as="select"
+                                name='ddMenuCode'
+                                id='ddMenuCode'
+                                style={{ width:200 }}
+                                onChange={handleChange}
+                            >
+                                <option></option>
+                            </Form.Control>
+                        </Form.Group>
+
+                    </Row>
+
+                    <br></br>
+                    <Row>
+                    <label  style={{ fontWeight:'bold' }}>Texture Modification</label>
+                    </Row>
+                    <Row className="mb-6">
+                        
+                        <Form.Group as={Col} >
+                            <Form.Label>Liquids</Form.Label>
+                            <Form.Control as="select"
+                                name='Texture_Modification'
+                                id='Texture_Modification'
+                                style={{ width:300 }}
+                                onChange={handleChange}   
+                            >
+                            <option></option>
+                            <option>Mildly Thick Liquid (Level 2)</option>
+                            <option>Moderately Thick Liquid (Level 3)</option>
+                            <option>Extremely Thick Liquid (Level 4)</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group as={Col} >
+                            <Form.Label>Solids</Form.Label>
+                            <Form.Control as="select"
+                                name='Texture_Modification2'
+                                id='Texture_Modification2'
+                                style={{ width:300 }}
+                                onChange={handleChange}
+                            >
+                            <option></option>
+                            <option>Soft & Bite-Sized Solids (Level 6)</option>
+                            <option>Minced & Moist Solids (Level 5)</option>
+                            <option>Pureed Solids (Level 4)</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                    </Row>
+
+                    <br></br>
+                    <Row>
+                    <label  style={{ fontWeight:'bold' }}>Supplements and Milk Substitute</label>
+                    </Row>
+                    <br></br>
+
+                    <Row>
+                    <Form.Group as={Col} >
+                    <Form.Label>Nutrition Supplement</Form.Label>
+                    <GenericMultiSelectCombo 
+                        name_ddLeft = 'ddNutSubList'
+                        name_ddRight = 'ddNutSubList_Selected'
+                        buttonRight = 'btnSelectRightNutSub'
+                        buttonLeft = 'btnSelectLeftNutSub'
+                        label_ddLeft = 'Available Trainings'
+                        label_ddRight = 'Selected Trainings'
+                        handleClickRight = {(e) =>handleClickRightNutSub(e)}
+                        handleClickLeft = {(e) =>handleClickLeftNutSub(e)}
+                      />
+                      
+                    </Form.Group >
+                    </Row>
+
+                    <br></br>
+
+                    <Row>
+                    <Form.Group as={Col} >
+                    <Form.Label>Milk Substitute</Form.Label>
+                    <GenericMultiSelectCombo 
+                        name_ddLeft = 'ddMilkSubList'
+                        name_ddRight = 'ddMilkSubList_Selected'
+                        buttonRight = 'btnSelectRightMilkSub'
+                        buttonLeft = 'btnSelectLeftMilkSub'
+                        label_ddLeft = 'Available Trainings'
+                        label_ddRight = 'Selected Trainings'
+                        handleClickRight = {(e) =>handleClickRightMilkSub(e)}
+                        handleClickLeft = {(e) =>handleClickLeftMilkSub(e)}
+                      />
+                      
+                    </Form.Group >
+                    </Row>
+
+                    <br></br>
+                    <Row>
+                    <Form.Group as={Col} >
+
+                      <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
+                      <input
+                        type="checkbox"
+                        name='NPO'
+                        id='NPO'
+                        onChange={handleChange}
+                        style={{ marginLeft: 10,marginTop: 30 }} />
+                      </Form.Group>
+                    </Row>
+                    <br></br>
+
+                    <Row className="mb-3"> 
+                    <Form.Group className="mb-3">
+                          <Form.Label>Other Supplements</Form.Label>
+                          <Form.Control
+                          as="textarea"
+                          name='SupplementNameMore'
+                          id='SupplementNameMore'
+                          onChange={handleChange}
+                        
+                          style={{ height: '100px',width:1000 }}
+                        />
+                        </Form.Group>
+                    </Row>
+
+     
                </Tab>
 
                <Tab eventKey="Documentation" title="Documentation">
