@@ -160,12 +160,50 @@ function StudentDataEntry() {
     }
    }
 
-   
+   const setDropDownSubstitutesFieldValues = (e) =>
+   {
+    e.preventDefault();
+     /* for(const key in listBlueCycle) {     
+      _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listBlueCycle[key]);
+    }
+
+    Milk_Sub_Name	
+    SupplementName
+    Foods_to_be_Omitted	
+
+    */
+
+     var _DDSSelect = document.getElementById('ddFTBOList_Selected'); 
+
+     appendDropDownSubstitutesFieldValues('ddFTBOList_Selected','Foods_to_be_Omitted');
+     appendDropDownSubstitutesFieldValues('ddNutSubList_Selected','SupplementName');
+     appendDropDownSubstitutesFieldValues('ddMilkSubList_Selected','Milk_Sub_Name');
+     
+   }
+
+   const appendDropDownSubstitutesFieldValues=(ddListName,fieldName)=>
+    {
+      var _DDSSelect = document.getElementById(ddListName); 
+      var _fieldName = document.getElementById(fieldName);
+      var _strDDValues = '';
+
+     
+          Array.from(_DDSSelect.options).forEach(function(option_element) {
+            let option_text = option_element.text;
+            let option_value = option_element.value;
+            _strDDValues += option_value;
+        });
+
+        _fieldName.value = _strDDValues;
+    }
+
 
     async function AddStudentDataRecord() {
       //var myAPI = new studentInfoApi;
       //var _response = await myAPI.AddStudentComplexDataRecord(student)
     }
+
+    
 
     const searchStudent =()=>
     {
@@ -672,6 +710,14 @@ function StudentDataEntry() {
                </Row>
 
                <Row>
+               <Button variant="warning" type="button"
+                      onClick={(e) => setDropDownSubstitutesFieldValues(e)}
+                      >
+                      Testing Something with DD Lists
+                    </Button>
+               </Row>
+  
+               <Row>
                <Form.Group as={Col} >
                <Form.Label>Foods to be Ommitted</Form.Label>
                <GenericMultiSelectCombo 
@@ -686,6 +732,13 @@ function StudentDataEntry() {
                 />
                 
                </Form.Group >
+               </Row>
+               <Row>
+               <Col sm={6}>
+                  <input type='text' 
+                   id='Foods_to_be_Omitted'
+                   name='Foods_to_be_Omitted' />
+                </Col>
                </Row>
   
                     <br></br>
@@ -793,6 +846,13 @@ function StudentDataEntry() {
                     </Form.Group >
                     </Row>
 
+                <Row>
+                  <Col sm={6}>
+                    <input type='text' 
+                    id='SupplementName'
+                    name='SupplementName' />
+                  </Col>
+                </Row>
                     <br></br>
 
                     <Row>
@@ -811,6 +871,14 @@ function StudentDataEntry() {
                       
                     </Form.Group >
                     </Row>
+
+                <Row>
+                  <Col sm={6}>
+                    <input type='text' 
+                    id='Milk_Sub_Name'
+                    name='Milk_Sub_Name' />
+                  </Col>
+                </Row>
 
                     <br></br>
                     <Row>
