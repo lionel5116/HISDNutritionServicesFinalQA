@@ -337,7 +337,8 @@ function handleChange (e){
                <BootStrapSelectForSearch />
            </Col>
            <Col sm={2}>
-              <SchoolYearDropDown />
+              <SchoolYearDropDown 
+               name='ddSchoolYears'/>
            </Col>
          </Row>
 

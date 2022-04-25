@@ -8,6 +8,8 @@ import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
 
 import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelectCombo';
+import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
+import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 
 import studentInfoApi from '../../api/studentInfoApi';
 
@@ -98,14 +100,17 @@ function StudentDataEntry() {
 
 
   useEffect(() => {
+    //console.log('WS Call fetchSearchDDListDataFTBO')
     fetchSearchDDListDataFTBO();
   },[]);
 
   useEffect(() => {
+    //console.log('WS Call fetchSearchDDListDataNutSub')
     fetchSearchDDListDataNutSub();
   },[]);
 
   useEffect(() => {
+    //console.log('WS Call fetchSearchDDListDataMilkSub')
     fetchSearchDDListDataMilkSub();
   },[]);
   
@@ -203,7 +208,7 @@ function StudentDataEntry() {
           case 'Current_Student':
               setStudent({ ...student, Current_Student: value });
               break;
-          case 'School':
+          case 'ddSchoolListings':
               setStudent({ ...student, School: value });
               break;
           case 'FirstName':
@@ -217,7 +222,7 @@ function StudentDataEntry() {
               setStudent({ ...student, Birthday: value });
               break;
 
-          case 'SchoolYear':
+          case 'ddSchoolYears':
               setStudent({ ...student, SchoolYear: value });
               break;
 
@@ -248,6 +253,7 @@ function StudentDataEntry() {
           break;
           case 'ddMenuColor':
             setStudent({ ...student, Menu_Color: value });
+            populateMenuCodeDropDown();
           break;
           case 'ddMenuCode':
             setStudent({ ...student, Menu_Code: value });
@@ -271,14 +277,69 @@ function StudentDataEntry() {
             setStudent({ ...student, SupplementNameMore: value });
           break;
 
+
+          //TAB Documentation
+          case 'CurrentOrderDate':
+            setStudent({ ...student, CurrentOrderDate: value });
+          break;
+          case 'Diet_Order_Notes':
+            setStudent({ ...student, Diet_Order_Notes: value });
+          break;
+
+
               default:
-              break;  
+              break;    //Diet_Order_Notes
       }
 
      // console.log(user)
     }
    
+    function removeOptions(selectElement) {
+      var i, L = selectElement.options.length - 1;
+      for(i = L; i >= 0; i--) {
+         selectElement.remove(i);
+      }
+   }
 
+    const populateMenuCodeDropDown = () =>
+    {
+      
+      var _ddMenuColor = document.getElementById('ddMenuColor');
+      var _DDMenuCodeSelect = document.getElementById('ddMenuCode'); 
+      removeOptions(_DDMenuCodeSelect);  //clear select first
+
+      //console.log("Calling populateMenuCodeDropDown method...for color " + _ddMenuColor.value);
+      const listBlueCycle = ['AF-CF','AF','AF + D','AF + D(Compliant)','AF + S','AF + S(Compliant)','CHO 60','Renal','Renal + Milk','Low PRO','Prader - Willi','Custom(with free textbox)'];
+      const listGreen = ['DF','DFWEF','EF','EFDF','Poultry','Custom(with free textbox)']
+      const listRed = ['WEF','Beef','SF','Citrus','Tomato','Sesame','Apples','Strawberry','Berries','Chocolate','Cinnamon','Pineapple','Carrot','Beans/ Peas/ Lentils','Custom(with free textbox)'];
+     
+      switch( _ddMenuColor.value) {
+        case 'Blue':
+          _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
+          for(const key in listBlueCycle) {     
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listBlueCycle[key]);
+          }
+        break;
+
+        case 'Red':
+          _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
+          for(const key in listRed) {     
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listRed[key]);
+          }
+        break;
+
+        case 'Green':
+          _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
+          for(const key in listGreen) {     
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listGreen[key]);
+          }
+        break;
+
+        default:
+          break; 
+      }
+    
+    }
    
      const handleClickRightFTBO = (e) =>
      {
@@ -460,18 +521,10 @@ function StudentDataEntry() {
                 <Row className="mb-3">
                        <Form.Group as={Col} >
                             <Form.Label>School</Form.Label>
-                            <Form.Control as="select"
-                                name='School'
-                                id='School'
-                                onChange={handleChange}
-                                style={{width:500}}
-                            >
-                                <option></option>
-                                <option>Almeda ES</option>
-                                <option>Browning ES</option>
-                                <option>Clifton MS</option>
-                                <option>Gallegos ES</option>
-                            </Form.Control>
+                            <SchoolListDropDown 
+                                handleChange = {(e) =>handleChange(e)}
+                                name='ddSchoolListings'
+                                id='ddSchoolListings'/>
                         </Form.Group>
                 </Row>
 
@@ -511,17 +564,14 @@ function StudentDataEntry() {
 
                   <Form.Group as={Col} >
                     <Form.Label>School Year</Form.Label>
-                    <Form.Control as="select"
-                      name='SchoolYear'
-                      id='SchoolYear'
-                      onChange={handleChange}
-                      style={{ width: 100 }}
-                    >
-                      <option></option>
-                      <option>2022</option>
-                      <option>2021</option>
 
-                    </Form.Control>
+                      <SchoolYearDropDown 
+                          name='ddSchoolYears'
+                          id='ddSchoolYears'
+                          onChange={handleChange}
+                          />
+
+                
                   </Form.Group>
 
                 </Row>
@@ -660,7 +710,7 @@ function StudentDataEntry() {
                                 id='ddMenuColor'
                                 style={{ width:200 }}
                                 onChange={handleChange}
-                            >
+                              >
                                 <option></option>
                                 <option>Blue</option>
                                 <option>Red</option>
@@ -778,7 +828,7 @@ function StudentDataEntry() {
                     <br></br>
 
                     <Row className="mb-3"> 
-                    <Form.Group className="mb-3">
+                        <Form.Group className="mb-3">
                           <Form.Label>Other Supplements</Form.Label>
                           <Form.Control
                           as="textarea"
@@ -795,15 +845,79 @@ function StudentDataEntry() {
                </Tab>
 
                <Tab eventKey="Documentation" title="Documentation">
-                           
+               <br></br>
+                    <Row className="mb-3"> 
+                      <Form.Group className="mb-3">
+                      <Form.Label>Current Order Date</Form.Label>
+                      <Form.Control
+                        type="date"
+                        name='CurrentOrderDate'
+                        id='CurrentOrderDate'
+                        onChange={handleChange}
+                        style={{ width: 200 }} />
+                    </Form.Group>
+
+                    </Row>
+
+                    <Row className="mb-3"> 
+                        <Form.Group className="mb-3">
+                          <Form.Label>Physician Diet Order Notes</Form.Label>
+                          <Form.Control
+                          as="textarea"
+                          name='Diet_Order_Notes'
+                          id='Diet_Order_Notes'
+                          onChange={handleChange}
+                        
+                          style={{ height: '100px',width:1000 }}
+                        />
+                        </Form.Group>
+                    </Row>
+
                </Tab>
 
                <Tab eventKey="Training" title="Training">
-                           
+                   <br></br>
+                    <Row className="mb-3"> 
+                    <Form.Group className="mb-3">
+                          <Form.Label>School-Wide Training</Form.Label>
+                          <Form.Control
+                          as="textarea"
+                          name='txtSchoolWideTraining'
+                          id='txtSchoolWideTraining'
+                          style={{ height: '100px',width:1000 }}
+                          readOnly 
+                        />
+                        </Form.Group>
+                    </Row>
+
+                    <Row className="mb-3"> 
+                    <Form.Group className="mb-3">
+                          <Form.Label>School Training Notes</Form.Label>
+                          <Form.Control
+                          as="textarea"
+                          name='txtSchoolTraining'
+                          id='txtSchoolTraining'
+                          style={{ height: '100px',width:1000 }}
+                          readOnly 
+                        />
+                        </Form.Group>
+                    </Row>      
                 </Tab>
 
                 <Tab eventKey="Communication" title="Communication">
-                           
+                   <br></br>
+                    <Row className="mb-3"> 
+                    <Form.Group className="mb-3">
+                          <Form.Label>Student Communication Notes</Form.Label>
+                          <Form.Control
+                          as="textarea"
+                          name='txtStudentCommunicationNotes'
+                          id='txtStudentCommunicationNotes'
+                          style={{ height: '100px',width:1000 }}
+                          readOnly 
+                        />
+                        </Form.Group>
+                    </Row>
                 </Tab>
 
               </Tabs>

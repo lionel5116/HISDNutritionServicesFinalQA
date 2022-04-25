@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import studentInfoApi from '../../api/studentInfoApi';
 
-function SchoolYearDropDown() {
+function SchoolYearDropDown(props) {
 
     useEffect(() => {
         fetchSchoolYears();
@@ -26,7 +26,7 @@ function SchoolYearDropDown() {
     <div>
     <select class="form-select form-select-sm" 
             aria-label=".form-select-sm example" 
-            style={{ width: 300 }} id='ddSchoolYears'>
+            style={{ width: 300 }} id={props.name}>
       
     </select>
   </div>

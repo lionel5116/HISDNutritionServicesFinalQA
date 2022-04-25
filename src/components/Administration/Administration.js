@@ -529,7 +529,7 @@ async function EditStudentID(){
                                         handleOnChange={onDDChanged}
                                         items = {optionsDDSelections}
                                         name = "selDDSelections"
-                               />
+                                />
                                   </Col>                           
                               </Row>
                                {/* I CAN USE THIS CODE FOR SOME OTHER COMPOENT **}
@@ -628,7 +628,7 @@ async function EditStudentID(){
                                 <Row>
                                   <Col sm={4}>
                                   <SchoolYearDropDown 
-                                  name='ddSchoolListings'/>
+                                  name='ddSchoolYears'/>
                                   </Col>
                                   
                                   <Col sm={3}>
