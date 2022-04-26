@@ -338,7 +338,8 @@ function handleChange (e){
            </Col>
            <Col sm={2}>
               <SchoolYearDropDown 
-               name='ddSchoolYears'/>
+               name='ddSchoolYears'
+               onChange={handleChange}/>
            </Col>
          </Row>
 

@@ -26,8 +26,10 @@ function SchoolYearDropDown(props) {
     <div>
     <select class="form-select form-select-sm" 
             aria-label=".form-select-sm example" 
-            style={{ width: 300 }} id={props.name}>
-      
+            style={{ width: 300 }} 
+            name={props.name}
+            id={props.name}
+            onChange={props.handleChange}>   
     </select>
   </div>
   )

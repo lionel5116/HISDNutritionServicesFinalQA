@@ -21,17 +21,61 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import GenericModal from '../GenericModal/GenericModal';
 import { useEffect } from 'react';
 
-
 //location
 //https://www.codegrepper.com/code-examples/javascript/history.push+with+params
 import { useLocation } from 'react-router-dom';
 
-
-
 function StudentDataEntry() {
     const location  = useLocation();
     const [storeFullNameFromSearch, setFullNameFromSearch] = useState([])
-    const [student, setStudent] = useState({});
+    const [student, setStudent] = useState({ id  :'',  //id is an identity column (for fetching)
+                                              Student_ID  :'',
+                                              LastName :'',
+                                              FirstName  :'',
+                                              School  :'',
+                                              WF  :'',
+                                              Menu  :'',
+                                              Disabled  :'',
+                                              Supplement  :'',
+                                              LTA  :'',
+                                              SupplementName  :'',
+                                              CurrentOrderDate  :'',
+                                              CurrentOrder  :'',
+                                              Notes  :'',
+                                              BabyFoodName  :'',
+                                              OneCans_D  :'',
+                                              OneCans_6Wk  :'',
+                                              NeedsF_U  :'',
+                                              Baby_Food_Types  :'',
+                                              Date_Processed  :'',
+                                              Date_Received  :'',
+                                              Current_Student  :'',
+                                              Accommodation_ON_HOLD  :'',
+                                              Milk_Sub  :'',
+                                              Allergy  :'',
+                                              Medical_Condition  :'',
+                                              Foods_to_be_Omitted  :'',
+                                              Substitution  :'',
+                                              Texture_Modification  :'',
+                                              BK_Menu  :'',
+                                              Lu_Menu  :'',
+                                              Milk_Sub_Name  :'',
+                                              Waiting_on_Menu_Approval  :'',
+                                              Nurse  :'',
+                                              Diet_Order_Notes  :'',
+                                              POS_alert  :'',
+                                              Menu_Code  :'',
+                                              Birthday  :'',
+                                              Production_Record  :'',
+                                              NPO  :'',
+                                              Tray_Yes  :'',
+                                              Tray_No  :'',
+                                              Menu_Color  :'',
+                                              Inactive  :'',
+                                              SchoolYear  :'',
+                                              SupplementNameMore  :'',
+                                              Texture_Modification2  :'',
+                                              Archive  :''});
 
   
 
@@ -87,6 +131,7 @@ function StudentDataEntry() {
    };//plain ol vanilla object
 
 
+   //useEffect Methods ***********
    useEffect(() => {
     const _queryID = location.search;
     if(_queryID != '')
@@ -97,7 +142,6 @@ function StudentDataEntry() {
     }
     
    }, [location]);
-
 
   useEffect(() => {
     //console.log('WS Call fetchSearchDDListDataFTBO')
@@ -113,8 +157,11 @@ function StudentDataEntry() {
     //console.log('WS Call fetchSearchDDListDataMilkSub')
     fetchSearchDDListDataMilkSub();
   },[]);
-  
+  //useEffect Methods END ***********
+
+
    //let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute'];
+   //FETCH METHODS FOR THE THREE DROPDOWN SUPPLEMENT (CALLED ON FORM LOAD - useEffect())
    async function fetchSearchDDListDataFTBO() {        
     let _DD_LIST_DATA = [];
     var myAPI = new studentInfoApi;
@@ -160,25 +207,60 @@ function StudentDataEntry() {
     }
    }
 
+
+   //METHODS BELOW ARE FOR ADDING DROPDOWN VALUES TO HIDDEN SUPPLEMENT FIELDS
    const setDropDownSubstitutesFieldValues = (e) =>
    {
-    e.preventDefault();
-     /* for(const key in listBlueCycle) {     
-      _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listBlueCycle[key]);
-    }
+        e.preventDefault();
+        
+        //initalize the hidden suplement field values
+        appendDropDownSubstitutesFieldValues('ddFTBOList_Selected','Foods_to_be_Omitted');
+        appendDropDownSubstitutesFieldValues('ddNutSubList_Selected','SupplementName');
+        appendDropDownSubstitutesFieldValues('ddMilkSubList_Selected','Milk_Sub_Name');
 
-    Milk_Sub_Name	
-    SupplementName
-    Foods_to_be_Omitted	
+        var element = '';
 
-    */
+        //set the hidden suplement field values
+        element = document.getElementById('Foods_to_be_Omitted');
+        student.Foods_to_be_Omitted = element.value;
 
-     var _DDSSelect = document.getElementById('ddFTBOList_Selected'); 
+        element = document.getElementById('SupplementName');
+        student.SupplementName = element.value;
 
-     appendDropDownSubstitutesFieldValues('ddFTBOList_Selected','Foods_to_be_Omitted');
-     appendDropDownSubstitutesFieldValues('ddNutSubList_Selected','SupplementName');
-     appendDropDownSubstitutesFieldValues('ddMilkSubList_Selected','Milk_Sub_Name');
-     
+        element = document.getElementById('Milk_Sub_Name');
+        student.Milk_Sub_Name = element.value;
+
+        //awlays grab the value (in case they pressed the button twice)
+        element = document.getElementById('Student_ID');
+        student.Student_ID = element.value;
+
+
+        //my checked boxes
+        element = document.getElementById('Disabled');
+        if(element.checked) {
+          student.Disabled = 1;
+        } else {student.Disabled = 0}
+        
+        element = document.getElementById('LTA');
+        if(element.checked) {
+          student.LTA = 1;
+        } else {student.LTA = 0}
+
+        element = document.getElementById('NeedsF_U');
+        if(element.checked) {
+          student.NeedsF_U = 1;
+        }else {student.NeedsF_U = 0}
+
+        element = document.getElementById('Current_Student');
+        if(element.checked) {
+          student.Current_Student = 1;
+        }else {student.Current_Student = 0}
+
+        element = document.getElementById('NPO');
+        if(element.checked) {
+          student.NPO = 1;
+        }else {student.NPO = 0}
+
    }
 
    const appendDropDownSubstitutesFieldValues=(ddListName,fieldName)=>
@@ -187,14 +269,21 @@ function StudentDataEntry() {
       var _fieldName = document.getElementById(fieldName);
       var _strDDValues = '';
 
-     
           Array.from(_DDSSelect.options).forEach(function(option_element) {
             let option_text = option_element.text;
             let option_value = option_element.value;
             _strDDValues += option_value;
+            _strDDValues +=",";
         });
 
-        _fieldName.value = _strDDValues;
+        if (_strDDValues.endsWith(','))
+        {
+          _fieldName.value = _strDDValues.substring(0,_strDDValues.length - 1);
+        }
+        else{
+          _fieldName.value = _strDDValues;
+        }
+        
     }
 
 
@@ -203,37 +292,20 @@ function StudentDataEntry() {
       //var _response = await myAPI.AddStudentComplexDataRecord(student)
     }
 
-    
+    const saveRecord =(e)=>
+    {
+      e.preventDefault();
+       setDropDownSubstitutesFieldValues(e);
 
+       console.log(student);
+    }
+    
     const searchStudent =()=>
     {
 
     }
 
-    const generateStudentID =()=>
-    {
-      var studentIDField = document.getElementById('Student_ID');
-      studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
-    }
-
-    
-
-  function generateUUIDUsingMathRandom() { 
-    var d = new Date().getTime();//Timestamp
-    var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random() * 16;//random number between 0 and 16
-        if(d > 0){//Use timestamp until depleted
-            r = (d + r)%16 | 0;
-            d = Math.floor(d/16);
-        } else {//Use microseconds since page-load if supported
-            r = (d2 + r)%16 | 0;
-            d2 = Math.floor(d2/16);
-        }
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-}
-  
+//HANDLE CHANGE EVENT FOR WHEN A USER MAKES A CHANGE TO A FIELD ON THE FORM
     function handleChange (e){
       const { name, value } = e.target;
      
@@ -283,9 +355,13 @@ function StudentDataEntry() {
             break;
           case 'Medical_Condition':
             setStudent({ ...student, Medical_Condition: value });  
-            
-              //*****RESERVE FOR FOODS TO BE OMMITTED ***
-          
+            break;
+         
+          /*DROP- DOWNS - SUPPLEMENTS  - HIDDEN FIELDS*/
+          case 'Foods_to_be_Omitted':
+                setStudent({ ...student, Foods_to_be_Omitted: value }); 
+              break; 
+
           case 'Substitution':
             setStudent({ ...student, Substitution: value });
           break;
@@ -303,9 +379,13 @@ function StudentDataEntry() {
             setStudent({ ...student, Texture_Modification2: value });
           break;
 
-            //****Nutrition Supplement ***
-
-            //*****Milk Substitute ***
+          /*DROP- DOWNS - SUPPLEMENTS  - HIDDEN FIELDS*/
+          case 'SupplementName':
+            setStudent({ ...student, SupplementName: value });
+          break;
+          case 'Milk_Sub_Name':
+            setStudent({ ...student, Milk_Sub_Name: value });
+          break;
 
           case 'NPO':
             setStudent({ ...student, NPO: value });
@@ -332,12 +412,7 @@ function StudentDataEntry() {
      // console.log(user)
     }
    
-    function removeOptions(selectElement) {
-      var i, L = selectElement.options.length - 1;
-      for(i = L; i >= 0; i--) {
-         selectElement.remove(i);
-      }
-   }
+ 
 
     const populateMenuCodeDropDown = () =>
     {
@@ -379,6 +454,7 @@ function StudentDataEntry() {
     
     }
    
+    //HANDLE -CLICK METHODS FOR DROPDOWN LISTS (SUPPLEMENTS) *******
      const handleClickRightFTBO = (e) =>
      {
        e.preventDefault();
@@ -504,8 +580,37 @@ function StudentDataEntry() {
        var _mySelect2 = document.getElementById('ddMilkSubList_Selected');
        _mySelect2.remove(_mySelect2.selectedIndex); 
      }
+//END HANDLE -CLICK METHODS FOR DROPDOWN LISTS (SUPPLEMENTS)  *******
+      
+   //UTILITY METHODS
+  //GENERATE STUDENT ID - TEMP ID -
+    const generateStudentID =()=>
+    {
+      var studentIDField = document.getElementById('Student_ID');
+      studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
+    }
+      function generateUUIDUsingMathRandom() { 
+        var d = new Date().getTime();//Timestamp
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){//Use timestamp until depleted
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+    function removeOptions(selectElement) {
+      var i, L = selectElement.options.length - 1;
+      for(i = L; i >= 0; i--) {
+        selectElement.remove(i);
+      }
+    }
 
-     
 
   return (
     <div>
@@ -602,14 +707,11 @@ function StudentDataEntry() {
 
                   <Form.Group as={Col} >
                     <Form.Label>School Year</Form.Label>
-
                       <SchoolYearDropDown 
+                          handleChange = {(e) =>handleChange(e)}
                           name='ddSchoolYears'
                           id='ddSchoolYears'
-                          onChange={handleChange}
                           />
-
-                
                   </Form.Group>
 
                 </Row>
@@ -709,7 +811,7 @@ function StudentDataEntry() {
                   </Form.Group>
                </Row>
 
-               <Row>
+               <Row style={{display:'none'}}>
                <Button variant="warning" type="button"
                       onClick={(e) => setDropDownSubstitutesFieldValues(e)}
                       >
@@ -733,11 +835,12 @@ function StudentDataEntry() {
                 
                </Form.Group >
                </Row>
-               <Row>
+               <Row style={{display:'none'}}>
                <Col sm={6}>
                   <input type='text' 
                    id='Foods_to_be_Omitted'
-                   name='Foods_to_be_Omitted' />
+                   name='Foods_to_be_Omitted' 
+                   onChange={handleChange}/>
                 </Col>
                </Row>
   
@@ -846,11 +949,12 @@ function StudentDataEntry() {
                     </Form.Group >
                     </Row>
 
-                <Row>
+                <Row style={{display:'none'}}>
                   <Col sm={6}>
                     <input type='text' 
                     id='SupplementName'
-                    name='SupplementName' />
+                    name='SupplementName' 
+                    onChange={handleChange}/>
                   </Col>
                 </Row>
                     <br></br>
@@ -872,11 +976,12 @@ function StudentDataEntry() {
                     </Form.Group >
                     </Row>
 
-                <Row>
+                <Row style={{display:'none'}}>
                   <Col sm={6}>
                     <input type='text' 
                     id='Milk_Sub_Name'
-                    name='Milk_Sub_Name' />
+                    name='Milk_Sub_Name' 
+                    onChange={handleChange}/>
                   </Col>
                 </Row>
 
@@ -987,8 +1092,15 @@ function StudentDataEntry() {
                         </Form.Group>
                     </Row>
                 </Tab>
-
               </Tabs>
+            
+            <hr></hr>
+            <br></br>
+          <Row>
+            <Col sm={12}>
+              <Button variant="outline-primary" onClick={(e) => saveRecord(e)}>Submit</Button>
+            </Col>
+          </Row>
           </Form>
         </Container>
       </main>
