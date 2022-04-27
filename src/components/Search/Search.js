@@ -82,7 +82,7 @@ function handleChange (e){
       School.value == "--Select--") {
       //Search By Student ID  - WORKS!!!
       console.log('Search By Student ID')
-      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += studentID.value;
       _SEARCH_STRING += "'";
@@ -138,7 +138,7 @@ function handleChange (e){
       School.value == "--Select--") {
       //Search By School Year - WORKS!!!
       console.log('Search By School Year ')
-      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
+      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += SchoolYear.value;
       _SEARCH_STRING += "'";
@@ -153,7 +153,7 @@ function handleChange (e){
       School.value != "--Select--") {
       //Search By School Name  - WORKS!!!
       console.log('Search By School Name')
-      _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
       _SEARCH_STRING += "'";
       _SEARCH_STRING += School.value;
       _SEARCH_STRING += "'";
@@ -209,45 +209,18 @@ function handleChange (e){
         onClick={() => history.push(
           {
             pathname: '/StudentDataEntry',
-            search: '?query=' + row.Student_ID,
+            search: '?id=' + row.id,
             fullName: row.FirstName + ' ' + row.LastName
 
           }
         )}/></div>);
   }
 
-      /*
-        const options = {
-          exportCSVText: 'Export CSV',
-          insertText: 'Insert',
-          deleteText: 'Delete',
-          saveText: 'Save',
-          closeText: 'Close',
-      
-          sizePerPage: 25,
-          sortOrder: 'desc',
-          prePage: 'Prev',
-          nextPage: 'Next',
-          firstPage: 'First',
-          lastPage: 'Last',
-          paginationShowsTotal: renderShowsTotal
-        };
-  
-  
-        function renderShowsTotal(start, to, total) {
-          return (
-              <p style={{color: 'black'}}>
-              From {start} to {to}. Total: {total}&nbsp;&nbsp;
-              </p>
-          );
-      }
-      */
-
-  //for the row height fix
+     //for the row height fix
   const rowStyle = {  height: '10px', padding: '2px 0' };
 
   const columns = [{
-    dataField: 'Student_ID',
+    dataField: 'id',
     text: 'id',
     formatter: CellFormatter,
     style: { width: '10px' }
@@ -355,22 +328,11 @@ function handleChange (e){
         <Row>
           <Col sm={12}> 
             <h2>Search Results</h2>
-          
-            {/*
-            <BootstrapTable data={tblSearchResults} striped hover options={options}
-              pagination           
-            >
-              <TableHeaderColumn row="1" width="10%" editable={false} isKey dataField="id" dataFormat={CellFormatter}>Select</TableHeaderColumn>
-              <TableHeaderColumn row="1" width="20%" dataField="LastName">Last Name</TableHeaderColumn>
-              <TableHeaderColumn row="1" width="20%" dataField="FirstName">First Name</TableHeaderColumn> 
-              <TableHeaderColumn row="1" width="30%" dataField="School">School</TableHeaderColumn> 
-              <TableHeaderColumn row="1" width="20%" dataField="currStudentYesNo">Current</TableHeaderColumn>      
-            </BootstrapTable>
-          */}
+
               <BootstrapTable
                 striped
                 hover
-                keyField='Student_ID'
+                keyField='id'
                 data={tblSearchResults}
                 columns={columns}
                 pagination={paginationFactory()}

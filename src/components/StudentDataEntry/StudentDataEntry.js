@@ -4,12 +4,17 @@ import {Button,
     Container,
     Row,
     Col,Form,Tabs,Tab} from 'react-bootstrap';
-import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
-import { Pencil  } from 'react-bootstrap-icons';
+import { useHistory } from "react-router-dom";
 
+
+//import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
+//import { Pencil  } from 'react-bootstrap-icons';
+
+//reusable components
 import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelectCombo';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
+import AlertDismissible from '../ReusableAppComponents/AlertDismissible';
 
 import studentInfoApi from '../../api/studentInfoApi';
 
@@ -28,109 +33,116 @@ import { useLocation } from 'react-router-dom';
 function StudentDataEntry() {
     const location  = useLocation();
     const [storeFullNameFromSearch, setFullNameFromSearch] = useState([])
-    const [student, setStudent] = useState({ id  :'',  //id is an identity column (for fetching)
+    const [recordSuccessShowHide,setrecordSuccessShowHide] = useState(['block'])
+
+    //alert WireUp *******
+    const [showAlert, setShowAlert] = useState(false);
+    const [successMsg,setsuccessMsg] = useState('');
+    const [msgBody,setmsgBody] = useState('');
+    const [msgBody2,setmsgBody2] = useState('');
+    const [shouldReturnToMain,setshouldReturnToMain] = useState(false);
+    
+    const openAlert = () => {
+       // e.preventDefault();
+        setsuccessMsg('alert alert-success')
+        setmsgBody("Student Information Add/Update Information")
+        setmsgBody2("Successfully wrote record!!!")
+        setshouldReturnToMain(true)
+        setShowAlert(true);
+    }
+
+    const closeAlert = (e) => {
+        e.preventDefault();
+        setShowAlert(false);
+        
+        if(shouldReturnToMain)
+        {
+          history.push(
+            {
+              pathname: '/NutritionLogin'
+            }
+          )
+        }
+         
+    }
+
+    const openAlertError = () => {
+        //e.preventDefault();
+        setsuccessMsg('alert alert-danger')
+        setmsgBody("Student Information Add/Update Information")
+        setmsgBody2("There was an issue writing the record !!!")
+        setshouldReturnToMain(false)
+        setShowAlert(true);
+    }
+   //alert WireUp ********
+
+   const history = useHistory();
+
+    //CUT DOWN TO 31 FIELDS (THIS IS ALL YOU ARE USING ON THE SERVICE SIDE)
+    const [student, setStudent] = useState({ id  :'',  
                                               Student_ID  :'',
-                                              LastName :'',
+                                              LastName :'', 
                                               FirstName  :'',
-                                              School  :'',
-                                              WF  :'',
-                                              Menu  :'',
+                                              School  :'',                     
                                               Disabled  :'',
-                                              Supplement  :'',
                                               LTA  :'',
                                               SupplementName  :'',
                                               CurrentOrderDate  :'',
                                               CurrentOrder  :'',
                                               Notes  :'',
-                                              BabyFoodName  :'',
-                                              OneCans_D  :'',
-                                              OneCans_6Wk  :'',
                                               NeedsF_U  :'',
-                                              Baby_Food_Types  :'',
                                               Date_Processed  :'',
                                               Date_Received  :'',
                                               Current_Student  :'',
-                                              Accommodation_ON_HOLD  :'',
                                               Milk_Sub  :'',
-                                              Allergy  :'',
                                               Medical_Condition  :'',
                                               Foods_to_be_Omitted  :'',
                                               Substitution  :'',
                                               Texture_Modification  :'',
-                                              BK_Menu  :'',
-                                              Lu_Menu  :'',
                                               Milk_Sub_Name  :'',
-                                              Waiting_on_Menu_Approval  :'',
-                                              Nurse  :'',
                                               Diet_Order_Notes  :'',
-                                              POS_alert  :'',
                                               Menu_Code  :'',
-                                              Birthday  :'',
-                                              Production_Record  :'',
+                                              Birthday  :'',                                
                                               NPO  :'',
-                                              Tray_Yes  :'',
-                                              Tray_No  :'',
                                               Menu_Color  :'',
                                               Inactive  :'',
                                               SchoolYear  :'',
                                               SupplementNameMore  :'',
-                                              Texture_Modification2  :'',
-                                              Archive  :''});
+                                              Texture_Modification2  :''});
 
   
+/*SELECT TOP (1000) 
+      [id][LastName]
+      ,[FirstName]
+      ,[School]
+      ,[Disabled]
+      ,[LTA]
+      ,[SupplementName]
+      ,[CurrentOrderDate]
+      ,[Notes]
+      ,[NeedsF_U]
+      ,[Date_Processed]
+      ,[Date_Received]
+      ,[Current_Student]
+      ,[Milk_Sub]
+      ,[Medical_Condition]
+      ,[Foods_to_be_Omitted]
+      ,[Substitution]
+      ,[Texture_Modification]
+      ,[Milk_Sub_Name]
+      ,[Menu_Code]
+      ,[Birthday]
+      ,[Student_ID]
+      ,[NPO]
+      ,[Menu_Color]
+      ,[SchoolYear]
+      ,[SupplementNameMore]
+      ,[Texture_Modification2]
+  FROM [HISDNutritionalServices].[dbo].[StudentEntryData]
+  where id = 4557
+  */
 
-    var objStudent= {
-          id  :'',  //id is an identity column (for fetching)
-          Student_ID  :'',
-          LastName :'',
-          FirstName  :'',
-          School  :'',
-          WF  :'',
-          Menu  :'',
-          Disabled  :'',
-          Supplement  :'',
-          LTA  :'',
-          SupplementName  :'',
-          CurrentOrderDate  :'',
-          CurrentOrder  :'',
-          Notes  :'',
-          BabyFoodName  :'',
-          OneCans_D  :'',
-          OneCans_6Wk  :'',
-          NeedsF_U  :'',
-          Baby_Food_Types  :'',
-          Date_Processed  :'',
-          Date_Received  :'',
-          Current_Student  :'',
-          Accommodation_ON_HOLD  :'',
-          Milk_Sub  :'',
-          Allergy  :'',
-          Medical_Condition  :'',
-          Foods_to_be_Omitted  :'',
-          Substitution  :'',
-          Texture_Modification  :'',
-          BK_Menu  :'',
-          Lu_Menu  :'',
-          Milk_Sub_Name  :'',
-          Waiting_on_Menu_Approval  :'',
-          Nurse  :'',
-          Diet_Order_Notes  :'',
-          POS_alert  :'',
-          Menu_Code  :'',
-          Birthday  :'',
-          Production_Record  :'',
-          NPO  :'',
-          Tray_Yes  :'',
-          Tray_No  :'',
-          Menu_Color  :'',
-          Inactive  :'',
-          SchoolYear  :'',
-          SupplementNameMore  :'',
-          Texture_Modification2  :'',
-          Archive  :''
-   };//plain ol vanilla object
-
-
+    
    //useEffect Methods ***********
    useEffect(() => {
     const _queryID = location.search;
@@ -287,19 +299,36 @@ function StudentDataEntry() {
     }
 
 
-    async function AddStudentDataRecord() {
-      //var myAPI = new studentInfoApi;
-      //var _response = await myAPI.AddStudentComplexDataRecord(student)
+  async function AddOrUpdateStudentRecord(e) {
+      e.preventDefault()
+      setDropDownSubstitutesFieldValues(e);
+      var myAPI = new studentInfoApi;
+      var _response = await myAPI.AddOrUpdateStudentRecord(student)
+      //setdbWriteSuccess(_response);
+      console.log(_response);
+      if(_response)
+      {
+        openAlert();
+        setrecordSuccessShowHide('none')
+      }
+      else{
+        openAlertError();
+        setrecordSuccessShowHide('block')
+      }
+      //console.log('Response from writing record..' + _response);
     }
 
+    /*
     const saveRecord =(e)=>
     {
       e.preventDefault();
        setDropDownSubstitutesFieldValues(e);
-
-       console.log(student);
+       AddOrUpdateStudentRecord(student)
+       //openAlert(e);
+       //console.log(student);
     }
-    
+    */
+
     const searchStudent =()=>
     {
 
@@ -616,8 +645,16 @@ function StudentDataEntry() {
     <div>
       <main>
         <Container>
+        <AlertDismissible 
+             show = {showAlert}
+             toogleAlert = {(e) => closeAlert(e)}
+             msgClass = {successMsg}
+             msgBody = {msgBody}
+             msgBody2 = {msgBody2}
+            />
+
         <h1>Student Record</h1> 
-          <Form>
+          <Form style={{display:recordSuccessShowHide}}>
               <Tabs>
               <Tab eventKey="StudentInformation" title="Student Information">
                   <h2><label>{storeFullNameFromSearch}</label></h2>
@@ -1098,7 +1135,7 @@ function StudentDataEntry() {
             <br></br>
           <Row>
             <Col sm={12}>
-              <Button variant="outline-primary" onClick={(e) => saveRecord(e)}>Submit</Button>
+              <Button variant="outline-primary" onClick={(e) => AddOrUpdateStudentRecord(e)}>Submit</Button>
             </Col>
           </Row>
           </Form>

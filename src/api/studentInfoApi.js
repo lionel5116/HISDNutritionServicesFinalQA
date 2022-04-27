@@ -266,7 +266,7 @@ export class studentInfoApi {
      }
 
      async  writeTrainingRecord(trainingRecord){
-        console.log(url)
+      
        var url = Config.REST_URL + '/api/Communications/saveTrainingNotes/';
 
        try {
@@ -274,6 +274,29 @@ export class studentInfoApi {
         .then(res => console.log(res.data));
        } catch(err) {
         console.log("Issue fetching data.. possible url invalid character sent: " + err)
+       }
+      
+    }
+
+    async  AddOrUpdateStudentRecord(studentRecord){
+    
+       var url = Config.REST_URL + '/api/StudentEntryData/AddOrUpdateStudentRecord/';
+
+       try {
+        /*
+        await axios.post(url, studentRecord)
+        .then(res => 
+            {
+                return res.data
+            });
+           */
+            return await axios.post(url, studentRecord)
+            .then(res => {
+                return res.data;
+            });
+       } catch(err) {
+        console.log("Issue writing student record error = : " + err)
+        return false;
        }
       
     }
