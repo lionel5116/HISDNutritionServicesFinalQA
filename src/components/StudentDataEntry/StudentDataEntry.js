@@ -36,6 +36,7 @@ function StudentDataEntry() {
     const [recordSuccessShowHide,setrecordSuccessShowHide] = useState(['block'])
 
     //alert WireUp *******
+    //controls import AlertDismissible from '../ReusableAppComponents/AlertDismissible';
     const [showAlert, setShowAlert] = useState(false);
     const [successMsg,setsuccessMsg] = useState('');
     const [msgBody,setmsgBody] = useState('');
@@ -43,11 +44,13 @@ function StudentDataEntry() {
     const [shouldReturnToMain,setshouldReturnToMain] = useState(false);
     
     const openAlert = () => {
-       // e.preventDefault();
         setsuccessMsg('alert alert-success')
         setmsgBody("Student Information Add/Update Information")
         setmsgBody2("Successfully wrote record!!!")
+        
+        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
         setshouldReturnToMain(true)
+
         setShowAlert(true);
     }
 
@@ -67,11 +70,13 @@ function StudentDataEntry() {
     }
 
     const openAlertError = () => {
-        //e.preventDefault();
         setsuccessMsg('alert alert-danger')
         setmsgBody("Student Information Add/Update Information")
         setmsgBody2("There was an issue writing the record !!!")
+
+        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
         setshouldReturnToMain(false)
+
         setShowAlert(true);
     }
    //alert WireUp ********
@@ -315,19 +320,8 @@ function StudentDataEntry() {
         openAlertError();
         setrecordSuccessShowHide('block')
       }
-      //console.log('Response from writing record..' + _response);
-    }
 
-    /*
-    const saveRecord =(e)=>
-    {
-      e.preventDefault();
-       setDropDownSubstitutesFieldValues(e);
-       AddOrUpdateStudentRecord(student)
-       //openAlert(e);
-       //console.log(student);
     }
-    */
 
     const searchStudent =()=>
     {

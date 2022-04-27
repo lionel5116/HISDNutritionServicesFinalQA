@@ -279,17 +279,8 @@ export class studentInfoApi {
     }
 
     async  AddOrUpdateStudentRecord(studentRecord){
-    
        var url = Config.REST_URL + '/api/StudentEntryData/AddOrUpdateStudentRecord/';
-
        try {
-        /*
-        await axios.post(url, studentRecord)
-        .then(res => 
-            {
-                return res.data
-            });
-           */
             return await axios.post(url, studentRecord)
             .then(res => {
                 return res.data;
