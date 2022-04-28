@@ -147,15 +147,16 @@ function StudentDataEntry() {
   where id = 4557
   */
 
-    
+    //STID_24c6b43f-625
    //useEffect Methods ***********
    useEffect(() => {
     const _queryID = location.search;
     if(_queryID != '')
     {
-        console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
+        //console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
+        var id = _queryID.substring(_queryID.indexOf('=') + 1);
         setFullNameFromSearch(location.fullName)
-        console.log("Full Name from search " + location.fullName);
+        fetchSingeRecordByRecordID(id)  
     }
     
    }, [location]);
@@ -175,6 +176,15 @@ function StudentDataEntry() {
     fetchSearchDDListDataMilkSub();
   },[]);
   //useEffect Methods END ***********
+
+
+  async function fetchSingeRecordByRecordID(id) {        
+    let _DD_STUDENT_RECORD_DATA = [];
+    var myAPI = new studentInfoApi;
+    _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
+    populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
+    //console.log(_DD_STUDENT_RECORD_DATA[0].LastName);
+   }
 
 
    //let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute'];
@@ -323,10 +333,111 @@ function StudentDataEntry() {
 
     }
 
-    const searchStudent =()=>
-    {
+   function populateFormWithStudentData(fieldData)
+   {
+     //console.log(fieldData)
+     console.log("Student ID: " + fieldData[0].Student_ID)
+    var _Student_ID = document.getElementById('Student_ID');
+    _Student_ID.value = fieldData[0].Student_ID
+    
+    
+    var _School = document.getElementById('School');
+    _School.value = fieldData[0].School
 
+    var _FirstName = document.getElementById('FirstName');
+    _FirstName.value = fieldData[0].FirstName
+
+    var _LastName = document.getElementById('LastName');
+    _LastName.value = fieldData[0].LastName
+
+    var _Birthday = document.getElementById('Birthday');
+    _Birthday.value = fieldData[0].Birthday
+
+    var _SchoolYear = document.getElementById('SchoolYear');
+    _SchoolYear.value = fieldData[0].SchoolYear
+
+    var _Date_Received = document.getElementById('Date_Received');
+    _Date_Received.value = fieldData[0].Date_Received
+
+
+    var _Date_Processed = document.getElementById('Date_Processed');
+    _Date_Processed.value = fieldData[0].Date_Processed
+
+    var _Notes = document.getElementById('Notes');
+    _Notes.value = fieldData[0].Notes
+
+ 
+    var _Disabled = document.getElementById('Disabled');//check box
+    if(fieldData[0].Disabled = 1)
+    {
+      _Disabled.checked = true
     }
+
+    var _Current_Student = document.getElementById('Current_Student');//check box
+    if(fieldData[0].Current_Student = 1)
+    {
+      _Current_Student.checked = true
+    }
+   
+    var _LTA = document.getElementById('LTA');//check box
+    if(fieldData[0].LTA = 1)
+    {
+      _LTA.value.checked = true
+    }
+   
+
+    var _NeedsF_U = document.getElementById('NeedsF_U');//check box
+    if(fieldData[0].NeedsF_U = 1)
+    {
+      _NeedsF_U.checked = true
+    }
+ 
+
+    var _NPO = document.getElementById('NPO');//check box
+    if(fieldData[0].NPO = 1)
+    {
+      _NPO.value.checked = true
+    }
+ 
+
+    var _Medical_Condition = document.getElementById('Medical_Condition');
+    _Medical_Condition.value = fieldData[0].Medical_Condition
+
+
+    var _Foods_to_be_Omitted = document.getElementById('Foods_to_be_Omitted');
+    _Foods_to_be_Omitted.value = fieldData[0]._Foods_to_be_Omitted
+
+    var _Substitution = document.getElementById('Substitution');
+    _Substitution.value = fieldData[0].Substitution
+
+    var _Menu_Color = document.getElementById('Menu_Color');
+    _Menu_Color.value = fieldData[0].Menu_Color
+
+    var _Menu_Code = document.getElementById('Menu_Code');
+    _Menu_Code.value = fieldData[0].Menu_Code
+
+    var _Texture_Modification = document.getElementById('Texture_Modification');
+    _Texture_Modification.value = fieldData[0].Texture_Modification
+
+    var _SupplementName = document.getElementById('SupplementName');
+    _SupplementName.value = fieldData[0].SupplementName
+
+    var _Milk_Sub_Name = document.getElementById('Milk_Sub_Name');
+    _Milk_Sub_Name.value = fieldData[0].Milk_Sub_Name
+
+    var _SupplementNameMore = document.getElementById('SupplementNameMore');
+    _SupplementNameMore.value = fieldData[0].SupplementNameMore
+
+    var _CurrentOrderDate = document.getElementById('CurrentOrderDate');
+    _CurrentOrderDate.value = fieldData[0].CurrentOrderDate
+
+    var _Diet_Order_Notes = document.getElementById('Diet_Order_Notes');
+    _Diet_Order_Notes.value = fieldData[0].Diet_Order_Notes
+
+    var _Texture_Modification2 = document.getElementById('Texture_Modification2');
+    _Texture_Modification2.value = fieldData[0].Texture_Modification2
+    
+   }
 
 //HANDLE CHANGE EVENT FOR WHEN A USER MAKES A CHANGE TO A FIELD ON THE FORM
     function handleChange (e){
@@ -362,6 +473,9 @@ function StudentDataEntry() {
           case 'Date_Received':
               setStudent({ ...student, Date_Received: value });
               break;
+          case 'Date_Processed':
+                setStudent({ ...student, Date_Processed: value });
+                break;
           case 'Notes':
               setStudent({ ...student, Notes: value });
               break;
