@@ -69,10 +69,10 @@ function StudentDataEntry() {
          
     }
 
-    const openAlertError = () => {
+    const openAlertError = (msg) => {
         setsuccessMsg('alert alert-danger')
         setmsgBody("Student Information Add/Update Information")
-        setmsgBody2("There was an issue writing the record !!!")
+        setmsgBody2(msg)
 
         //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
         setshouldReturnToMain(false)
@@ -175,6 +175,12 @@ function StudentDataEntry() {
     //console.log('WS Call fetchSearchDDListDataMilkSub')
     fetchSearchDDListDataMilkSub();
   },[]);
+
+  useEffect(() => {
+    
+     
+  },[]);
+
   //useEffect Methods END ***********
 
 
@@ -182,8 +188,12 @@ function StudentDataEntry() {
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
-    populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
-    //console.log(_DD_STUDENT_RECORD_DATA[0].LastName);
+    student.id = _DD_STUDENT_RECORD_DATA[0].id
+    await populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
+    //by the time this the base fields are rendered, we can now set the drop-downs for the
+    //School Year and School (using async to pause the thread)
+    await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
+    await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
    }
 
 
@@ -316,10 +326,35 @@ function StudentDataEntry() {
 
   async function AddOrUpdateStudentRecord(e) {
       e.preventDefault()
+
+      console.log("Student ID " + student.id )
+      if(student.id != '')
+      {
+        openAlertError('Editing a RECORD IS NOT YET IMPLEMENTED YET.. COMING SOON!!! DEBBIE/DOLLY');
+        setrecordSuccessShowHide('block')
+        return;
+      }
+     
+      if(student.Student_ID != '' &&
+        student.School != '' &&
+        student.FirstName != '' &&
+        student.LastName != '' )
+        {
+            //we are good to go       
+  
+        }
+        else{
+          openAlertError('You must have at least the following: StudentID,School,First and Last Name!!!!');
+          setrecordSuccessShowHide('block')
+          return;
+        }
+
+      
+
       setDropDownSubstitutesFieldValues(e);
       var myAPI = new studentInfoApi;
       var _response = await myAPI.AddOrUpdateStudentRecord(student)
-      //setdbWriteSuccess(_response);
+
       console.log(_response);
       if(_response)
       {
@@ -327,119 +362,187 @@ function StudentDataEntry() {
         setrecordSuccessShowHide('none')
       }
       else{
-        openAlertError();
+        openAlertError('There was a problem adding or updating the record');
         setrecordSuccessShowHide('block')
       }
 
     }
 
-   function populateFormWithStudentData(fieldData)
+    async function populateFormWithStudentData(fieldData)
+    {
+     
+     var _Student_ID = document.getElementById('Student_ID');
+     _Student_ID.value = fieldData[0].Student_ID
+     
+
+     var _FirstName = document.getElementById('FirstName');
+     _FirstName.value = fieldData[0].FirstName
+ 
+     var _LastName = document.getElementById('LastName');
+     _LastName.value = fieldData[0].LastName
+   
+    
+     var _Notes = document.getElementById('Notes');
+     _Notes.value = fieldData[0].Notes
+ 
+    
+     var _Medical_Condition = document.getElementById('Medical_Condition');
+     _Medical_Condition.value = fieldData[0].Medical_Condition
+ 
+ 
+     
+     var _Substitution = document.getElementById('Substitution');
+     _Substitution.value = fieldData[0].Substitution
+ 
+     
+ 
+     var _Texture_Modification = document.getElementById('Texture_Modification');
+     _Texture_Modification.value = fieldData[0].Texture_Modification
+ 
+    
+ 
+ 
+     var _SupplementNameMore = document.getElementById('SupplementNameMore');
+     _SupplementNameMore.value = fieldData[0].SupplementNameMore
+ 
+ 
+     var _Diet_Order_Notes = document.getElementById('Diet_Order_Notes');
+     _Diet_Order_Notes.value = fieldData[0].Diet_Order_Notes
+ 
+     var _Texture_Modification2 = document.getElementById('Texture_Modification2');
+     _Texture_Modification2.value = fieldData[0].Texture_Modification2
+
+
+     //Supplement Multi-Selects
+     var _Foods_to_be_Omitted = document.getElementById('Foods_to_be_Omitted');
+     _Foods_to_be_Omitted.value = fieldData[0].Foods_to_be_Omitted
+     renderMultiSelectsWithValuesFromFetch('ddFTBOList_Selected',_Foods_to_be_Omitted.value)
+
+
+     var _SupplementName = document.getElementById('SupplementName');
+     _SupplementName.value = fieldData[0].SupplementName
+     renderMultiSelectsWithValuesFromFetch('ddNutSubList_Selected', _SupplementName.value)
+
+  
+     var _Milk_Sub_Name = document.getElementById('Milk_Sub_Name');
+     _Milk_Sub_Name.value = fieldData[0].Milk_Sub_Name
+     renderMultiSelectsWithValuesFromFetch('ddMilkSubList_Selected', _Milk_Sub_Name.value)
+     
+   
+     
+     //drop downs (School Listing & School Year)
+     //MOVED TO ASYNC METHODS BECAUSE THEY ARE RE-USABLE CONTROLS AND THERE WAS A JAVASCRIPT NATIVE ASYNC ISSUE
+     /*
+     var _SchoolYear = document.getElementById('ddSchoolYears');
+     console.log(fieldData[0].SchoolYear)
+     _SchoolYear.value = fieldData[0].SchoolYear
+   
+     var _School = document.getElementById('ddSchoolListings');
+     console.log(_School.value)
+     console.log(fieldData[0].School)
+     _School.value = fieldData[0].School
+     */
+
+
+
+     //Check Boxes
+     var _Disabled = document.getElementById('Disabled');//check box
+     if(fieldData[0].Disabled = 1)
+     {
+       _Disabled.checked = true
+     }
+ 
+     var _Current_Student = document.getElementById('Current_Student');//check box
+     if(fieldData[0].Current_Student = 1)
+     {
+       _Current_Student.checked = true
+     }
+    
+     var _LTA = document.getElementById('LTA');//check box
+     if(fieldData[0].LTA = 1)
+     {
+       _LTA.checked = true
+     }
+    
+ 
+     var _NeedsF_U = document.getElementById('NeedsF_U');//check box
+     if(fieldData[0].NeedsF_U = 1)
+     {
+       _NeedsF_U.checked = true
+     }
+  
+ 
+     var _NPO = document.getElementById('NPO');//check box
+     if(fieldData[0].NPO = 1)
+     {
+       _NPO.checked = true
+     }
+
+
+      //for dates
+     //https://bobbyhadz.com/blog/javascript-set-values-input-date-time#:~:text=Use%20the%20value%20property%20on,%2C%20time%20and%20datetime%2Dlocal%20.
+     var _CurrentOrderDate = document.getElementById('CurrentOrderDate');
+     var dtTemp = new Date(fieldData[0].CurrentOrderDate)
+     var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     _CurrentOrderDate.value = formmatteTrueDate[0]
+
+      
+     var _Birthday = document.getElementById('Birthday');
+     var dtTemp = new Date(fieldData[0].Birthday)
+     var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     _Birthday.value = formmatteTrueDate[0]
+
+
+     var _Date_Received = document.getElementById('Date_Received');
+     var dtTemp = new Date(fieldData[0].Date_Received)
+     var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     _Date_Received.value  = formmatteTrueDate[0]
+ 
+ 
+      //date field
+     var _Date_Processed = document.getElementById('Date_Processed');
+     var dtTemp = new Date(fieldData[0].Date_Processed)
+     var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     _Date_Processed.value  = formmatteTrueDate[0]
+
+
+     
+     var _Menu_Color = document.getElementById('ddMenuColor');
+     _Menu_Color.value = fieldData[0].Menu_Color
+     populateMenuCodeDropDown();
+     var _Menu_Code = document.getElementById('ddMenuCode');
+     _Menu_Code.value = fieldData[0].Menu_Code
+
+
+    }
+
+    //THESE ARE THE DROP-DOWNS (RESUSABLE ASYNC FIX)
+    async function setDropDownValuesAndSchoolListings(schoolName)
+    {
+  
+      var _School = document.getElementById('ddSchoolListings');
+      _School.value = schoolName
+    }
+
+    async function setDropDownValuesForSchoolYear(schoolYear)
+    {
+      var _SchoolYear = document.getElementById('ddSchoolYears');
+      _SchoolYear.value = schoolYear
+ 
+    }
+
+   function renderMultiSelectsWithValuesFromFetch(elementSelectedID,fieldValue)
    {
-     //console.log(fieldData)
-     console.log("Student ID: " + fieldData[0].Student_ID)
-    var _Student_ID = document.getElementById('Student_ID');
-    _Student_ID.value = fieldData[0].Student_ID
-    
-    
-    var _School = document.getElementById('School');
-    _School.value = fieldData[0].School
-
-    var _FirstName = document.getElementById('FirstName');
-    _FirstName.value = fieldData[0].FirstName
-
-    var _LastName = document.getElementById('LastName');
-    _LastName.value = fieldData[0].LastName
-
-    var _Birthday = document.getElementById('Birthday');
-    _Birthday.value = fieldData[0].Birthday
-
-    var _SchoolYear = document.getElementById('SchoolYear');
-    _SchoolYear.value = fieldData[0].SchoolYear
-
-    var _Date_Received = document.getElementById('Date_Received');
-    _Date_Received.value = fieldData[0].Date_Received
-
-
-    var _Date_Processed = document.getElementById('Date_Processed');
-    _Date_Processed.value = fieldData[0].Date_Processed
-
-    var _Notes = document.getElementById('Notes');
-    _Notes.value = fieldData[0].Notes
-
- 
-    var _Disabled = document.getElementById('Disabled');//check box
-    if(fieldData[0].Disabled = 1)
-    {
-      _Disabled.checked = true
-    }
-
-    var _Current_Student = document.getElementById('Current_Student');//check box
-    if(fieldData[0].Current_Student = 1)
-    {
-      _Current_Student.checked = true
-    }
-   
-    var _LTA = document.getElementById('LTA');//check box
-    if(fieldData[0].LTA = 1)
-    {
-      _LTA.value.checked = true
-    }
-   
-
-    var _NeedsF_U = document.getElementById('NeedsF_U');//check box
-    if(fieldData[0].NeedsF_U = 1)
-    {
-      _NeedsF_U.checked = true
-    }
- 
-
-    var _NPO = document.getElementById('NPO');//check box
-    if(fieldData[0].NPO = 1)
-    {
-      _NPO.value.checked = true
-    }
- 
-
-    var _Medical_Condition = document.getElementById('Medical_Condition');
-    _Medical_Condition.value = fieldData[0].Medical_Condition
-
-
-    var _Foods_to_be_Omitted = document.getElementById('Foods_to_be_Omitted');
-    _Foods_to_be_Omitted.value = fieldData[0]._Foods_to_be_Omitted
-
-    var _Substitution = document.getElementById('Substitution');
-    _Substitution.value = fieldData[0].Substitution
-
-    var _Menu_Color = document.getElementById('Menu_Color');
-    _Menu_Color.value = fieldData[0].Menu_Color
-
-    var _Menu_Code = document.getElementById('Menu_Code');
-    _Menu_Code.value = fieldData[0].Menu_Code
-
-    var _Texture_Modification = document.getElementById('Texture_Modification');
-    _Texture_Modification.value = fieldData[0].Texture_Modification
-
-    var _SupplementName = document.getElementById('SupplementName');
-    _SupplementName.value = fieldData[0].SupplementName
-
-    var _Milk_Sub_Name = document.getElementById('Milk_Sub_Name');
-    _Milk_Sub_Name.value = fieldData[0].Milk_Sub_Name
-
-    var _SupplementNameMore = document.getElementById('SupplementNameMore');
-    _SupplementNameMore.value = fieldData[0].SupplementNameMore
-
-    var _CurrentOrderDate = document.getElementById('CurrentOrderDate');
-    _CurrentOrderDate.value = fieldData[0].CurrentOrderDate
-
-    var _Diet_Order_Notes = document.getElementById('Diet_Order_Notes');
-    _Diet_Order_Notes.value = fieldData[0].Diet_Order_Notes
-
-    var _Texture_Modification2 = document.getElementById('Texture_Modification2');
-    _Texture_Modification2.value = fieldData[0].Texture_Modification2
-    
+    if (fieldValue.length > 2) {
+      var arrItems = fieldValue.split(',');
+      var _mySelect2 = document.getElementById(elementSelectedID);
+      arrItems.forEach(element => {
+        _mySelect2.options[_mySelect2.options.length] = new Option( element, element);
+      })
+     }
    }
 
-//HANDLE CHANGE EVENT FOR WHEN A USER MAKES A CHANGE TO A FIELD ON THE FORM
+    //HANDLE CHANGE EVENT FOR WHEN A USER MAKES A CHANGE TO A FIELD ON THE FORM
     function handleChange (e){
       const { name, value } = e.target;
      
@@ -720,11 +823,13 @@ function StudentDataEntry() {
 //END HANDLE -CLICK METHODS FOR DROPDOWN LISTS (SUPPLEMENTS)  *******
       
    //UTILITY METHODS
-  //GENERATE STUDENT ID - TEMP ID -
-    const generateStudentID =()=>
+  //Utility Methods *****
+  const generateStudentID =()=>
     {
       var studentIDField = document.getElementById('Student_ID');
       studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
+      //set this because the onChange is not fired
+      student.Student_ID = studentIDField.value;
     }
       function generateUUIDUsingMathRandom() { 
         var d = new Date().getTime();//Timestamp
@@ -746,6 +851,26 @@ function StudentDataEntry() {
       for(i = L; i >= 0; i--) {
         selectElement.remove(i);
       }
+    }
+
+    function padTo2Digits(num) {
+      return num.toString().padStart(2, '0');
+    }
+    
+    function formatDate(date) {
+      return (
+        [
+          date.getFullYear(),
+          padTo2Digits(date.getMonth() + 1),
+          padTo2Digits(date.getDate()),
+        ].join('-') +
+        ' ' +
+        [
+          padTo2Digits(date.getHours()),
+          padTo2Digits(date.getMinutes()),
+          // padTo2Digits(date.getSeconds()),  // 👈️ can also add seconds
+        ].join(':')
+      );
     }
 
 
@@ -813,7 +938,7 @@ function StudentDataEntry() {
                                 handleChange = {(e) =>handleChange(e)}
                                 name='ddSchoolListings'
                                 id='ddSchoolListings'/>
-                        </Form.Group>
+                            </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
@@ -956,6 +1081,7 @@ function StudentDataEntry() {
                   </Form.Group>
                </Row>
 
+               {/*<Row style={{display:'none'}}>*/}
                <Row style={{display:'none'}}>
                <Button variant="warning" type="button"
                       onClick={(e) => setDropDownSubstitutesFieldValues(e)}
@@ -980,6 +1106,7 @@ function StudentDataEntry() {
                 
                </Form.Group >
                </Row>
+               {/*<Row style={{display:'none'}}> */}
                <Row style={{display:'none'}}>
                <Col sm={6}>
                   <input type='text' 
