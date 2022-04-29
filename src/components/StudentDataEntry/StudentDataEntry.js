@@ -177,14 +177,14 @@ function StudentDataEntry() {
   },[]);
 
   useEffect(() => {
-    
-     
+    //fetchSchoolListingData();
   },[]);
 
   //useEffect Methods END ***********
 
 
-  async function fetchSingeRecordByRecordID(id) {        
+  async function fetchSingeRecordByRecordID(id) { 
+    await fetchSchoolListingData();       
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
@@ -244,7 +244,19 @@ function StudentDataEntry() {
     }
    }
 
+   async function fetchSchoolListingData() {        
+    let _SCHOOL_LISTING_DATA = [];
+    var myAPI = new studentInfoApi;
+    _SCHOOL_LISTING_DATA = await myAPI.fetchSchoolListings()
+   
+    var _DDSchoolListingSelect = document.getElementById('ddSchoolListings'); 
 
+    _DDSchoolListingSelect.options[_DDSchoolListingSelect.options.length] = new Option('--Select--');
+    for(const key in _SCHOOL_LISTING_DATA) {     
+       _DDSchoolListingSelect.options[_DDSchoolListingSelect.options.length] = new Option(_SCHOOL_LISTING_DATA[key].NameOfInstitution);
+    }
+ 
+}
    //METHODS BELOW ARE FOR ADDING DROPDOWN VALUES TO HIDDEN SUPPLEMENT FIELDS
    const setDropDownSubstitutesFieldValues = (e) =>
    {
@@ -933,13 +945,24 @@ function StudentDataEntry() {
                
                 <Row className="mb-3">
                        <Form.Group as={Col} >
-                            <Form.Label>School</Form.Label>
+                            {/*<Form.Label>School</Form.Label>
+                            
                             <SchoolListDropDown 
                                 handleChange = {(e) =>handleChange(e)}
                                 name='ddSchoolListings'
                                 id='ddSchoolListings'/>
-                            </Form.Group>
-                </Row>
+                          */}
+                           <label>School</label>
+                           <br></br>
+                           <select class="form-select form-select-sm" 
+                            aria-label=".form-select-sm example" 
+                            style={{ width: 300 }} 
+                            name='ddSchoolListings'
+                            id='ddSchoolListings'
+                            onChange={handleChange}>
+                            </select>
+                          </Form.Group>
+                   </Row>
 
                 <Row className="mb-3">
                   <Form.Group as={Col} >
@@ -982,6 +1005,8 @@ function StudentDataEntry() {
                           name='ddSchoolYears'
                           id='ddSchoolYears'
                           />
+                    
+                   
                   </Form.Group>
 
                 </Row>
