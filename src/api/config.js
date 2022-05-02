@@ -1,6 +1,6 @@
 let Config = {};
 
-Config.REST_URL = 'http://appsdev.houstonisd.org/HISDDevAppsWEBAPI/';
+Config.REST_URL = 'http://appsdev.houstonisd.org/HISDDevAppsWEBAPI';
 //Config.REST_URL = 'http://appsdev.houstonisd.org/SBHISDCustomDevAppsWebAPI';
 //Config.REST_URL = 'http://localhost/HISDCustAppsWebAPI';
 //Config.REST_URL = 'http://localhost:54751';

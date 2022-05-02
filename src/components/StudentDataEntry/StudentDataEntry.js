@@ -15,6 +15,8 @@ import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelect
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 import AlertDismissible from '../ReusableAppComponents/AlertDismissible';
+import UploadFilesLight from '../Upload/upload-files.component';
+
 
 import studentInfoApi from '../../api/studentInfoApi';
 
@@ -42,7 +44,23 @@ function StudentDataEntry() {
     const [msgBody,setmsgBody] = useState('');
     const [msgBody2,setmsgBody2] = useState('');
     const [shouldReturnToMain,setshouldReturnToMain] = useState(false);
+    const [_studentid_, setStudentID] = useState('');
+    const [shouldDisplayAttachment,setShouldDisplayAttachment] = useState(['none'])
+
+    //attachments
+    const [tblFiles, setTblFileData] = useState([])
     
+    async function fetchAttachments(e)
+    {
+      e.preventDefault();
+      let _attachments = [];
+      var myAPI = new studentInfoApi;
+      //console.log("Inside of fetchAttachments")
+      if( _studentid_!='') {} else {return;}
+      _attachments =await myAPI.getAttachmentsAxios(_studentid_)
+      setTblFileData(_attachments)
+    }
+
     const openAlert = () => {
         setsuccessMsg('alert alert-success')
         setmsgBody("Student Information Add/Update Information")
@@ -50,7 +68,6 @@ function StudentDataEntry() {
         
         //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
         setshouldReturnToMain(true)
-
         setShowAlert(true);
     }
 
@@ -156,30 +173,40 @@ function StudentDataEntry() {
         //console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
         setFullNameFromSearch(location.fullName)
-        fetchSingeRecordByRecordID(id)  
+        fetchSingeRecordByRecordID(id) ;
+        setStudentID(student.Student_ID);
+        //var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
+        //_btnfetchAttach.onClick();
     }
     
    }, [location]);
 
   useEffect(() => {
-    //console.log('WS Call fetchSearchDDListDataFTBO')
     fetchSearchDDListDataFTBO();
   },[]);
 
   useEffect(() => {
-    //console.log('WS Call fetchSearchDDListDataNutSub')
     fetchSearchDDListDataNutSub();
   },[]);
 
   useEffect(() => {
-    //console.log('WS Call fetchSearchDDListDataMilkSub')
     fetchSearchDDListDataMilkSub();
   },[]);
 
-  useEffect(() => {
-    //fetchSchoolListingData();
-  },[]);
 
+  /*
+  useEffect(() => {
+    setStudentID(student.Student_ID)
+    if(_studentid_ != '')
+      {
+        setShouldDisplayAttachment('block')
+        fetchAttachments();
+      }
+      else{
+        setShouldDisplayAttachment('none')
+      }
+  },[]);
+  */
   //useEffect Methods END ***********
 
 
@@ -189,11 +216,23 @@ function StudentDataEntry() {
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
     student.id = _DD_STUDENT_RECORD_DATA[0].id
+    setStudentID(_DD_STUDENT_RECORD_DATA[0].Student_ID)
+    if(_DD_STUDENT_RECORD_DATA[0].Student_ID != '')
+      {
+        setShouldDisplayAttachment('block')
+        
+      }
+      else{
+        setShouldDisplayAttachment('none')
+      }
     await populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
-    //by the time this the base fields are rendered, we can now set the drop-downs for the
+    //by the time this the base fields are rendered, we ca.sn now set the drop-downs for the
     //School Year and School (using async to pause the thread)
     await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
     await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
+
+    var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
+    _btnfetchAttach.click();
    }
 
 
@@ -563,6 +602,14 @@ function StudentDataEntry() {
           //TAB Student Information
           case 'Student_ID':
               setStudent({ ...student, Student_ID: value });
+              setStudendID(student.Student_ID)
+              if(_studentid_ != '')
+              {
+                setShouldDisplayAttachment('block')
+              }
+              else{
+                setShouldDisplayAttachment('none')
+              }
               break;
           case 'Current_Student':
               setStudent({ ...student, Current_Student: value });
@@ -842,6 +889,14 @@ function StudentDataEntry() {
       studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
       //set this because the onChange is not fired
       student.Student_ID = studentIDField.value;
+      setStudendID(student.studentID)
+      if(_studentid_ != '')
+      {
+        setShouldDisplayAttachment('block')
+      }
+      else{
+        setShouldDisplayAttachment('none')
+      }
     }
       function generateUUIDUsingMathRandom() { 
         var d = new Date().getTime();//Timestamp
@@ -885,6 +940,12 @@ function StudentDataEntry() {
       );
     }
 
+    const test = () =>
+    {
+       
+     var  _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
+      _btnfetchAttach.click();
+    }
 
   return (
     <div>
@@ -900,6 +961,15 @@ function StudentDataEntry() {
 
         <h1>Student Record</h1> 
           <Form style={{display:recordSuccessShowHide}}>
+              {/*<Row style={{display:'none'}}>*/}
+              <Row style={{display:'none'}}>
+               <Button variant="warning" type="button"
+                      onClick={() =>test()}
+                      >
+                      Testing Something with DD Lists
+                    </Button>
+               </Row>
+
               <Tabs>
               <Tab eventKey="StudentInformation" title="Student Information">
                   <h2><label>{storeFullNameFromSearch}</label></h2>
@@ -1106,14 +1176,7 @@ function StudentDataEntry() {
                   </Form.Group>
                </Row>
 
-               {/*<Row style={{display:'none'}}>*/}
-               <Row style={{display:'none'}}>
-               <Button variant="warning" type="button"
-                      onClick={(e) => setDropDownSubstitutesFieldValues(e)}
-                      >
-                      Testing Something with DD Lists
-                    </Button>
-               </Row>
+             
   
                <Row>
                <Form.Group as={Col} >
@@ -1342,6 +1405,15 @@ function StudentDataEntry() {
                         />
                         </Form.Group>
                     </Row>
+                    <hr></hr>
+                    <UploadFilesLight 
+                        btnFetchAttachments = 'btnFetchAttachments'
+                        displayAttachments = {shouldDisplayAttachment}
+                        studentID = {_studentid_}
+                        tblFiles = {tblFiles}
+                        fetchAttachments = {(e) => fetchAttachments(e)}
+                        
+                     />
 
                </Tab>
 

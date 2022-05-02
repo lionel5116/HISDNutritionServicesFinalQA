@@ -11,19 +11,23 @@ import {
   import Config from '../../api/config'
 
 //https://www.filestack.com/fileschool/react/react-file-upload/
-function UploadFilesLight()
+function UploadFilesLight(props)
 {
-    const [file, setFile] = useState()
+    const [file, setFile] = useState('')
 
-    const [tblFiles, setTblFileData] = useState([])
+    //const [tblFiles, setTblFileData] = useState([])
 
   function handleChange(event) {
     setFile(event.target.files[0])
   }
   
-  function handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault()
-    const url = Config.REST_URL + '/api/UploadFiles/upload/P00149021';
+    const url = Config.REST_URL + '/api/UploadFiles/upload/' + props.studentID;
+    
+    if(file != '') {} else {return;}
+    if(props.studentID !='') {} else {return;}
+
     console.log(url)
     const formData = new FormData();
     formData.append('file', file);
@@ -37,7 +41,7 @@ function UploadFilesLight()
       console.log(response.data);
     });
 
-     fetchAttachments();
+     {props.fetchAttachments()}
   }
 
   function renderShowsTotal(start, to, total) {
@@ -49,14 +53,18 @@ function UploadFilesLight()
 }
 
 
+/*
 async function fetchAttachments()
 {
   let _attachments = [];
   var myAPI = new studentInfoApi;
-  _attachments =await myAPI.getAttachmentsAxios()
-  console.log(_attachments)
+  if(props.studentID !='') {} else {return;}
+  _attachments =await myAPI.getAttachmentsAxios(props.studentID)
+  //console.log(_attachments)
   setTblFileData(_attachments)
 }
+*/
+
 
 function CellFormatter(cell, row) {
   return (<div><a href={Config.REST_URL + '/api/UploadFiles/DownloadFile/' + row.id}>{cell}</a></div>);
@@ -79,14 +87,14 @@ function CellFormatter(cell, row) {
   };
 
   return (
-    <div className="UploadFilesLight">
+    <div className="UploadFilesLight" style={{display:props.displayAttachments}}>
       <Container>
         <Row>
           <Col sm={12}>
-            <form onSubmit={handleSubmit}>
-              <h1>React File Upload</h1>
+            <form>
+              <h1>Upload Attachments</h1>
               <input type="file" onChange={handleChange} />
-              <Button type="submit" variant="primary">Upload</Button>
+              <Button variant="warning" onClick={(e) => handleSubmit(e)}>Upload </Button>
             </form>
           </Col>
         </Row>
@@ -96,7 +104,11 @@ function CellFormatter(cell, row) {
       
        <Row>
           <Col sm={12}>
-          <Button variant="warning" onClick={fetchAttachments}>Fetch Attachments</Button>
+          <Button variant="warning" 
+                   onClick={props.fetchAttachments}
+                   id={props.btnFetchAttachments}
+                   name={props.btnFetchAttachments}
+                   >Fetch Attachments</Button>
           </Col>
         </Row>
    
@@ -105,7 +117,7 @@ function CellFormatter(cell, row) {
         <Row>
           <Col sm={12}> 
             <h2>Files - Attachments</h2>
-            <BootstrapTable data={tblFiles} striped hover options={options}
+            <BootstrapTable data={props.tblFiles} striped hover options={options}
               pagination           
             >
               <TableHeaderColumn row="1" width="33%" editable={false} isKey dataField="id" dataFormat={CellFormatter}>Download</TableHeaderColumn>

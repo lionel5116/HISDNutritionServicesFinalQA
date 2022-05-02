@@ -58,9 +58,10 @@ export class studentInfoApi {
  
      }
 
-     async  getAttachmentsAxios(){
-        var url = Config.REST_URL + '/api/StudentEntryData/getAttachments/'
-        console.log(url)
+     async  getAttachmentsAxios(studentID){
+        var url = Config.REST_URL + '/api/UploadFiles/getAttachments/'
+        url += studentID
+        //console.log(url)
         return await axios.get(url)
          .then(res => {
                return res.data;
