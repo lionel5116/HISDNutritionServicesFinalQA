@@ -141,6 +141,7 @@ function StudentDataEntry() {
       ,[LTA]
       ,[SupplementName]
       ,[CurrentOrderDate]
+      ,[Diet_Order_Notes]
       ,[Notes]
       ,[NeedsF_U]
       ,[Date_Processed]
@@ -173,10 +174,9 @@ function StudentDataEntry() {
         //console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
         setFullNameFromSearch(location.fullName)
+        student.id = id;
         fetchSingeRecordByRecordID(id) ;
         setStudentID(student.Student_ID);
-        //var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
-        //_btnfetchAttach.onClick();
     }
     
    }, [location]);
@@ -193,20 +193,6 @@ function StudentDataEntry() {
     fetchSearchDDListDataMilkSub();
   },[]);
 
-
-  /*
-  useEffect(() => {
-    setStudentID(student.Student_ID)
-    if(_studentid_ != '')
-      {
-        setShouldDisplayAttachment('block')
-        fetchAttachments();
-      }
-      else{
-        setShouldDisplayAttachment('none')
-      }
-  },[]);
-  */
   //useEffect Methods END ***********
 
 
@@ -381,9 +367,12 @@ function StudentDataEntry() {
       console.log("Student ID " + student.id )
       if(student.id != '')
       {
-        openAlertError('Editing a RECORD IS NOT YET IMPLEMENTED YET.. COMING SOON!!! DEBBIE/DOLLY');
-        setrecordSuccessShowHide('block')
-        return;
+        //this method is being called below, had here for testing earlier
+        //setDropDownSubstitutesFieldValues(e); //make sure we keep the dropdown hidden values in sync as well as check boxes
+        //console.log(student)
+        //openAlertError('Editing a RECORD IS NOT YET IMPLEMENTED YET.. COMING SOON!!! DEBBIE/DOLLY');
+        //setrecordSuccessShowHide('block')
+        //return;
       }
      
       if(student.Student_ID != '' &&
@@ -400,9 +389,9 @@ function StudentDataEntry() {
           return;
         }
 
-      
-
+      ////make sure we keep the dropdown hidden values in sync as well as check boxes
       setDropDownSubstitutesFieldValues(e);
+      console.log(student);
       var myAPI = new studentInfoApi;
       var _response = await myAPI.AddOrUpdateStudentRecord(student)
 
@@ -422,111 +411,133 @@ function StudentDataEntry() {
     async function populateFormWithStudentData(fieldData)
     {
      
+
+    student.SchoolYear= fieldData[0].SchoolYear
+    student.School= fieldData[0].School
+    student.Menu_Color= fieldData[0].Menu_Color
+
      var _Student_ID = document.getElementById('Student_ID');
      _Student_ID.value = fieldData[0].Student_ID
+     student.Student_ID = _Student_ID.value;
      
 
      var _FirstName = document.getElementById('FirstName');
      _FirstName.value = fieldData[0].FirstName
+     student.FirstName =_FirstName.value;
+
  
      var _LastName = document.getElementById('LastName');
      _LastName.value = fieldData[0].LastName
+     student.LastName = _LastName.value;
    
     
      var _Notes = document.getElementById('Notes');
      _Notes.value = fieldData[0].Notes
+     student.Notes = _Notes.value
  
     
      var _Medical_Condition = document.getElementById('Medical_Condition');
      _Medical_Condition.value = fieldData[0].Medical_Condition
- 
+     student.Medical_Condition = _Medical_Condition.value;
  
      
      var _Substitution = document.getElementById('Substitution');
      _Substitution.value = fieldData[0].Substitution
+     student.Substitution = _Substitution.value;
  
      
- 
      var _Texture_Modification = document.getElementById('Texture_Modification');
      _Texture_Modification.value = fieldData[0].Texture_Modification
- 
+     student.Texture_Modification = _Texture_Modification.value;
     
- 
- 
      var _SupplementNameMore = document.getElementById('SupplementNameMore');
      _SupplementNameMore.value = fieldData[0].SupplementNameMore
+     student.SupplementNameMore = _SupplementNameMore.value;
  
- 
+     
      var _Diet_Order_Notes = document.getElementById('Diet_Order_Notes');
      _Diet_Order_Notes.value = fieldData[0].Diet_Order_Notes
+     student.Diet_Order_Notes = _Diet_Order_Notes.value;
+     
  
      var _Texture_Modification2 = document.getElementById('Texture_Modification2');
      _Texture_Modification2.value = fieldData[0].Texture_Modification2
-
+     student.Texture_Modification2 = _Texture_Modification2.value;
 
      //Supplement Multi-Selects
      var _Foods_to_be_Omitted = document.getElementById('Foods_to_be_Omitted');
      _Foods_to_be_Omitted.value = fieldData[0].Foods_to_be_Omitted
      renderMultiSelectsWithValuesFromFetch('ddFTBOList_Selected',_Foods_to_be_Omitted.value)
-
+     student.Foods_to_be_Omitted = _Foods_to_be_Omitted.value;
 
      var _SupplementName = document.getElementById('SupplementName');
      _SupplementName.value = fieldData[0].SupplementName
      renderMultiSelectsWithValuesFromFetch('ddNutSubList_Selected', _SupplementName.value)
-
+     student.SupplementName = _SupplementName.value;
   
      var _Milk_Sub_Name = document.getElementById('Milk_Sub_Name');
      _Milk_Sub_Name.value = fieldData[0].Milk_Sub_Name
      renderMultiSelectsWithValuesFromFetch('ddMilkSubList_Selected', _Milk_Sub_Name.value)
-     
+     student.Milk_Sub_Name = _Milk_Sub_Name.value;
    
-     
-     //drop downs (School Listing & School Year)
-     //MOVED TO ASYNC METHODS BECAUSE THEY ARE RE-USABLE CONTROLS AND THERE WAS A JAVASCRIPT NATIVE ASYNC ISSUE
-     /*
-     var _SchoolYear = document.getElementById('ddSchoolYears');
-     console.log(fieldData[0].SchoolYear)
-     _SchoolYear.value = fieldData[0].SchoolYear
-   
-     var _School = document.getElementById('ddSchoolListings');
-     console.log(_School.value)
-     console.log(fieldData[0].School)
-     _School.value = fieldData[0].School
-     */
-
-
 
      //Check Boxes
      var _Disabled = document.getElementById('Disabled');//check box
-     if(fieldData[0].Disabled = 1)
+     if(fieldData[0].Disabled == 1)
      {
        _Disabled.checked = true
+       student.Disabled = 1;
+     }
+     else
+     {
+      _Disabled.checked = false
+      student.Disabled = 0;
      }
  
      var _Current_Student = document.getElementById('Current_Student');//check box
-     if(fieldData[0].Current_Student = 1)
+     if(fieldData[0].Current_Student == 1)
      {
        _Current_Student.checked = true
+       student.Current_Student = 1;
+     }
+     else{
+      _Current_Student.checked = false
+      student.Current_Student = 0;
      }
     
      var _LTA = document.getElementById('LTA');//check box
-     if(fieldData[0].LTA = 1)
+     if(fieldData[0].LTA == 1)
      {
-       _LTA.checked = true
+      _LTA.checked  = true
+       student.LTA = 1;
+     }
+     else{
+      _LTA.checked  = false
+      student.LTA = 0;
      }
     
  
      var _NeedsF_U = document.getElementById('NeedsF_U');//check box
-     if(fieldData[0].NeedsF_U = 1)
+     if(fieldData[0].NeedsF_U == 1)
      {
-       _NeedsF_U.checked = true
+       _NeedsF_U.checked  = true
+       student.NeedsF_U = 1;
+     }
+     else{
+      document.getElementById('NeedsF_U').checked  = false
+      student.NeedsF_U = 0;
      }
   
  
      var _NPO = document.getElementById('NPO');//check box
-     if(fieldData[0].NPO = 1)
+     if(fieldData[0].NPO == 1)
      {
        _NPO.checked = true
+       student.NPO = 1;
+     }
+     else{
+      _NPO.checked = false
+      student.NPO = 0;
      }
 
 
@@ -536,26 +547,28 @@ function StudentDataEntry() {
      var dtTemp = new Date(fieldData[0].CurrentOrderDate)
      var formmatteTrueDate = formatDate(dtTemp).split(' ');
      _CurrentOrderDate.value = formmatteTrueDate[0]
+     student.CurrentOrderDate = _CurrentOrderDate.value;
 
       
      var _Birthday = document.getElementById('Birthday');
      var dtTemp = new Date(fieldData[0].Birthday)
      var formmatteTrueDate = formatDate(dtTemp).split(' ');
      _Birthday.value = formmatteTrueDate[0]
+     student.Birthday = _Birthday.value;
 
 
      var _Date_Received = document.getElementById('Date_Received');
      var dtTemp = new Date(fieldData[0].Date_Received)
      var formmatteTrueDate = formatDate(dtTemp).split(' ');
      _Date_Received.value  = formmatteTrueDate[0]
- 
+     student.Date_Received = _Date_Received.value;
  
       //date field
      var _Date_Processed = document.getElementById('Date_Processed');
      var dtTemp = new Date(fieldData[0].Date_Processed)
      var formmatteTrueDate = formatDate(dtTemp).split(' ');
      _Date_Processed.value  = formmatteTrueDate[0]
-
+     student.Date_Processed = _Date_Processed.value;
 
      
      var _Menu_Color = document.getElementById('ddMenuColor');
@@ -563,7 +576,7 @@ function StudentDataEntry() {
      populateMenuCodeDropDown();
      var _Menu_Code = document.getElementById('ddMenuCode');
      _Menu_Code.value = fieldData[0].Menu_Code
-
+     student.Menu_Code = _Menu_Code.value;
 
     }
 
@@ -705,7 +718,7 @@ function StudentDataEntry() {
 
 
               default:
-              break;    //Diet_Order_Notes
+              break;  
       }
 
      // console.log(user)
