@@ -310,6 +310,45 @@ export class studentInfoApi {
  
      }
 
+     async  fetchSchoolWideTrainingNotes(_school){
+        var url = Config.REST_URL + '/api/Admin/fetchSchoolWideTrainingNotes/'
+        url +=_school;
+        url += ",";
+        url += "Training";
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
+     async  fetchCommNotes(_studentID){
+        var url = Config.REST_URL + '/api/Admin/fetchCommNotes/'
+        url +=_studentID;
+        url += ",";
+        url += "Communication";
+        console.log(url);
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
 }
 
 export default studentInfoApi

@@ -217,6 +217,17 @@ function StudentDataEntry() {
     await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
     await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
 
+    if(_DD_STUDENT_RECORD_DATA[0].School != "")
+    {
+      await fetchSchoolWideTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School);
+    }
+    
+    if(_DD_STUDENT_RECORD_DATA[0].Student_ID != "")
+    {
+      await fetchCommNotes(_DD_STUDENT_RECORD_DATA[0].Student_ID);
+    }
+    
+
     var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
     _btnfetchAttach.click();
    }
@@ -282,6 +293,41 @@ function StudentDataEntry() {
     }
  
 }
+
+
+//school wide training and communication notes
+
+async function fetchSchoolWideTrainingNotes(_school) {        
+  let _SCHOOL_NOTE_DATA = [];
+  var myAPI = new studentInfoApi;
+  _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolWideTrainingNotes(_school)
+  var _txtSchoolWideTraining = document.getElementById('txtSchoolWideTraining');
+  _txtSchoolWideTraining.value = _SCHOOL_NOTE_DATA;
+
+  }
+
+  async function fetchCommNotes(_studentID) {        
+    let _SCHOOL_NOTE_DATA = [];
+    var myAPI = new studentInfoApi;
+    _SCHOOL_NOTE_DATA = await myAPI.fetchCommNotes(_studentID)
+    console.log(_SCHOOL_NOTE_DATA);
+    var _txtStudentCommunicationNotes = document.getElementById('txtStudentCommunicationNotes');
+    _txtStudentCommunicationNotes.value = _SCHOOL_NOTE_DATA;
+   
+    }
+
+    /*
+    async function fetchSchoolWideTrainingNotes() {        
+      let _SCHOOL_NOTE_DATA = [];
+      var myAPI = new studentInfoApi;
+      _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolWideTrainingNotes(school)
+      var _DDSchoolListingSelect = document.getElementById('txtSchoolTraining');
+    
+      }
+      */
+  
+
+
    //METHODS BELOW ARE FOR ADDING DROPDOWN VALUES TO HIDDEN SUPPLEMENT FIELDS
    const setDropDownSubstitutesFieldValues = (e) =>
    {
