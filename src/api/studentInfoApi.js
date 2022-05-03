@@ -310,11 +310,12 @@ export class studentInfoApi {
  
      }
 
-     async  fetchSchoolWideTrainingNotes(_school){
-        var url = Config.REST_URL + '/api/Admin/fetchSchoolWideTrainingNotes/'
+
+     async  fetchSchoolTrainingNotes(_school,_noteType){
+        var url = Config.REST_URL + '/api/Admin/fetchSchoolTrainingNotes/'
         url +=_school;
         url += ",";
-        url += "Training";
+        url += _noteType;
         try
         {
             return await axios.get(url)
@@ -328,6 +329,8 @@ export class studentInfoApi {
         }
  
      }
+
+
 
      async  fetchCommNotes(_studentID){
         var url = Config.REST_URL + '/api/Admin/fetchCommNotes/'

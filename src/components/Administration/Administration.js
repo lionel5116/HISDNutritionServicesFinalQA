@@ -311,7 +311,7 @@ async function ADD_New_DDItem(){
   }
 
 
-  console.log("Drop Down Type :" + DDType)
+  //console.log("Drop Down Type :" + DDType)
 
   var argument  = '';
 
@@ -324,8 +324,8 @@ async function ADD_New_DDItem(){
    } 
    
 
-   console.log("SQL Statement :" + argument)
-   console.log("Inside of the ADD_New_DDItem method")
+   //console.log("SQL Statement :" + argument)
+   //console.log("Inside of the ADD_New_DDItem method")
 
 
   var myAPI = new studentInfoApi;

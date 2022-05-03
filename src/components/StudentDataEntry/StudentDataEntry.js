@@ -221,6 +221,11 @@ function StudentDataEntry() {
     {
       await fetchSchoolWideTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School);
     }
+
+    if(_DD_STUDENT_RECORD_DATA[0].School != "")
+    {
+      await fetchSchoolTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School);
+    }
     
     if(_DD_STUDENT_RECORD_DATA[0].Student_ID != "")
     {
@@ -300,11 +305,21 @@ function StudentDataEntry() {
 async function fetchSchoolWideTrainingNotes(_school) {        
   let _SCHOOL_NOTE_DATA = [];
   var myAPI = new studentInfoApi;
-  _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolWideTrainingNotes(_school)
+  _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolTrainingNotes(_school,'School Wide Training')
   var _txtSchoolWideTraining = document.getElementById('txtSchoolWideTraining');
   _txtSchoolWideTraining.value = _SCHOOL_NOTE_DATA;
 
   }
+
+  async function fetchSchoolTrainingNotes(_school) {        
+    let _SCHOOL_NOTE_DATA = [];
+    var myAPI = new studentInfoApi;
+    _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolTrainingNotes(_school,'School Training')
+    console.log(_SCHOOL_NOTE_DATA);
+    var _txtSchoolTraining = document.getElementById('txtSchoolTraining');
+    _txtSchoolTraining.value = _SCHOOL_NOTE_DATA;
+   
+    }
 
   async function fetchCommNotes(_studentID) {        
     let _SCHOOL_NOTE_DATA = [];
@@ -316,17 +331,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
    
     }
 
-    /*
-    async function fetchSchoolWideTrainingNotes() {        
-      let _SCHOOL_NOTE_DATA = [];
-      var myAPI = new studentInfoApi;
-      _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolWideTrainingNotes(school)
-      var _DDSchoolListingSelect = document.getElementById('txtSchoolTraining');
     
-      }
-      */
-  
-
 
    //METHODS BELOW ARE FOR ADDING DROPDOWN VALUES TO HIDDEN SUPPLEMENT FIELDS
    const setDropDownSubstitutesFieldValues = (e) =>
@@ -1245,8 +1250,8 @@ async function fetchSchoolWideTrainingNotes(_school) {
                    name_ddRight = 'ddFTBOList_Selected'
                    buttonRight = 'btnSelectRightFTBO'
                    buttonLeft = 'btnSelectLeftFTBO'
-                   label_ddLeft = 'Available Trainings'
-                   label_ddRight = 'Selected Trainings'
+                   label_ddLeft = 'Available Items'
+                   label_ddRight = 'Selected Items'
                    handleClickRight = {(e) =>handleClickRightFTBO(e)}
                    handleClickLeft = {(e) =>handleClickLeftFTBO(e)}
                 />
@@ -1359,8 +1364,8 @@ async function fetchSchoolWideTrainingNotes(_school) {
                         name_ddRight = 'ddNutSubList_Selected'
                         buttonRight = 'btnSelectRightNutSub'
                         buttonLeft = 'btnSelectLeftNutSub'
-                        label_ddLeft = 'Available Trainings'
-                        label_ddRight = 'Selected Trainings'
+                        label_ddLeft = 'Available Items'
+                        label_ddRight = 'Selected Items'
                         handleClickRight = {(e) =>handleClickRightNutSub(e)}
                         handleClickLeft = {(e) =>handleClickLeftNutSub(e)}
                       />
@@ -1386,8 +1391,8 @@ async function fetchSchoolWideTrainingNotes(_school) {
                         name_ddRight = 'ddMilkSubList_Selected'
                         buttonRight = 'btnSelectRightMilkSub'
                         buttonLeft = 'btnSelectLeftMilkSub'
-                        label_ddLeft = 'Available Trainings'
-                        label_ddRight = 'Selected Trainings'
+                        label_ddLeft = 'Available Items'
+                        label_ddRight = 'Selected Items'
                         handleClickRight = {(e) =>handleClickRightMilkSub(e)}
                         handleClickLeft = {(e) =>handleClickLeftMilkSub(e)}
                       />

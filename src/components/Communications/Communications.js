@@ -123,16 +123,12 @@ function Communications() {
     var _SchoolName = document.getElementById('ddSchoolListings');
     var _Note = document.getElementById('Notes');
 
-  /*YOU COUL WRAP ALL OF THIS INSIDE OF A USE EFFECT CALL AND YOUR ONCHANGE
-  EVENT WOULD WORK ALONG WITH THIS
-  setSchoolTraining({ ...SchoolTraining, NoteType: 'Training' });
-  setSchoolTraining({ ...SchoolTraining, DateEntered: newDate });
-  setSchoolTraining({ ...SchoolTraining, Student_ID: '' });
- */
+  
     //had to use an vanilla object because of the dropdown selected action when looping
     //does not work with useState very well
-    var TrainingObj = {NoteType: 'Training', 
-                       Note: _Note.value,
+    //this is for the selected trainings only, not the notes themselvs
+    var TrainingObj = {NoteType: 'School Wide Training', 
+                       Note:'',
                        SchoolName:_SchoolName.value,
                        DateEntered:newDate,
                        Student_ID:''};//vanilla object
@@ -140,19 +136,32 @@ function Communications() {
    
     var _TrainingObj = {};
 
+    //you want to add all of the different trainings on the selected school
     var _mySelect2 = document.getElementById('ddTrainingList_Selected');
     Array.from(_mySelect2.options).forEach(function(option_element) {
       let option_text = option_element.text;
       let option_value = option_element.value;
       
       _TrainingObj = {...TrainingObj,TrainingType:option_value} 
-      //console.log(_TrainingObj);
-
+    
       //HOWEVER SINCE THIS IS INSIDE OF A LOOP AND NEEDSTO GET CALLED EVERY N TIMES (O-n), useEffect would not work
       //setSchoolTraining({ ...SchoolTraining, TrainingType: option_value });
 
       writeTrainingRecord(_TrainingObj)
     });
+
+
+   
+      //now write School Training notes for the notes section
+      //if any data exists in the note field
+      if(_Note.value.length > 5) {
+          TrainingObj = {NoteType: 'School Training', 
+          Note: _Note.value,
+          SchoolName:_SchoolName.value,
+          DateEntered:newDate,
+          Student_ID:''};//vanilla object
+        writeTrainingRecord(_TrainingObj)
+      }                
 
     _SchoolName.value = '--Select--';
     _Note.value = '';
@@ -161,7 +170,7 @@ function Communications() {
 
   const saveCommNotes = (e) =>
   {
-    
+    //communication notes for student does not require school name
     e.preventDefault();
 
     var isValid = validateFormCommunication(e)
@@ -177,7 +186,7 @@ function Communications() {
 
     var TrainingObj = {NoteType: 'Communication', 
                        Note: _Note.value,
-                       SchoolName:_SchoolName.value,
+                       SchoolName: '',
                        DateEntered:newDate,
                        TrainingType:'',
                        Student_ID:_studentID.value};//vanilla object
@@ -193,15 +202,24 @@ function Communications() {
   {
     e.preventDefault();
     var bIsValid = false;
+
     var _SchoolName = document.getElementById('ddSchoolListings');
     var _Note = document.getElementById('Notes');
     var _mySelect2 = document.getElementById('ddTrainingList_Selected');
     var lengthOfListOptions = _mySelect2.length;
+    
+    //for school wide training (from drop - downs)
     if(_SchoolName.value != '' &&
       _SchoolName.value != '--Select--' &&
-      _Note.value !='' &&
       lengthOfListOptions > 0)
       {
+        bIsValid =  true;
+      }
+      else if (_SchoolName.value != '' &&
+              _SchoolName.value != '--Select--' &&
+              _Note.value !='')
+      {
+        //for notes only for the school
         bIsValid =  true;
       }
       
@@ -214,17 +232,17 @@ function Communications() {
     var bIsValid = false;
     var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
     var _Note = document.getElementById('CommNotes');
+
+    //studentID was written to a hidden field on select
     var _studentID = document.getElementById('txtStudentIDHidden');
 
-
-    if(_SchoolName.value != '' &&
-      _SchoolName.value != '--Select--' &&
+    
+      if(
       _Note.value !='' && 
       _studentID.value !='')
       {
         bIsValid =  true;
       }
-      
       return bIsValid;
   }
 
@@ -286,23 +304,26 @@ function Communications() {
 const selectedStudentRecord = (e,_studentID,_setstudentInfo) =>
 {
   e.preventDefault();
-  console.log('You selected ' + _studentID)
+
   var studentID = document.getElementById('txtStudentIDHidden');
+  studentID.value = _studentID;
+
   var lblStudentInfoField = document.getElementById('lblStudentInfo');
   lblStudentInfoField.innerHTML = _setstudentInfo;
-  studentID.value = _studentID;
+  
   setshowNotesAndSaveButton('block');
   setSearchStudents([]);
 }
 
 function CellFormatterSearchStudent(cell, row) {
+  //build string for label to display
   var _setstudentInfo = row.Student_ID;
       _setstudentInfo += ":";
       _setstudentInfo += row.LastName;
       _setstudentInfo += ",";
       _setstudentInfo += row.FirstName;
      
-  //setstudentInfo(_setstudentInfo);
+ 
 
   return (<div><BinocularsFill 
         onClick={(e) => selectedStudentRecord(e,row.Student_ID,_setstudentInfo)}/>
@@ -341,6 +362,7 @@ function CellFormatterSearchStudent(cell, row) {
 
 const searchMixed = (e) => {
 
+  //this will be set to 'block' when a row is selected
   setshowNotesAndSaveButton('none');
 
   e.preventDefault();
@@ -357,11 +379,11 @@ const searchMixed = (e) => {
     School.value == "--Select--") {
     //Search By Student ID  - WORKS!!!
     console.log('Search By Student ID')
-    _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+    _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
     _SEARCH_STRING += "'";
     _SEARCH_STRING += studentID.value;
     _SEARCH_STRING += "'";
-    //console.log(_SEARCH_STRING);
+
     fetchSearchData(_SEARCH_STRING);
 
   }
@@ -378,7 +400,7 @@ const searchMixed = (e) => {
     _SEARCH_STRING += "|"
     _SEARCH_STRING += "LAST_NAME"
 
-    //console.log("SEARCH_TYPE : LAST_NAME");
+
     fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
   }
@@ -387,11 +409,11 @@ const searchMixed = (e) => {
     School.value != "--Select--") {
     //Search By School Name  - WORKS!!!
     console.log('Search By School Name')
-    _SEARCH_STRING += "SELECT Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+    _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
     _SEARCH_STRING += "'";
     _SEARCH_STRING += School.value;
     _SEARCH_STRING += "'";
-    //console.log(_SEARCH_STRING);
+    
     fetchSearchData(_SEARCH_STRING);
 
   }
@@ -515,7 +537,7 @@ const searchMixed = (e) => {
 
                   <Row>
                     <Col sm={12}>
-                     <label id="lblStudentInfo"></label> 
+                     <label id="lblStudentInfo" style={{fontWeight:'bold'}}></label> 
                     <BootstrapTable   
                       striped
                       hover
