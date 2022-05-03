@@ -46,57 +46,7 @@ function StudentDataEntry() {
     const [shouldReturnToMain,setshouldReturnToMain] = useState(false);
     const [_studentid_, setStudentID] = useState('');
     const [shouldDisplayAttachment,setShouldDisplayAttachment] = useState(['none'])
-
-    //attachments
     const [tblFiles, setTblFileData] = useState([])
-    
-    async function fetchAttachments(e)
-    {
-      e.preventDefault();
-      let _attachments = [];
-      var myAPI = new studentInfoApi;
-      //console.log("Inside of fetchAttachments")
-      if( _studentid_!='') {} else {return;}
-      _attachments =await myAPI.getAttachmentsAxios(_studentid_)
-      setTblFileData(_attachments)
-    }
-
-    const openAlert = () => {
-        setsuccessMsg('alert alert-success')
-        setmsgBody("Student Information Add/Update Information")
-        setmsgBody2("Successfully wrote record!!!")
-        
-        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
-        setshouldReturnToMain(true)
-        setShowAlert(true);
-    }
-
-    const closeAlert = (e) => {
-        e.preventDefault();
-        setShowAlert(false);
-        
-        if(shouldReturnToMain)
-        {
-          history.push(
-            {
-              pathname: '/NutritionLogin'
-            }
-          )
-        }
-         
-    }
-
-    const openAlertError = (msg) => {
-        setsuccessMsg('alert alert-danger')
-        setmsgBody("Student Information Add/Update Information")
-        setmsgBody2(msg)
-
-        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
-        setshouldReturnToMain(false)
-
-        setShowAlert(true);
-    }
-   //alert WireUp ********
 
    const history = useHistory();
 
@@ -178,6 +128,10 @@ function StudentDataEntry() {
         fetchSingeRecordByRecordID(id) ;
         setStudentID(student.Student_ID);
     }
+    else{
+      //this used to be in a reusable control, moved this component
+      fetchSchoolListingData();
+    }
     
    }, [location]);
 
@@ -211,6 +165,8 @@ function StudentDataEntry() {
       else{
         setShouldDisplayAttachment('none')
       }
+
+    // YOU CAN ONLY DO ALERTS INSIDE OF A ASYNCH FUNCTION
     await populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
     //by the time this the base fields are rendered, we ca.sn now set the drop-downs for the
     //School Year and School (using async to pause the thread)
@@ -666,7 +622,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
           //TAB Student Information
           case 'Student_ID':
               setStudent({ ...student, Student_ID: value });
-              setStudendID(student.Student_ID)
+              setStudentID(student.Student_ID)
               if(_studentid_ != '')
               {
                 setShouldDisplayAttachment('block')
@@ -944,6 +900,66 @@ async function fetchSchoolWideTrainingNotes(_school) {
        _mySelect2.remove(_mySelect2.selectedIndex); 
      }
 //END HANDLE -CLICK METHODS FOR DROPDOWN LISTS (SUPPLEMENTS)  *******
+
+//SEARCH DATA WAREHOUSE FOR STUDENT INFORMATION - test records below
+//1979794
+//1979797
+const searchStudent = (e) =>
+{
+  e.preventDefault();
+  
+  var studentIDField = document.getElementById('Student_ID')
+  if(studentIDField.value != '')
+  {
+    fetchSingleStudentByStudentNaturalKey(studentIDField.value);
+    
+  }
+  else
+  {
+    openAlertError('You need to enter in a student ID to search for record in Data Warehouse !!!!');
+    setrecordSuccessShowHide('block')
+  }
+ 
+}
+
+async function fetchSingleStudentByStudentNaturalKey(_studentID) {        
+  
+  var _FirstName = document.getElementById('FirstName')
+  var _LastName = document.getElementById('LastName')
+ 
+  let _DATA = [];
+  var myAPI = new studentInfoApi;
+  _DATA = await myAPI.fetchSingleStudentByStudentNaturalKey(_studentID)
+  //console.log(_DATA);
+  if(_DATA.length > 0)
+  {
+    if(_DATA[0].NameOfInstitution !='')
+    {
+      student.schoolName = _DATA[0].NameOfInstitution;
+      //YOU CAN ONLY DO AWAITS INSIDE OF AN ASYNC FUNCTION!!!!
+      await setDropDownValuesAndSchoolListings(student.schoolName);
+    }
+
+    var _Birthday = document.getElementById('Birthday')
+     var dtTemp = new Date(_DATA[0].BirthDate)
+     var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     _Birthday.value = formmatteTrueDate[0]
+     student.Birthday = _Birthday.value;
+
+    student.FirstName= _DATA[0].FirstName;
+    _FirstName.value = _DATA[0].FirstName;
+
+    student.LastName= _DATA[0].LastName;
+    _LastName.value = _DATA[0].LastName;
+
+  }
+  else{
+    openAlertError('No records returned for that student ID !!!!');
+    setrecordSuccessShowHide('block')
+  }
+  
+}
+
       
    //UTILITY METHODS
   //Utility Methods *****
@@ -1011,6 +1027,63 @@ async function fetchSchoolWideTrainingNotes(_school) {
       _btnfetchAttach.click();
     }
 
+    
+  
+
+    
+      //attachments
+    async function fetchAttachments(e)
+    {
+      e.preventDefault();
+      let _attachments = [];
+      var myAPI = new studentInfoApi;
+      //console.log("Inside of fetchAttachments")
+      if( _studentid_!='') {} else {return;}
+      _attachments =await myAPI.getAttachmentsAxios(_studentid_)
+      setTblFileData(_attachments)
+    }
+
+
+    //alerets
+    const openAlert = () => {
+        setsuccessMsg('alert alert-success')
+        setmsgBody("Student Information Add/Update Information")
+        setmsgBody2("Successfully wrote record!!!")
+        
+        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
+        setshouldReturnToMain(true)
+        setShowAlert(true);
+    }
+
+    const closeAlert = (e) => {
+        e.preventDefault();
+        setShowAlert(false);
+        
+        if(shouldReturnToMain)
+        {
+          history.push(
+            {
+              pathname: '/NutritionLogin'
+            }
+          )
+        }
+         
+    }
+
+    const openAlertError = (msg) => {
+        setsuccessMsg('alert alert-danger')
+        setmsgBody("Student Information Add/Update Information")
+        setmsgBody2(msg)
+
+        //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
+        setshouldReturnToMain(false)
+
+        setShowAlert(true);
+    }
+   //alert WireUp ********
+
+
+
   return (
     <div>
       <main>
@@ -1052,7 +1125,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
                   <Form.Group as={Col} >
 
                     <Button variant="primary" type="button"
-                      onClick={() => searchStudent()}
+                      onClick={(e) => searchStudent(e)}
                       style={{ marginTop: 30 }}>
                       Search Student
                     </Button>
