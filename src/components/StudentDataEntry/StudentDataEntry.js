@@ -1263,43 +1263,6 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                <Tab eventKey="DietaryAccommodations" title="Dietary Accommodations">
 
                <Row className="mb-3"> 
-
-                  <Form.Group as={Col} >
-
-                    <Form.Label style={{ marginTop: 30 }}>Disabled</Form.Label>
-                    <input
-                      type="checkbox"
-                      name='Disabled'
-                      id='Disabled'
-                      onChange={handleChange}
-                      style={{ marginLeft: 10,marginTop: 30 }} />
-                  </Form.Group>
-
-                  <Form.Group as={Col} >
-
-                    <Form.Label style={{ marginTop: 30 }}>LTA</Form.Label>
-                    <input
-                      type="checkbox"
-                      name='LTA'
-                      id='LTA'
-                      onChange={handleChange}
-                      style={{ marginLeft: 10,marginTop: 30 }} />
-                  </Form.Group>
-
-                  <Form.Group as={Col} >
-
-                    <Form.Label style={{ marginTop: 30 }}>Needs F/U</Form.Label>
-                    <input
-                      type="checkbox"
-                      name='NeedsF_U'
-                      id='NeedsF_U'
-                      onChange={handleChange}
-                      style={{ marginLeft: 10, marginTop: 30 }} />
-                  </Form.Group>
-
-               </Row>
-
-               <Row className="mb-3"> 
                <Form.Group className="mb-3">
                     <Form.Label>Medical Diagnosis</Form.Label>
                     <Form.Control
@@ -1308,23 +1271,49 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                     id='Medical_Condition'
                     onChange={handleChange}
                    
-                    style={{ height: '100px',width:1000 }}
+                    style={{ height: '100px',width:500 }}
                    />
                   </Form.Group>
                </Row>
 
-             
-  
+               <Row className="mb-3" style={{ display: 'block' }}> 
+                    <input
+                      type="checkbox"
+                      name='Disabled'
+                      id='Disabled'
+                      onChange={handleChange}
+                      />
+                      <Form.Label >Disabled</Form.Label>
+                      <br></br>
+                      <input
+                      type="checkbox"
+                      name='LTA'
+                      id='LTA'
+                      onChange={handleChange}
+                       />
+                       <Form.Label >LTA</Form.Label>
+                       <br></br>
+                       <input
+                      type="checkbox"
+                      name='NeedsF_U'
+                      id='NeedsF_U'
+                      onChange={handleChange}
+                       />
+                       <Form.Label >Needs F/U</Form.Label>
+               </Row>
+
+                <hr></hr>   
+            
                <Row>
                <Form.Group as={Col} >
-               <Form.Label>Foods to be Ommitted</Form.Label>
+               <Form.Label style={myStyles.genericDropDownHeaderLabels}>Foods to be Ommitted</Form.Label>
                <GenericMultiSelectCombo 
                    name_ddLeft = 'ddFTBOList'
                    name_ddRight = 'ddFTBOList_Selected'
                    buttonRight = 'btnSelectRightFTBO'
                    buttonLeft = 'btnSelectLeftFTBO'
-                   label_ddLeft = 'Available Items'
-                   label_ddRight = 'Selected Items'
+                   label_ddLeft = 'Available Foods to Exclude'
+                   label_ddRight = 'Selected Foods to Exclude'
                    handleClickRight = {(e) =>handleClickRightFTBO(e)}
                    handleClickLeft = {(e) =>handleClickLeftFTBO(e)}
                 />
@@ -1342,10 +1331,11 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                </Row>
   
                     <br></br>
-                    <Row className="mb-6">
-                        
-                        <Form.Group as={Col}>
-                            <Form.Label>Substitution</Form.Label>
+                  
+                  <Row className="mb-6">
+                    <label>Allowable Substitutes</label>
+                  <Form.Group as={Col}>
+                            {/*<Form.Label>Substitution</Form.Label>*/}
                             <Form.Control
                             as="textarea"
                             name='Substitution'
@@ -1355,13 +1345,18 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                             
                         />
                         </Form.Group>
+                  </Row>
 
-                        <Form.Group as={Col} >
-                            <Form.Label>Menu Color</Form.Label>
+                    <Row className="mb-6" style={{ display: 'block' }}>
+                    
+                          <Form.Group as={Col}>
+                            <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
+                   
                             <Form.Control as="select"
+                                
                                 name='ddMenuColor'
                                 id='ddMenuColor'
-                                style={{ width:200 }}
+                                style={myStyles.ddMenuColorPaddingAndWidth}
                                 onChange={handleChange}
                               >
                                 <option></option>
@@ -1371,12 +1366,15 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                             </Form.Control>
                         </Form.Group>
 
-                        <Form.Group as={Col} >
-                            <Form.Label>Menu Code</Form.Label>
+                        <br></br>
+                        
+                        <Form.Group as={Col}>
+                            <Form.Label style={myStyles.ddlabel}>Menu Code</Form.Label>
+                    
                             <Form.Control as="select"
                                 name='ddMenuCode'
                                 id='ddMenuCode'
-                                style={{ width:200 }}
+                                style={myStyles.ddMenuColorPaddingAndWidth}
                                 onChange={handleChange}
                             >
                                 <option></option>
@@ -1385,45 +1383,11 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
                     </Row>
 
-                    <br></br>
-                    <Row>
-                    <label  style={{ fontWeight:'bold' }}>Texture Modification</label>
-                    </Row>
-                    <Row className="mb-6">
-                        
-                        <Form.Group as={Col} >
-                            <Form.Label>Liquids</Form.Label>
-                            <Form.Control as="select"
-                                name='Texture_Modification'
-                                id='Texture_Modification'
-                                style={{ width:300 }}
-                                onChange={handleChange}   
-                            >
-                            <option></option>
-                            <option>Mildly Thick Liquid (Level 2)</option>
-                            <option>Moderately Thick Liquid (Level 3)</option>
-                            <option>Extremely Thick Liquid (Level 4)</option>
-                            </Form.Control>
-                        </Form.Group>
+                    <hr></hr> 
 
-                        <Form.Group as={Col} >
-                            <Form.Label>Solids</Form.Label>
-                            <Form.Control as="select"
-                                name='Texture_Modification2'
-                                id='Texture_Modification2'
-                                style={{ width:300 }}
-                                onChange={handleChange}
-                            >
-                            <option></option>
-                            <option>Soft & Bite-Sized Solids (Level 6)</option>
-                            <option>Minced & Moist Solids (Level 5)</option>
-                            <option>Pureed Solids (Level 4)</option>
-                            </Form.Control>
-                        </Form.Group>
+                    
 
-                    </Row>
-
-                    <br></br>
+             
                     <Row>
                     <label  style={{ fontWeight:'bold' }}>Supplements and Milk Substitute</label>
                     </Row>
@@ -1431,14 +1395,14 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
                     <Row>
                     <Form.Group as={Col} >
-                    <Form.Label>Nutrition Supplement</Form.Label>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>Nutrition Supplement</Form.Label>
                     <GenericMultiSelectCombo 
                         name_ddLeft = 'ddNutSubList'
                         name_ddRight = 'ddNutSubList_Selected'
                         buttonRight = 'btnSelectRightNutSub'
                         buttonLeft = 'btnSelectLeftNutSub'
-                        label_ddLeft = 'Available Items'
-                        label_ddRight = 'Selected Items'
+                        label_ddLeft = 'Available Milk Substitutes'
+                        label_ddRight = 'Selected Milk Substitutes'
                         handleClickRight = {(e) =>handleClickRightNutSub(e)}
                         handleClickLeft = {(e) =>handleClickLeftNutSub(e)}
                       />
@@ -1458,14 +1422,14 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
                     <Row>
                     <Form.Group as={Col} >
-                    <Form.Label>Milk Substitute</Form.Label>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>Milk Substitute</Form.Label>
                     <GenericMultiSelectCombo 
                         name_ddLeft = 'ddMilkSubList'
                         name_ddRight = 'ddMilkSubList_Selected'
                         buttonRight = 'btnSelectRightMilkSub'
                         buttonLeft = 'btnSelectLeftMilkSub'
-                        label_ddLeft = 'Available Items'
-                        label_ddRight = 'Selected Items'
+                        label_ddLeft = 'Available Nutrition Supplements'
+                        label_ddRight = 'Selected Nutrition Supplements'
                         handleClickRight = {(e) =>handleClickRightMilkSub(e)}
                         handleClickLeft = {(e) =>handleClickLeftMilkSub(e)}
                       />
@@ -1482,36 +1446,71 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                   </Col>
                 </Row>
 
-                    <br></br>
-                    <Row>
-                    <Form.Group as={Col} >
-
-                      <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
+            
+                    <Row className="mb-3" style={{ display: 'block' }}>
                       <input
                         type="checkbox"
                         name='NPO'
                         id='NPO'
                         onChange={handleChange}
                         style={{ marginLeft: 10,marginTop: 30 }} />
-                      </Form.Group>
+                        <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
+                  
                     </Row>
-                    <br></br>
+          
 
-                    <Row className="mb-3"> 
-                        <Form.Group className="mb-3">
-                          <Form.Label>Other Supplements</Form.Label>
+                    <Row className="mb-6"> 
+                    <label>Other Supplements</label>
+                        <Form.Group as={Col}>
+                          {/*<Form.Label>Other Supplements</Form.Label>*/}
                           <Form.Control
                           as="textarea"
                           name='SupplementNameMore'
                           id='SupplementNameMore'
                           onChange={handleChange}
                         
-                          style={{ height: '100px',width:1000 }}
+                          style={{ height: '100px',width:350 }}
                         />
                         </Form.Group>
                     </Row>
 
-     
+                 <hr></hr>
+                   <Row>
+                    <label  style={{ fontWeight:'bold' }}>Texture Modification</label>
+                    </Row>
+                    <Row className="mb-6">
+                        
+                        <Form.Group as={Col} >
+                            <Form.Label style={myStyles.ddlabel}>Liquids</Form.Label>
+                            <Form.Control as="select"
+                                name='Texture_Modification'
+                                id='Texture_Modification'
+                                style={myStyles.ddMenuTextureModPaddingAndWidth}
+                                onChange={handleChange}   
+                            >
+                            <option></option>
+                            <option>Mildly Thick Liquid (Level 2)</option>
+                            <option>Moderately Thick Liquid (Level 3)</option>
+                            <option>Extremely Thick Liquid (Level 4)</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group as={Col} >
+                            <Form.Label style={myStyles.ddlabel}>Solids</Form.Label>
+                            <Form.Control as="select"
+                                name='Texture_Modification2'
+                                id='Texture_Modification2'
+                                style={myStyles.ddMenuTextureModPaddingAndWidth}
+                                onChange={handleChange}
+                            >
+                            <option></option>
+                            <option>Soft & Bite-Sized Solids (Level 6)</option>
+                            <option>Minced & Moist Solids (Level 5)</option>
+                            <option>Pureed Solids (Level 4)</option>
+                            </Form.Control>
+                        </Form.Group>
+
+                    </Row>
                </Tab>
 
                <Tab eventKey="Documentation" title="Documentation">
@@ -1600,7 +1599,7 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                 </Tab>
               </Tabs>
             
-            <hr></hr>
+        
             <br></br>
           <Row>
             <Col sm={12}>
@@ -1614,5 +1613,30 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
     </div>
   )
 }
+
+const myStyles = {
+  buttonPadLeft: {
+      marginLeft: '2px'
+  },
+   genericDropDownHeaderLabels: {
+    fontWeight:'bold',
+    fontSize: '20px'
+  },
+  ddlabel: {
+    position: 'absolute', 
+    left: 0,
+    width: '10em',
+    marginRight:'50px'
+    },
+  ddMenuColorPaddingAndWidth : {
+    width:'200px', 
+    marginLeft:'100px'
+  },
+  ddMenuTextureModPaddingAndWidth : {
+    width:'300px', 
+    marginLeft:'50px'
+  },
+
+};
 
 export default StudentDataEntry
