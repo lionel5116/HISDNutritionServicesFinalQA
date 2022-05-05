@@ -21,7 +21,7 @@ class NavbarMain extends React.Component {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-
+                <Nav.Link href="#/NutritionLogin">Home</Nav.Link>
                 <NavDropdown title="Student Records" id="basic-nav-dropdown">
                   <NavDropdown.Item href="#/Search">Search</NavDropdown.Item>
                   <NavDropdown.Item href="#/StudentDataEntry">Add</NavDropdown.Item>
@@ -31,8 +31,9 @@ class NavbarMain extends React.Component {
                 </NavDropdown>
                 
                 <Nav.Link href="#/Communications">Communications</Nav.Link>
-                <Nav.Link href="#/Administration">Administration</Nav.Link>
                 <Nav.Link href="#/HISDReportsMenu">Reports</Nav.Link>
+                <Nav.Link href="#/Administration">Administration</Nav.Link>
+                
                 </Nav>
              
             </Navbar.Collapse>

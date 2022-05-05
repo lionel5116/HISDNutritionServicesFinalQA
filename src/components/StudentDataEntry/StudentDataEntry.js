@@ -1139,28 +1139,21 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                   </Form.Group>
 
                   <Form.Group as={Col} >
-
-                    <Form.Label style={{ marginTop: 30 }}>Current Student</Form.Label>
                     <input
                       type="checkbox"
                       name='Current_Student'
                       id='Current_Student'
                       onChange={handleChange}
                       style={{ marginLeft: 10, marginTop: 30 }} />
+                      <Form.Label style={{ marginTop: 30 ,marginRight:20}}>Current Student</Form.Label>
                   </Form.Group>
                 </Row>
                
-                <Row className="mb-3">
-                       <Form.Group as={Col} >
-                            {/*<Form.Label>School</Form.Label>
-                            
-                            <SchoolListDropDown 
-                                handleChange = {(e) =>handleChange(e)}
-                                name='ddSchoolListings'
-                                id='ddSchoolListings'/>
-                          */}
-                           <label>School</label>
-                           <br></br>
+               <Row>        
+                <Col sm={1.75} style={{marginRight:20,marginLeft:20}}>
+                   School Name
+                </Col>   
+                    <Col sm={5}>        
                            <select class="form-select form-select-sm" 
                             aria-label=".form-select-sm example" 
                             style={{ width: 300 }} 
@@ -1168,8 +1161,10 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                             id='ddSchoolListings'
                             onChange={handleChange}>
                             </select>
-                          </Form.Group>
+                            </Col>
                    </Row>
+
+                   <br></br>
 
                 <Row className="mb-3">
                   <Form.Group as={Col} >
@@ -1221,13 +1216,13 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                 <Row className="mb-3">
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Date Received</Form.Label>
+                    <Form.Label style={{ marginLeft:20}}>Date Received</Form.Label>
                     <Form.Control
                       type="date"
                       name='Date_Received'
                       id='Date_Received'
                       onChange={handleChange}
-                      style={{ width: 200 }} />
+                      style={{ width: 200 ,marginLeft:20}} />
                   </Form.Group>
 
                   
@@ -1244,14 +1239,14 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
                
                 <Row className="mb-3">
                 <Form.Group className="mb-3">
-                    <Form.Label>Processing Notes</Form.Label>
+                    <Form.Label style={{ marginLeft:10}}> Processing Notes</Form.Label>
                     <Form.Control
                     as="textarea"
                     name='Notes'
                     id='Notes'
                     onChange={handleChange}
                    
-                    style={{ height: '100px',width:1000 }}
+                    style={{ height: '100px',width:1000,marginLeft:10 }}
                    />
                   </Form.Group>
 
@@ -1603,7 +1598,7 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
             <br></br>
           <Row>
             <Col sm={12}>
-              <Button variant="outline-primary" onClick={(e) => AddOrUpdateStudentRecord(e)}>Submit</Button>
+              <Button variant="primary" onClick={(e) => AddOrUpdateStudentRecord(e)}>Save</Button>
             </Col>
           </Row>
           </Form>

@@ -16,14 +16,14 @@ function GenericModal(props) {
       >
         <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
-          {props.title}
+          {props.actionLabel} {props.title}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
          
           <Row>
             <Col sm={12}>
-              <label style={{marginRight:15}}>{props.actionLabel}</label>
+              <label style={{marginRight:15}}>{props.title}</label>
               <input id={props.id} style={styles.modalInputSyle}>
               </input>
             </Col>
@@ -31,22 +31,24 @@ function GenericModal(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="outline-secondary"
-            onClick={props.handleClickOne()}>
-            {props.Submit}
-          </Button>
-          <Button
-            variant="outline-secondary"
-            onClick={props.handleClosePrimary()}>
-            {props.close}
-          </Button>
-          <Button
             variant="danger"
             onClick={props.handleClickTwo()}
             
-          style={{display: props.handleClickTwoVisable}}
+              style={{display: props.handleClickTwoVisable}}
             >
             {props.delete}
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={props.handleClickOne()}>
+            {props.Submit}
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={props.handleClosePrimary()}>
+            {props.close}
           </Button>
         </Modal.Footer>
       </Modal>

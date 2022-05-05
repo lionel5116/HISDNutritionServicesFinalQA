@@ -366,23 +366,20 @@ async function EditStudentID(){
 
       const columns = [{
         dataField: 'ItemName',
+        text: 'Item Name',
+      }, 
+      {
+        dataField: 'ItemName',
         text: 'Edit',
         formatter: CellFormatter,
         style: { width: '10px' }
-      }, {
-        dataField: 'ItemName',
-        text: 'Item Name',
-      }, ];
-
-      const columnsTempIDS = [{
-        dataField: 'Student_ID',
-        text: 'ID',
-        formatter: CellFormatterTempIDS,
-       
       }, 
+    ];
+
+      const columnsTempIDS = [
       {
         dataField: 'Student_ID',
-        text: 'Student ID',
+        text: 'Temp Student ID',
         style: { width: '200px' }
        
       }, 
@@ -402,8 +399,15 @@ async function EditStudentID(){
         dataField: 'SchoolYear',
         text: 'School Year',
       }, 
+      {
+        dataField: 'Student_ID',
+        text: 'ID',
+        formatter: CellFormatterTempIDS,
+       
+      }, 
     ];
 
+    /*
     const columnsLogs = [
     {
       dataField: 'Student_ID',
@@ -425,6 +429,26 @@ async function EditStudentID(){
     {
       dataField: 'UserMakingChange',
       text: 'User',
+    }, 
+  ];
+  */
+
+  const columnsLogs = [
+    {
+      dataField: 'LogDate',
+      text: 'Log Date',
+    }, 
+    {
+      dataField: 'ChangeType',
+      text: 'Change Type',
+    }, 
+    {
+      dataField: 'UserMakingChange',
+      text: 'User Name',
+    }, 
+    {
+      dataField: 'ChangeNotes',
+      text: 'ChangeNotes',
     }, 
   ];
 
@@ -472,206 +496,185 @@ async function EditStudentID(){
 
   return (
     <div>
-    <main>
-       <Container> 
-          <h1>Administration</h1>   
-           <br></br>         
-                  <Form>
-                      <Tabs>
-                          <Tab eventKey="TempStudentIDS" title="Temp Student IDS">
-                            <h2>Temp Student IDS</h2>
-                            <Row>
-                              <Col sm={6}>
-                              <Button variant="primary"
-                                onClick={()=>fetchStudentTempIDRecords(true)}
-                               
-                                 >Show Temp IDs</Button>
-                              </Col>
-                            </Row>
+      <main>
+        <Container>
+          <h1>Administration</h1>
+          <br></br>
+          <Form>
+            <Tabs>
+              <Tab eventKey="TempStudentIDS" title="Temp Student IDS">
+                <h2>Show All Temp Student IDS</h2>
+                <Row>
+                  <Col sm={6}>
+                    <Button
+                      variant="primary"
+                      onClick={() => fetchStudentTempIDRecords(true)}
+                    >
+                      Show Temp IDs
+                    </Button>
+                  </Col>
+                </Row>
 
-                            <br></br>
+                <br></br>
 
-                            <Row>
-                              <Col sm={12}>
-                              <BootstrapTable   
-                                striped
-                                hover
-                                keyField='Student_ID'
-                                data={tblSearchTempIDS}
-                                columns={columnsTempIDS}
-                                pagination={ paginationFactory()}
-                                rowStyle={rowStyle}
-                              
-                              />
-                              </Col>
-                            </Row>
+                <Row>
+                  <Col sm={12}>
+                    <BootstrapTable
+                      striped
+                      hover
+                      keyField="Student_ID"
+                      data={tblSearchTempIDS}
+                      columns={columnsTempIDS}
+                      pagination={paginationFactory()}
+                      rowStyle={rowStyle}
+                    />
+                  </Col>
+                </Row>
+              </Tab>
 
-                          </Tab>
+              <Tab eventKey="ManageDropdownLists" title="Manage Dropdown Lists">
+                <br></br>
 
-                          <Tab eventKey="ManageDropdownLists" title="Manage Dropdown Lists">
-                            <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 40 }}>
+                    Choose List
+                  </Col>
+                  <Col sm={4}>
+                    <GenericDDSelect
+                      handleOnChange={onDDChanged}
+                      items={optionsDDSelections}
+                      name="selDDSelections"
+                    />
+                  </Col>
+                </Row>
 
-                            <Row>
-                              <Col sm={4}>
-                              <Button variant="primary"
-                                onClick={()=>setShow2(true)}
-                                 disabled = {disableAddNewDDItem}
-                                 >Add New Item</Button>
-                              </Col>
-                            </Row>
+                <hr></hr>
 
-                            <br></br>
+                <Row>
+                  <Col sm={4}>
+                    <Button
+                      variant="primary"
+                      onClick={() => setShow2(true)}
+                      disabled={disableAddNewDDItem}
+                    >
+                      Add {_ItemNameSelected}
+                    </Button>
+                  </Col>
+                </Row>
 
-                            <Row>
-                                  <Col sm={4}>
-                                  <label>Select List</label>
-                                  <GenericDDSelect 
-                                        handleOnChange={onDDChanged}
-                                        items = {optionsDDSelections}
-                                        name = "selDDSelections"
-                                />
-                                  </Col>                           
-                              </Row>
-                               {/* I CAN USE THIS CODE FOR SOME OTHER COMPOENT **}
-                               <Row>
-                                  <Col sm={6}>
-                                     <GenericMultipleSelect 
-                                        name = "selAdminDD"
-                                        />
-                                  </Col>                           
-                              </Row>
-                              */}
-                              <hr></hr>
+                <Row>
+                  <Col sm={6}>
+                    <h2></h2>
 
-                            <Row>
-                              
-                              <Col sm={6}> 
-                               
-                                <h2>Items</h2>
-                              
-                              <BootstrapTable   
-                                striped
-                                hover
-                                keyField='ItemName'
-                                data={tblSearchResults}
-                                columns={columns}
-                                pagination={ paginationFactory()}
-                                rowStyle={rowStyle}
-                              
-                              />
+                    <BootstrapTable
+                      striped
+                      hover
+                      keyField="ItemName"
+                      data={tblSearchResults}
+                      columns={columns}
+                      pagination={paginationFactory()}
+                      rowStyle={rowStyle}
+                    />
+                  </Col>
+                </Row>
 
-                              </Col>
-                             
-                             </Row>
+                <Row>
+                  <Col sm={12}>
+                    <GenericModal
+                      id="oldValue"
+                      title = {_ItemNameSelected}
+                      actionLabel="Edit"
+                      showPrimaryModal={show}
+                      close="Close"
+                      Submit="Submit"
+                      delete="Delete Item"
+                      handleClosePrimary={() => closeModalPrimary}
+                      handleClickOne={() => updateDDItem}
+                      handleClickTwo={() => DeleteDDListItem}
+                      handleClickTwoVisable="block"
+                    />
 
-                              <Row>
-                                
-                                <Col sm={12}>
-                              
-                                <GenericModal 
-                                   id="oldValue"
-                                   title="Edit DropDown List Item"
-                                   actionLabel='Edit Item'
-                                   showPrimaryModal= {show}
-                                   close = 'Close'
-                                   Submit = 'Submit'
-                                   delete = 'Delete Item'
- 
-                                   handleClosePrimary = {()=>closeModalPrimary}
-                                   handleClickOne = {()=>updateDDItem}
-                                   handleClickTwo = {()=>DeleteDDListItem}
+                    <GenericModal
+                      id="oldValue"
+                      title =  {_ItemNameSelected}
+                      actionLabel="Add"
+                      showPrimaryModal={show2}
+                      close="Close"
+                      Submit="Submit"
+                      handleClosePrimary={() => closeModalSecondary}
+                      handleClickOne={() => ADD_New_DDItem}
+                      //we will hide these in this dialog
+                      delete="Delete Item"
+                      handleClickTwo={() => DeleteDDListItem}
+                      handleClickTwoVisable="none"
+                    />
 
-                                   handleClickTwoVisable = 'block' />
+                    <GenericModal
+                      id="oldValue"
+                      title="Temp Student ID"
+                      actionLabel="Edit"
+                      showPrimaryModal={show3}
+                      close="Close"
+                      Submit="Submit"
+                      handleClosePrimary={() => closeModalThird}
+                      handleClickOne={() => EditStudentID}
+                      //we will hide these in this dialog
+                      delete="Delete Item"
+                      handleClickTwo={() => DeleteDDListItem}
+                      handleClickTwoVisable="none"
+                    />
+                  </Col>
+                </Row>
+              </Tab>
 
-                                  <GenericModal 
-                                   id="oldValue"
-                                   title = "New DropDown List Item"
-                                   actionLabel='Add New Item'
-                                   showPrimaryModal= {show2}
-                                   close = 'Close'
-                                   Submit = 'Submit'
-                                
-                                   handleClosePrimary = {()=>closeModalSecondary}
-                                   handleClickOne = {()=>ADD_New_DDItem}
+              <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
+                <h2>Archive School Year</h2>
+                <Row>
+                  <Col sm={4}>
+                    <SchoolYearDropDown name="ddSchoolYears" />
+                  </Col>
 
-                                   //we will hide these in this dialog
-                                   delete = 'Delete Item'
-                                   handleClickTwo = {()=>DeleteDDListItem}
-                                   handleClickTwoVisable = 'none' 
-                                   />
+                  <Col sm={3}>
+                    <Button
+                      variant="danger"
+                      onClick={() => archiveSchoolYear()}
+                    >
+                      Archive
+                    </Button>
+                  </Col>
+                </Row>
+              </Tab>
 
-                                 <GenericModal 
-                                   id="oldValue"
-                                   title = "Edit Temp ID"
-                                   actionLabel='Set Student ID'
-                                   showPrimaryModal= {show3}
-                                   close = 'Close'
-                                   Submit = 'Submit'
-                                
-                                   handleClosePrimary = {()=>closeModalThird}
-                                   handleClickOne = {()=>EditStudentID}
-
-                                   //we will hide these in this dialog
-                                   delete = 'Delete Item'
-                                   handleClickTwo = {()=>DeleteDDListItem}
-                                   handleClickTwoVisable = 'none' 
-                                   />
-                                   
-
-                                </Col>
-
-                              </Row>
-                          </Tab>
-
-                          <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
-                                <h2>Archive School Year</h2>
-                                <Row>
-                                  <Col sm={4}>
-                                  <SchoolYearDropDown 
-                                  name='ddSchoolYears'/>
-                                  </Col>
-                                  
-                                  <Col sm={3}>
-                                  <Button variant="danger"
-                                    onClick={()=>archiveSchoolYear()}
-                                    >Archive School Year</Button>
-                                  </Col>
-                
-                                </Row>
-                          </Tab>
-
-                          <Tab eventKey="ActivityLogs" title="Activity Logs">
-                               <h2>Activity Logs</h2>
-                                  <Row>
-                                    <Col>
-                                    <Button variant="primary"
-                                    onClick={()=>fetchLogs()}
-                                    >View Logs</Button>
-                                    </Col>
-                                  </Row>
-                                  <br></br>
-                                  <Row>
-                                    <Col sm={12}>
-                                     
-                                      <BootstrapTable
-                                        striped
-                                        hover
-                                        keyField='LogDate'
-                                        data={tblSearchResultsLogs}
-                                        columns={columnsLogs}
-                                        pagination={paginationFactory()}
-                                        rowStyle={rowStyle}
-                                      />
-                                    </Col>
-                                  </Row>
-                               
-                          </Tab>
-                      </Tabs>
-                  </Form>
-       </Container>
-    </main>
+              <Tab eventKey="ActivityLogs" title="Activity Logs">
+                <h2>Activity Logs</h2>
+                <Row>
+                  <Col>
+                    <Button variant="primary" onClick={() => fetchLogs()}>
+                      View Logs
+                    </Button>
+                  </Col>
+                </Row>
+                <br></br>
+                <Row>
+                  <Col sm={12}>
+                    <BootstrapTable
+                      striped
+                      hover
+                      keyField="LogDate"
+                      data={tblSearchResultsLogs}
+                      columns={columnsLogs}
+                      pagination={paginationFactory()}
+                      rowStyle={rowStyle}
+                    />
+                  </Col>
+                </Row>
+              </Tab>
+            </Tabs>
+          </Form>
+        </Container>
+      </main>
     </div>
-  )
+  );
 }
 
 const styles = {

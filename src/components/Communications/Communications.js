@@ -20,6 +20,7 @@ function Communications() {
   const [SchoolTraining, setSchoolTraining] = useState({});
   const [tblSearchStudents, setSearchStudents] = useState([]);
   const [showNotesAndSaveButton, setshowNotesAndSaveButton] = useState('none');
+  const [showBootStrapTable, setshowBootStrapTable] = useState('none');
   const [studentInfo, setstudentInfo] = useState('');
 
 
@@ -305,6 +306,8 @@ const selectedStudentRecord = (e,_studentID,_setstudentInfo) =>
 {
   e.preventDefault();
 
+  setshowBootStrapTable('none')
+
   var studentID = document.getElementById('txtStudentIDHidden');
   studentID.value = _studentID;
 
@@ -336,12 +339,16 @@ function CellFormatterSearchStudent(cell, row) {
     var myAPI = new studentInfoApi;
     try {
       _SEARCH_DATA = await myAPI.fetchSearchData(_SEARCH_STRING_)
+      if(_SEARCH_DATA.length > 0)
+      {
+        setshowBootStrapTable('block')
+      }
     }
     catch (err) {
       console.log(err)
+      setshowBootStrapTable('none')
     }
     setSearchStudents(_SEARCH_DATA)
-
   }
 
   async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {
@@ -364,6 +371,7 @@ const searchMixed = (e) => {
 
   //this will be set to 'block' when a row is selected
   setshowNotesAndSaveButton('none');
+  
 
   e.preventDefault();
 
@@ -372,6 +380,8 @@ const searchMixed = (e) => {
   var studentID = document.getElementById('txtStudentID');
   var LastName = document.getElementById('txtLastName');
   var School = document.getElementById('ddSchoolListings_SearchStudent');
+  var lblStudentInfoField = document.getElementById('lblStudentInfo');
+  lblStudentInfoField.innerHTML = '';
 
 
   if (studentID.value != "" &&
@@ -474,7 +484,7 @@ const searchMixed = (e) => {
     
                 <Row>
                 <Col sm={12}>
-                  <Button variant="outline-primary" onClick={(e) => saveTrainingNotes(e)}>Save</Button>
+                  <Button variant="primary" onClick={(e) => saveTrainingNotes(e)}>Save And Send</Button>
                 </Col>
                 </Row>
 
@@ -535,9 +545,9 @@ const searchMixed = (e) => {
 
                 <br></br>
 
-                  <Row>
+                  <Row style={{display:showBootStrapTable}}>
                     <Col sm={12}>
-                     <label id="lblStudentInfo" style={{fontWeight:'bold'}}></label> 
+                     
                     <BootstrapTable   
                       striped
                       hover
@@ -552,11 +562,12 @@ const searchMixed = (e) => {
                   </Row>
           
                   <br></br>
+                  <label id="lblStudentInfo" style={{fontWeight:'bold'}}></label> 
                    <Row className="mb-3"
                         style={{display:showNotesAndSaveButton}}
                         >
                         <Form.Group className="mb-3">
-                            <Form.Label>Communication Notes</Form.Label>
+                            <Form.Label>Student Communication Notes</Form.Label>
                             <Form.Control
                             as="textarea"
                             name='CommNotes'
@@ -571,7 +582,7 @@ const searchMixed = (e) => {
                       style={{display:showNotesAndSaveButton}}>
                     <Col sm={12}
                         >
-                      <Button variant="outline-primary" onClick={(e) => saveCommNotes(e)}>Save</Button>
+                      <Button variant="primary" onClick={(e) => saveCommNotes(e)}>Save And Send</Button>
                     </Col>
                     </Row>
    

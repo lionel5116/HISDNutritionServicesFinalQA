@@ -75,132 +75,166 @@ function handleChange (e){
     var SchoolYear = document.getElementById('ddSchoolYears');
     var School = document.getElementById('ddSchoolListings');
 
-    if (studentID.value != "" &&
-      FirstName.value == "" &&
-      LastName.value == "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value == "--Select--") {
-      //Search By Student ID  - WORKS!!!
-      console.log('Search By Student ID')
-      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
-      _SEARCH_STRING += "'";
-      _SEARCH_STRING += studentID.value;
-      _SEARCH_STRING += "'";
-      console.log(_SEARCH_STRING);
-      fetchSearchData(_SEARCH_STRING);
+    var ddMatch = document.getElementById('ddMatch');
+     if(ddMatch.value == 'anyCriteria')
+     {
+            if (studentID.value != "" &&
+              FirstName.value == "" &&
+              LastName.value == "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value == "--Select--") {
+              //Search By Student ID  - WORKS!!!
+              console.log('Search By Student ID')
+              _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += studentID.value;
+              _SEARCH_STRING += "'";
+              console.log(_SEARCH_STRING);
+              fetchSearchData(_SEARCH_STRING);
 
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value != "" &&
-      LastName.value == "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value == "--Select--") {
-      //Search By First Name 
-      //only three values FirstName,LastName,School
-      console.log('Search By First Name')
-      _SEARCH_STRING += FirstName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "-"
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "-"
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "FIRST_NAME"
-      console.log("SEARCH_TYPE : FIRST_NAME");
-      fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+            }
+            else if (studentID.value == "" &&
+              FirstName.value != "" &&
+              LastName.value == "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value == "--Select--") {
+              //Search By First Name 
+              //only three values FirstName,LastName,School
+              console.log('Search By First Name')
+              _SEARCH_STRING += FirstName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "-"
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "-"
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "FIRST_NAME"
+              console.log("SEARCH_TYPE : FIRST_NAME");
+              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value == "" &&
-      LastName.value != "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value == "--Select--") {
-      //Search By Last Name 
-      console.log('Search By Last Name ')
-      _SEARCH_STRING += "-"
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += LastName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "-"
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "LAST_NAME"
+            }
+            else if (studentID.value == "" &&
+              FirstName.value == "" &&
+              LastName.value != "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value == "--Select--") {
+              //Search By Last Name 
+              console.log('Search By Last Name ')
+              _SEARCH_STRING += "-"
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += LastName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "-"
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "LAST_NAME"
 
-      console.log("SEARCH_TYPE : LAST_NAME");
-      fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+              console.log("SEARCH_TYPE : LAST_NAME");
+              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value == "" &&
-      LastName.value == "" &&
-      SchoolYear.value != "--Select--" &&
-      School.value == "--Select--") {
-      //Search By School Year - WORKS!!!
-      console.log('Search By School Year ')
-      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
-      _SEARCH_STRING += "'";
-      _SEARCH_STRING += SchoolYear.value;
-      _SEARCH_STRING += "'";
-      console.log(_SEARCH_STRING);
-      fetchSearchData(_SEARCH_STRING);
+            }
+            else if (studentID.value == "" &&
+              FirstName.value == "" &&
+              LastName.value == "" &&
+              SchoolYear.value != "--Select--" &&
+              School.value == "--Select--") {
+              //Search By School Year - WORKS!!!
+              console.log('Search By School Year ')
+              _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += SchoolYear.value;
+              _SEARCH_STRING += "'";
+              console.log(_SEARCH_STRING);
+              fetchSearchData(_SEARCH_STRING);
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value == "" &&
-      LastName.value == "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value != "--Select--") {
-      //Search By School Name  - WORKS!!!
-      console.log('Search By School Name')
-      _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
-      _SEARCH_STRING += "'";
-      _SEARCH_STRING += School.value;
-      _SEARCH_STRING += "'";
-      console.log(_SEARCH_STRING);
-      fetchSearchData(_SEARCH_STRING);
+            }
+            else if (studentID.value == "" &&
+              FirstName.value == "" &&
+              LastName.value == "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value != "--Select--") {
+              //Search By School Name  - WORKS!!!
+              console.log('Search By School Name')
+              _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += School.value;
+              _SEARCH_STRING += "'";
+              console.log(_SEARCH_STRING);
+              fetchSearchData(_SEARCH_STRING);
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value != "" &&
-      LastName.value != "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value == "--Select--") {
-      //Search By Last Name and First Name
-      console.log('Search By Last Name and First Name')
-      _SEARCH_STRING += FirstName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += LastName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "-"
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "LAST_FIRST_NAME"
-      console.log("SEARCH_TYPE : LAST_FIRST_NAME");
-      fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+            }
+            else if (studentID.value == "" &&
+              FirstName.value != "" &&
+              LastName.value != "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value == "--Select--") {
+              //Search By Last Name and First Name
+              console.log('Search By Last Name and First Name')
+              _SEARCH_STRING += FirstName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += LastName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "-"
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "LAST_FIRST_NAME"
+              console.log("SEARCH_TYPE : LAST_FIRST_NAME");
+              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
-    }
-    else if (studentID.value == "" &&
-      FirstName.value != "" &&
-      LastName.value != "" &&
-      SchoolYear.value == "--Select--" &&
-      School.value != "--Select--") {
-      //Search By Last Name and First Name and School Name
-      console.log('Search By Last Name and First Name and School Name')
-      _SEARCH_STRING += FirstName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += LastName.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += School.value
-      _SEARCH_STRING += "|"
-      _SEARCH_STRING += "LAST_FIRST_NAME_SCHOOL"
+            }
+            else if (studentID.value == "" &&
+              FirstName.value != "" &&
+              LastName.value != "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value != "--Select--") {
+              //Search By Last Name and First Name and School Name
+              console.log('Search By Last Name and First Name and School Name')
+              _SEARCH_STRING += FirstName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += LastName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += School.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "LAST_FIRST_NAME_SCHOOL"
 
-      console.log("SEARCH_TYPE : LAST_FIRST_NAME_SCHOOL");
-      fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+              console.log("SEARCH_TYPE : LAST_FIRST_NAME_SCHOOL");
+              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
-    }
-    else {
-      setSearchResults([])
-    }
+            }
+            else {
+              setSearchResults([])
+            }
+        }  //anyCriteria
+        else if (ddMatch.value == 'allCriteria'){
+
+          if (studentID.value != "" &&
+              FirstName.value != "" &&
+              LastName.value != "" &&
+              SchoolYear.value != "--Select--" &&
+              School.value != "--Select--") {
+              //Search By all criteria
+              console.log('Search all criteria')
+              _SEARCH_STRING += studentID.value;
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += FirstName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += LastName.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += School.value
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += SchoolYear.value;
+              _SEARCH_STRING += "|"
+              _SEARCH_STRING += "ALL_CRITERIA"
+
+              console.log("SEARCH_TYPE : ALL_CRITERIA");
+              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+
+            }
+            else {
+              setSearchResults([])
+            }
+           
+        } //allCriteria
   }
 
   function CellFormatter(cell, row) {
@@ -313,6 +347,24 @@ function handleChange (e){
               <SchoolYearDropDown 
                name='ddSchoolYears'
                onChange={handleChange}/>
+           </Col>
+         </Row>
+
+         <br></br>
+         <Row>
+           <Col sm={1.75} style={{paddingRight:8}}>
+               Match
+           </Col>
+           <Col sm={1.5}>
+           <select class="form-select form-select-sm" 
+              aria-label=".form-select-sm example" 
+              style={{ width: 200 }} id='ddMatch'>
+              <option value="anyCriteria">any criteria</option>
+              <option value="allCriteria">all criteria</option>
+            </select>
+           </Col>
+           <Col sm={2}>
+            
            </Col>
          </Row>
 
