@@ -82,6 +82,9 @@ function StudentDataEntry() {
                                               SupplementNameMore  :'',
                                               Texture_Modification2  :''});
 
+    const [currentSchoolName,setCurrentSchoolName]= useState('');
+    const [currentMedicalCondition,setcurrentMedicalCondition]= useState('');
+
   
 /*SELECT TOP (1000) 
       [id][LastName]
@@ -147,6 +150,16 @@ function StudentDataEntry() {
     fetchSearchDDListDataMilkSub();
   },[]);
 
+  useEffect( () => {
+    var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
+    setCurrentSchoolName(_DDSchoolListingSelect.value);
+  },[]);
+
+  useEffect( () => {
+    var _Medical_Condition = document.getElementById('Medical_Condition');
+    setcurrentMedicalCondition(_Medical_Condition.value);
+  },[]);
+
   //useEffect Methods END ***********
 
 
@@ -155,6 +168,7 @@ function StudentDataEntry() {
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
+    setcurrentMedicalCondition(_DD_STUDENT_RECORD_DATA[0].Medical_Condition);
     student.id = _DD_STUDENT_RECORD_DATA[0].id
     setStudentID(_DD_STUDENT_RECORD_DATA[0].Student_ID)
     if(_DD_STUDENT_RECORD_DATA[0].Student_ID != '')
@@ -191,6 +205,8 @@ function StudentDataEntry() {
 
     var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
     _btnfetchAttach.click();
+
+  
    }
 
 
@@ -271,7 +287,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
     let _SCHOOL_NOTE_DATA = [];
     var myAPI = new studentInfoApi;
     _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolTrainingNotes(_school,'School Training')
-    console.log(_SCHOOL_NOTE_DATA);
+    //console.log(_SCHOOL_NOTE_DATA);
     var _txtSchoolTraining = document.getElementById('txtSchoolTraining');
     _txtSchoolTraining.value = _SCHOOL_NOTE_DATA;
    
@@ -281,7 +297,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
     let _SCHOOL_NOTE_DATA = [];
     var myAPI = new studentInfoApi;
     _SCHOOL_NOTE_DATA = await myAPI.fetchCommNotes(_studentID)
-    console.log(_SCHOOL_NOTE_DATA);
+    //console.log(_SCHOOL_NOTE_DATA);
     var _txtStudentCommunicationNotes = document.getElementById('txtStudentCommunicationNotes');
     _txtStudentCommunicationNotes.value = _SCHOOL_NOTE_DATA;
    
@@ -371,15 +387,11 @@ async function fetchSchoolWideTrainingNotes(_school) {
   async function AddOrUpdateStudentRecord(e) {
       e.preventDefault()
 
-      console.log("Student ID " + student.id )
       if(student.id != '')
       {
-        //this method is being called below, had here for testing earlier
-        //setDropDownSubstitutesFieldValues(e); //make sure we keep the dropdown hidden values in sync as well as check boxes
-        //console.log(student)
-        //openAlertError('Editing a RECORD IS NOT YET IMPLEMENTED YET.. COMING SOON!!! DEBBIE/DOLLY');
-        //setrecordSuccessShowHide('block')
-        //return;
+        //add logs if applicable
+        //if this was an existing record
+        var logResponse = await logChanges(e);
       }
      
       if(student.Student_ID != '' &&
@@ -398,11 +410,10 @@ async function fetchSchoolWideTrainingNotes(_school) {
 
       ////make sure we keep the dropdown hidden values in sync as well as check boxes
       setDropDownSubstitutesFieldValues(e);
-      console.log(student);
-      var myAPI = new studentInfoApi;
-      var _response = await myAPI.AddOrUpdateStudentRecord(student)
 
-      console.log(_response);
+      var myAPI = new studentInfoApi;
+      var _response = await myAPI.AddOrUpdateStudentRecord(student);
+     
       if(_response)
       {
         openAlert();
@@ -593,6 +604,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
   
       var _School = document.getElementById('ddSchoolListings');
       _School.value = schoolName
+      setCurrentSchoolName(schoolName);
     }
 
     async function setDropDownValuesForSchoolYear(schoolYear)
@@ -960,7 +972,75 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
   
 }
 
+   
+//logging
+async function  logChanges(e)
+{
+   e.preventDefault();
+
+  var myAPI = new studentInfoApi;
+  
+
+      var logObject = {
+        LogDate: '',
+        ChangeType: '',
+        ChangeNotes: '',
+        Student_ID: '',
+        SchoolName: '',
+        SchoolNotes: '',
+        UserMakingChange:''
+      };
+
+      var _txtSchoolWideTraining = document.getElementById('txtSchoolWideTraining');
+      var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
+
+      var dtTemp  = new Date();
+      var formmatteTrueDate = formatDate(dtTemp).split(' ');
+
+      if(currentSchoolName != _DDSchoolListingSelect.value)
+      {
+
+          var changeSchool = "School Name changed from ";
+          changeSchool += currentSchoolName;
+          changeSchool += " To ";
+          changeSchool += _DDSchoolListingSelect.value;
+          //console.log("Log not for change school " + changeSchool);
+
+          logObject.LogDate = formmatteTrueDate[0]
+          logObject.ChangeType = 'SchoolName'
+          logObject.ChangeNotes = changeSchool;
+          logObject.studentID = student.studentID;
+          logObject.schoolName = currentSchoolName;
+          logObject.SchoolNotes = _txtSchoolWideTraining.value;
+          logObject.UserMakingChange = '';
+
+           await myAPI.insertLogData(logObject)
+
+      }
       
+      var _Medical_Condition = document.getElementById('Medical_Condition');
+      if(currentMedicalCondition != _Medical_Condition.value)
+      {
+
+          var sMedicalCondition = "Medical Condition changed from ";
+          sMedicalCondition += currentMedicalCondition;
+          sMedicalCondition += " To ";
+          sMedicalCondition += _Medical_Condition.value
+          //console.log("Log not for medical condition " + sMedicalCondition);
+
+            logObject.LogDate = formmatteTrueDate[0];
+            logObject.ChangeType = 'Medical Condition Change'
+            logObject.ChangeNotes = sMedicalCondition;
+            logObject.studentID = student.studentID;
+            logObject.schoolName = '';
+            logObject.SchoolNotes = '';
+            logObject.UserMakingChange = '';
+
+             await myAPI.insertLogData(logObject)
+
+      }
+}
+
    //UTILITY METHODS
   //Utility Methods *****
   const generateStudentID =()=>
@@ -1022,19 +1102,16 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
     const test = () =>
     {
-       
-     var  _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
-      _btnfetchAttach.click();
+      console.log("Value for School " + currentSchoolName);
+      console.log("Value for MedicalCondition " + currentMedicalCondition);
     }
-
-    
-  
 
     
       //attachments
     async function fetchAttachments(e)
     {
       e.preventDefault();
+
       let _attachments = [];
       var myAPI = new studentInfoApi;
       //console.log("Inside of fetchAttachments")
@@ -1098,7 +1175,7 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
         <h1>Student Record</h1> 
           <Form style={{display:recordSuccessShowHide}}>
-              {/*<Row style={{display:'none'}}>*/}
+        
               <Row style={{display:'none'}}>
                <Button variant="warning" type="button"
                       onClick={() =>test()}

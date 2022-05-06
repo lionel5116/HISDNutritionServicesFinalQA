@@ -293,6 +293,20 @@ export class studentInfoApi {
       
     }
 
+    async  insertLogData(Log){
+        var url = Config.REST_URL + '/api/Admin/insertLogData/';
+        try {
+             return await axios.post(url, Log)
+             .then(res => {
+                 return res.data;
+             });
+        } catch(err) {
+         console.log("Issue writing log record error = : " + err)
+         return false;
+        }
+       
+     }
+
     async  fetchSingeRecordByRecordID(id){
         var url = Config.REST_URL + '/api/StudentEntryData/fetchSingeRecordByRecordID/'
         url +=id;
