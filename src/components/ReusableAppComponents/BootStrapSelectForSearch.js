@@ -5,7 +5,7 @@ function BootStrapSelectForSearch(props) {
     <div>
       <select class="form-select form-select-sm" 
               aria-label=".form-select-sm example" 
-              style={{ width: 100 }} id={props.name}>
+              style={{ width: 110 }} id={props.name}>
         <option value="equals">equals</option>
         <option value="contains">contains</option>
       </select>

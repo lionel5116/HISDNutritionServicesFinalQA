@@ -1,5 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
+import { useEffect } from 'react';
 import {Button,
     Container,
     Row,
@@ -16,7 +17,7 @@ import GenericModal from '../GenericModal/GenericModal';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
     
 
-let optionsDDSelections = ['--Select--','Foods To Be Ommitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
+let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types'];
 
 var itemTypeSelected = ''
 import studentInfoApi from '../../api/studentInfoApi';
@@ -39,12 +40,40 @@ function Administration() {
 
   const [_studentIDTemp,setstudentIDTemp]  = useState("")
   
+
+  useEffect(() => {
+    fetchLogs();
+  },[]);
+
+  useEffect(() => {
+    fetchStudentTempIDRecords()
+  },[]);
+
+
   const onDDChanged = () =>
   {
     var _ItemTypeSelect = document.getElementById('selDDSelections');
 
     fetchSearchDDListData(_ItemTypeSelect.value)
-    setItemNameSelected(_ItemTypeSelect.value);
+    
+    
+    //let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
+    switch (_ItemTypeSelect.value) {
+      case 'Foods To Be Omitted':
+        setItemNameSelected('Food To Be Omitted');
+        break;
+      case 'Nutrition Supplements':
+        setItemNameSelected('Nutrition Supplement');
+        break;
+      case 'Milk Substitutes':
+        setItemNameSelected('Milk Substitute');
+        break;
+        case 'Training Types':
+          setItemNameSelected('Training Type');
+          break;
+      default:
+        break;
+    }
 
     toggleAddNewDDItem();
     console.log("Button State is" + disableAddNewDDItem)
@@ -78,17 +107,7 @@ function Administration() {
     var myAPI = new studentInfoApi;
     _DD_LIST_DATA = await myAPI.fetchSearchDDListData(itemTypeSelected)
     setSearchResults(_DD_LIST_DATA)
-   
-    /*  I CAN USE THIS CODE FOR SOME OTHER COMPOENT **
-    var _DDSSelect = document.getElementById('selAdminDD'); 
-    //clear list to add new ones
-    _DDSSelect.innerHTML = "";
-  
-   
-    for(const key in _DD_LIST_DATA) {     
-      _DDSSelect.options[_DDSSelect.options.length] = new Option(_DD_LIST_DATA[key]);
-    }
-   */
+ 
 
 }
 
@@ -105,7 +124,6 @@ async function fetchStudentTempIDRecords() {
     console.log(err)
   }
   setSearchResultsTempIDs(_SEARCH_DATA)
-  //console.log(_SEARCH_DATA)
 }
 
 async function archiveSchoolYear(){
@@ -182,13 +200,13 @@ async function updateDDItem(){
  
 
   switch (_ItemTypeSelect.value) {
-    case 'Foods To Be Ommitted':
+    case 'Foods To Be Omitted':
       DDType = 'FTBO'
       break;
-    case 'Nutrition Supplement':
+    case 'Nutrition Supplements':
       DDType = 'NUTR_SUB'
       break;
-    case 'Milk Substitute':
+    case 'Milk Substitutes':
       DDType = 'MILK_SUB'
       break;
       case 'Training Types':
@@ -237,13 +255,13 @@ async function DeleteDDListItem(){
  
 
   switch (_ItemTypeSelect.value) {
-    case 'Foods To Be Ommitted':
+    case 'Foods To Be Omitted':
       DDType = 'FTBO'
       break;
-    case 'Nutrition Supplement':
+    case 'Nutrition Supplements':
       DDType = 'NUTR_SUB'
       break;
-    case 'Milk Substitute':
+    case 'Milk Substitutes':
       DDType = 'MILK_SUB'
       break;
       case 'Training Types':
@@ -294,13 +312,13 @@ async function ADD_New_DDItem(){
  
 
   switch (_ItemTypeSelect.value) {
-    case 'Foods To Be Ommitted':
+    case 'Foods To Be Omitted':
       DDType = 'FTBO'
       break;
-    case 'Nutrition Supplement':
+    case 'Nutrition Supplements':
       DDType = 'NUTR_SUB'
       break;
-    case 'Milk Substitute':
+    case 'Milk Substitutes':
       DDType = 'MILK_SUB'
       break;
       case 'Training Types':
@@ -401,38 +419,13 @@ async function EditStudentID(){
       }, 
       {
         dataField: 'Student_ID',
-        text: 'ID',
+        text: 'Edit',
         formatter: CellFormatterTempIDS,
        
       }, 
     ];
 
-    /*
-    const columnsLogs = [
-    {
-      dataField: 'Student_ID',
-      text: 'Student ID',
-      style: { width: '200px' }
-    }, 
-    {
-      dataField: 'LogDate',
-      text: 'Log Date',
-    }, 
-    {
-      dataField: 'ChangeType',
-      text: 'ChangeType',
-    }, 
-    {
-      dataField: 'ChangeNotes',
-      text: 'ChangeNotes',
-    }, 
-    {
-      dataField: 'UserMakingChange',
-      text: 'User',
-    }, 
-  ];
-  */
-
+  
   const columnsLogs = [
     {
       dataField: 'LogDate',
@@ -447,7 +440,7 @@ async function EditStudentID(){
       text: 'User Name',
     }, 
     {
-      dataField: 'ChangeNotes',
+      dataField: 'Change Notes',
       text: 'ChangeNotes',
     }, 
   ];
@@ -502,9 +495,9 @@ async function EditStudentID(){
           <br></br>
           <Form>
             <Tabs>
-              <Tab eventKey="TempStudentIDS" title="Temp Student IDS">
-                <h2>Show All Temp Student IDS</h2>
-                <Row>
+              <Tab eventKey="TempStudentIDS" title="Temp Student ID">
+                <h2>Temp Student ID</h2>
+                <Row style={{ display: 'none' }}>
                   <Col sm={6}>
                     <Button
                       variant="primary"
@@ -536,7 +529,7 @@ async function EditStudentID(){
                 <br></br>
 
                 <Row>
-                  <Col sm={1.75} style={{ paddingRight: 40 }}>
+                  <Col sm={1.75} style={{ paddingRight: 40 ,marginLeft:12}}>
                     Choose List
                   </Col>
                   <Col sm={4}>
@@ -647,7 +640,7 @@ async function EditStudentID(){
 
               <Tab eventKey="ActivityLogs" title="Activity Logs">
                 <h2>Activity Logs</h2>
-                <Row>
+                <Row style={{ display: 'none' }}>
                   <Col>
                     <Button variant="primary" onClick={() => fetchLogs()}>
                       View Logs

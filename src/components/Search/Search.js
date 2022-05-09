@@ -255,7 +255,7 @@ function handleChange (e){
 
   const columns = [{
     dataField: 'id',
-    text: 'id',
+    text: 'View',
     formatter: CellFormatter,
     style: { width: '10px' }
   },
@@ -284,45 +284,45 @@ function handleChange (e){
            <h1>Search Student Records</h1>   
            <br></br>    
          <Row>
-           <Col sm={1.75} style={{paddingRight:10}}>
+           <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
                Student ID
            </Col>
            <Col sm={1.5}>
              <BootStrapSelectForSearch name ="selStudentID" />
            </Col>
            <Col sm={2}>
-               <input type='text' id='txtStudentID' />
+               <input type='text' id='txtStudentID' style={{ width:300}}/>
            </Col>
          </Row>
            <br></br>
          <Row>
-           <Col sm={1.75} style={{paddingRight:10}}>
+           <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
                Last Name
            </Col>
            <Col sm={1.5}>
              <BootStrapSelectForSearch name ="selLastName" />
            </Col>
            <Col sm={2}>
-               <input type='text' id='txtLastName' />
+               <input type='text' id='txtLastName' style={{ width:300}}/>
            </Col>
          </Row>
 
          <br></br>
          <Row>
-           <Col sm={1.75} style={{paddingRight:10}}>
+           <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
                First Name
            </Col>
            <Col sm={1.5}>
              <BootStrapSelectForSearch name ="selFirstName" />
            </Col>
            <Col sm={2}>
-               <input type='text' id='txtFirstName' />
-           </Col>
+               <input type='text' id='txtFirstName' style={{ width:300}}/>
+           </Col> 
          </Row>
 
          <br></br>
          <Row>
-           <Col sm={1.75} style={{paddingRight:40}}>
+           <Col sm={1.75} style={{paddingRight:40,marginLeft:12,width:150}}>
                School
            </Col>
            <Col sm={1.5}>
@@ -337,7 +337,7 @@ function handleChange (e){
 
          <br></br>
          <Row>
-           <Col sm={1.75} style={{paddingRight:8}}>
+           <Col sm={1.75} style={{paddingRight:8,marginLeft:12,width:150}}>
                School Year
            </Col>
            <Col sm={1.5}>
@@ -352,13 +352,13 @@ function handleChange (e){
 
          <br></br>
          <Row>
-           <Col sm={1.75} style={{paddingRight:8}}>
+           <Col sm={1.75} style={{ paddingRight: 8 ,marginLeft:12,width:150}}>
                Match
            </Col>
            <Col sm={1.5}>
            <select class="form-select form-select-sm" 
               aria-label=".form-select-sm example" 
-              style={{ width: 200 }} id='ddMatch'>
+              style={{ width: 110,marginRight:20}} id='ddMatch'>
               <option value="anyCriteria">any criteria</option>
               <option value="allCriteria">all criteria</option>
             </select>

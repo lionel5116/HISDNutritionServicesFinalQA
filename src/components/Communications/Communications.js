@@ -14,6 +14,7 @@ import { ArrowLeftSquare } from 'react-bootstrap-icons';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import {BinocularsFill} from 'react-bootstrap-icons';
+import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
 
 
 function Communications() {
@@ -280,7 +281,7 @@ function Communications() {
 
   const columns = [{
     dataField: 'Student_ID',
-    text: 'id',
+    text: '',
     formatter: CellFormatterSearchStudent,
     style: { width: '10px' }
   },
@@ -383,216 +384,276 @@ const searchMixed = (e) => {
   var lblStudentInfoField = document.getElementById('lblStudentInfo');
   lblStudentInfoField.innerHTML = '';
 
+  if(ddMatch.value == 'anyCriteria')
+  {
+          if (studentID.value != "" &&
+            LastName.value == "" &&
+            School.value == "--Select--") {
+            //Search By Student ID  - WORKS!!!
+            console.log('Search By Student ID')
+            _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+            _SEARCH_STRING += "'";
+            _SEARCH_STRING += studentID.value;
+            _SEARCH_STRING += "'";
 
-  if (studentID.value != "" &&
-    LastName.value == "" &&
-    School.value == "--Select--") {
-    //Search By Student ID  - WORKS!!!
-    console.log('Search By Student ID')
-    _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
-    _SEARCH_STRING += "'";
-    _SEARCH_STRING += studentID.value;
-    _SEARCH_STRING += "'";
+            fetchSearchData(_SEARCH_STRING);
 
-    fetchSearchData(_SEARCH_STRING);
-
-  }
-  else if (studentID.value == "" &&
-    LastName.value != "" &&
-    School.value == "--Select--") {
-    //Search By Last Name 
-    console.log('Search By Last Name ')
-    _SEARCH_STRING += "-"
-    _SEARCH_STRING += "|"
-    _SEARCH_STRING += LastName.value
-    _SEARCH_STRING += "|"
-    _SEARCH_STRING += "-"
-    _SEARCH_STRING += "|"
-    _SEARCH_STRING += "LAST_NAME"
+          }
+          else if (studentID.value == "" &&
+            LastName.value != "" &&
+            School.value == "--Select--") {
+            //Search By Last Name 
+            _SEARCH_STRING += "-"
+            _SEARCH_STRING += "|"
+            _SEARCH_STRING += LastName.value
+            _SEARCH_STRING += "|"
+            _SEARCH_STRING += "-"
+            _SEARCH_STRING += "|"
+            _SEARCH_STRING += "LAST_NAME"
 
 
-    fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+            fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
 
-  }
-  else if (studentID.value == "" &&
-    LastName.value == "" &&
-    School.value != "--Select--") {
-    //Search By School Name  - WORKS!!!
-    console.log('Search By School Name')
-    _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
-    _SEARCH_STRING += "'";
-    _SEARCH_STRING += School.value;
-    _SEARCH_STRING += "'";
-    
-    fetchSearchData(_SEARCH_STRING);
+          }
+          else if (studentID.value == "" &&
+            LastName.value == "" &&
+            School.value != "--Select--") {
+            //Search By School Name  - WORKS!!!
+            console.log('Search By School Name')
+            _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
+            _SEARCH_STRING += "'";
+            _SEARCH_STRING += School.value;
+            _SEARCH_STRING += "'";
+            
+            fetchSearchData(_SEARCH_STRING);
 
-  }
-  else {
-    setSearchStudents([])
-  }
+          }
+          else {
+            setSearchStudents([])
+          }
+    }  //anyCriteria
+    else if (ddMatch.value == 'allCriteria'){
+
+      if (studentID.value != "" &&
+          LastName.value != "" &&
+          School.value != "--Select--" ) {
+          //Search By all criteria
+
+          _SEARCH_STRING += studentID.value;
+          _SEARCH_STRING += "|"
+          _SEARCH_STRING += LastName.value
+          _SEARCH_STRING += "|"
+          _SEARCH_STRING += School.value
+          _SEARCH_STRING += "|"
+          _SEARCH_STRING += "ALL_CRITERIA_STUD_COMM"
+
+          fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+
+        }
+        else {
+          setSearchResults([])
+        }
+       
+    } //allCriteria
 }
 
   return (
     <div>
-     <main>
-      <Container>
+      <main>
+        <Container>
           <h1>Communications</h1>
           <br></br>
           <Form>
-              <Tabs>
-                 <Tab eventKey="SchoolTrainingNotes" title="School Training Notes">
-                     <h2>School Training Notes</h2>
-                    <Row>
-                        <Col sm={1.75} style={{ paddingRight: 40 }}>
-                            School
-                        </Col>
-                        <Col sm={2}>
-                            <SchoolListDropDown 
-                              handleChange = {(e) =>handleChange(e)}
-                              name='ddSchoolListings'
-                            />
-                        </Col>
-                    </Row>
-                <br></br>
-           
-                 <GenericMultiSelectCombo 
-                   name_ddLeft = 'ddTrainingList'
-                   name_ddRight = 'ddTrainingList_Selected'
-                   buttonRight = 'btnSelectRight'
-                   buttonLeft = 'btnSelectLeft'
-                   label_ddLeft = 'Available Trainings'
-                   label_ddRight = 'Selected Trainings'
-                   handleClickRight = {(e) =>handleClickRight(e)}
-                   handleClickLeft = {(e) =>handleClickLeft(e)}
-                   />
-            
-                     
-                <br></br>
-                    <Row className="mb-3">
-                        <Form.Group className="mb-3">
-                            <Form.Label>Notes</Form.Label>
-                            <Form.Control
-                            as="textarea"
-                            name='Notes'
-                            id='Notes'
-                            style={{ height: '100px',width:1000 }}
-                            
-                        />
-                        </Form.Group>
-                    </Row>
-
-    
+            <Tabs>
+              <Tab eventKey="SchoolTrainingNotes" title="School Training Notes">
+                <h2>School Training Notes</h2>
                 <Row>
-                <Col sm={12}>
-                  <Button variant="primary" onClick={(e) => saveTrainingNotes(e)}>Save And Send</Button>
-                </Col>
-                </Row>
-
-                </Tab>
-               
-
-                <Tab eventKey="StudentCommunication" title="Student Communication">
-                  <h2>Student Communication</h2>
-                <br></br>
-
-                <Row>
-                  <Col style={{display:'none'}}>
-                  <input type='text' id='txtStudentIDHidden' />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col sm={1.75} style={{ paddingRight: 10 }}>
-                    Student ID
-                  </Col>
-               
-                  <Col sm={2}>
-                    <input type='text' id='txtStudentID' />
-                  </Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col sm={1.75} style={{ paddingRight: 10 }}>
-                    Last Name
-                  </Col>
-              
-                  <Col sm={2}>
-                    <input type='text' id='txtLastName' />
-                  </Col>
-                </Row>
-
-
-                <br></br>
-                <Row>
-                  <Col sm={1.75} style={{ paddingRight: 40 }}>
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 12 }}>
                     School
                   </Col>
-
                   <Col sm={2}>
                     <SchoolListDropDown
-                      handleChange={(e) => dummyHandleChange(e)}
-                      name='ddSchoolListings_SearchStudent' />
+                      handleChange={(e) => handleChange(e)}
+                      name="ddSchoolListings"
+                    />
                   </Col>
                 </Row>
+                <br></br>
+
+                <GenericMultiSelectCombo
+                  name_ddLeft="ddTrainingList"
+                  name_ddRight="ddTrainingList_Selected"
+                  buttonRight="btnSelectRight"
+                  buttonLeft="btnSelectLeft"
+                  label_ddLeft="Available Trainings"
+                  label_ddRight="Selected Trainings"
+                  handleClickRight={(e) => handleClickRight(e)}
+                  handleClickLeft={(e) => handleClickLeft(e)}
+                />
 
                 <br></br>
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label style={{ marginLeft: 12 }}>Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="Notes"
+                      id="Notes"
+                      style={{ height: "100px", width: 1000, marginLeft: 12 }}
+                    />
+                  </Form.Group>
+                </Row>
 
                 <Row>
                   <Col sm={12}>
-                    <Button variant="outline-primary" onClick={(e) => searchMixed(e)}>Search</Button>
+                    <Button
+                      variant="primary"
+                      onClick={(e) => saveTrainingNotes(e)}
+                    >
+                      Save And Send
+                    </Button>
+                  </Col>
+                </Row>
+              </Tab>
+
+              <Tab
+                eventKey="StudentCommunication"
+                title="Student Communications"
+              >
+                <h2>Student Communications</h2>
+                <br></br>
+
+                <Row>
+                  <Col style={{ display: "none" }}>
+                    <input type="text" id="txtStudentIDHidden" />
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 10 ,marginLeft:12,width:150}}>
+                    Student ID
+                  </Col>
+                  <Col sm={1.5}>
+                    <label style={{ width:110}}>equals</label>
+                  </Col>
+                  <Col sm={4}>
+                    <input type="text" id="txtStudentID" style={{ width:300}}/>
+                  </Col>
+                </Row>
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 10 ,marginLeft:12,width:150}}>
+                    Last Name
+                  </Col>
+                  <Col sm={1.5}>
+                    <BootStrapSelectForSearch name="selStudentID" />
+                  </Col>
+                  <Col sm={4}>
+                    <input type="text" id="txtLastName" style={{ width:300}} />
+                  </Col>
+                </Row>
+
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 40 ,marginLeft:12,width:150}}>
+                    School
+                  </Col>
+                  <Col sm={1.5}>
+                    <BootStrapSelectForSearch name="selStudentID" />
+                  </Col>
+                  <Col sm={4}>
+                    <SchoolListDropDown
+                      handleChange={(e) => dummyHandleChange(e)}
+                      name="ddSchoolListings_SearchStudent"
+                    />
+                  </Col>
+                </Row>
+
+                <br></br>
+                <Row>
+                  <Col sm={1.75} style={{ paddingRight: 8 ,marginLeft:12,width:150}}>
+                    Match
+                  </Col>
+                  <Col sm={1.5}>
+                    <select
+                      class="form-select form-select-sm"
+                      aria-label=".form-select-sm example"
+                      style={{ width: 110,marginRight:20}}
+                      id="ddMatch"
+                    >
+                      <option value="anyCriteria">any criteria</option>
+                      <option value="allCriteria">all criteria</option>
+                    </select>
+                  </Col>
+                  <Col sm={2}></Col>
+                </Row>
+
+                <br></br>
+
+                <Row>
+                  <Col sm={2}>
+                    <Button
+                      variant="primary"
+                      onClick={(e) => searchMixed(e)}
+                      style={{ paddingLeft:10}}
+                    >
+                      Search
+                    </Button>
                   </Col>
                 </Row>
 
                 <br></br>
 
-                  <Row style={{display:showBootStrapTable}}>
-                    <Col sm={12}>
-                     
-                    <BootstrapTable   
+                <Row style={{ display: showBootStrapTable }}>
+                  <Col sm={12}>
+                    <BootstrapTable
                       striped
                       hover
-                      keyField='Student_ID'
+                      keyField="Student_ID"
                       data={tblSearchStudents}
                       columns={columns}
-                      pagination={ paginationFactory()}
+                      pagination={paginationFactory()}
                       rowStyle={rowStyle}
-                    
                     />
-                    </Col>
-                  </Row>
-          
-                  <br></br>
-                  <label id="lblStudentInfo" style={{fontWeight:'bold'}}></label> 
-                   <Row className="mb-3"
-                        style={{display:showNotesAndSaveButton}}
-                        >
-                        <Form.Group className="mb-3">
-                            <Form.Label>Student Communication Notes</Form.Label>
-                            <Form.Control
-                            as="textarea"
-                            name='CommNotes'
-                            id='CommNotes'
-                            style={{ height: '100px',width:1000 }}
-                            
-                        />
-                        </Form.Group>
-                    </Row>
+                  </Col>
+                </Row>
 
-                    <Row 
-                      style={{display:showNotesAndSaveButton}}>
-                    <Col sm={12}
-                        >
-                      <Button variant="primary" onClick={(e) => saveCommNotes(e)}>Save And Send</Button>
-                    </Col>
-                    </Row>
-   
-                </Tab>
-              </Tabs>
+                <br></br>
+                <label
+                  id="lblStudentInfo"
+                  style={{ fontWeight: "bold" }}
+                ></label>
+                <Row
+                  className="mb-3"
+                  style={{ display: showNotesAndSaveButton }}
+                >
+                  <Form.Group className="mb-3">
+                    <Form.Label 
+                    style={{marginLeft:12}}>
+                       Student Communication Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="CommNotes"
+                      id="CommNotes"
+                      style={{ height: "100px", width: 1000 ,marginLeft:12}}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row style={{ display: showNotesAndSaveButton }}>
+                  <Col sm={2}>
+                    <Button variant="primary" onClick={(e) => saveCommNotes(e)}>
+                      Save And Send
+                    </Button>
+                  </Col>
+                </Row>
+              </Tab>
+            </Tabs>
           </Form>
-      </Container>
-     </main>
+        </Container>
+      </main>
     </div>
-  )
+  );
 }
 
 export default Communications
