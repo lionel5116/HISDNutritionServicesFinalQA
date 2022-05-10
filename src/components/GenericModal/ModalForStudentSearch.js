@@ -27,10 +27,11 @@ function ModalForStudentSearch(props) {
               sm={1.75}
               style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
             >
-              Student ID
+              Student ID *
             </Col>
             <Col sm={2}>
               <input type="text" id="Student_ID" style={{ width: 300 }} />
+              
             </Col>
           </Row>
           <br></br>
@@ -39,7 +40,7 @@ function ModalForStudentSearch(props) {
               sm={1.75}
               style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
             >
-              School Name
+              School Name *
             </Col>
             <Col sm={5}>
               <select
@@ -48,7 +49,7 @@ function ModalForStudentSearch(props) {
                 style={{ width: 500 }}
                 name='ddSchoolListings2'
                 id='ddSchoolListings2'
-              ></select>
+              ></select> 
             </Col>
           </Row>
           <br></br>

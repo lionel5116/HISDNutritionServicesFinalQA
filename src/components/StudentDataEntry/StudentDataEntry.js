@@ -168,7 +168,9 @@ function StudentDataEntry() {
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
+
     setcurrentMedicalCondition(_DD_STUDENT_RECORD_DATA[0].Medical_Condition);
+
     student.id = _DD_STUDENT_RECORD_DATA[0].id
     setStudentID(_DD_STUDENT_RECORD_DATA[0].Student_ID)
     if(_DD_STUDENT_RECORD_DATA[0].Student_ID != '')

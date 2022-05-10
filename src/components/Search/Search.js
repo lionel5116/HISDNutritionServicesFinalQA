@@ -62,12 +62,12 @@ function Search() {
     
   
  useEffect(() => {
-   // fetchSchoolListingData();
+
 },[]);
 
 
 useEffect(() => {
-  //fetchSchoolYears();
+
 },[]);
 
   async function fetchSearchData(_SEARCH_STRING_) {         
@@ -282,16 +282,9 @@ function handleChange (e){
   }
 
   function showRowDetailInfo(_id){
-    console.log("Id from Row",_id)
+   
     fetchSingeRecordByRecordID(_id);
-    /*
-    setItemName(_name)  // const [_ItemName,setItemName]  = useState("")
-  
-    setShow(true)
-    //pause the thread for 1/2 second to give the modal time to render
-    // we don't use const [_ItemName,setItemName], but we refer to the _ItemName on edit
-    setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_name); }, 500); 
-    */
+   
     setShow(true);
   }
 
@@ -307,8 +300,45 @@ function handleChange (e){
       setShow2(false)
   }
 
+  async function AddNewStudentRecord() {
+    if(student.studentID.length > 4 && 
+      student.schoolName.length > 4 )
+    {
+
+    }
+    else{
+      return;
+    }
+
+    setShow2(false)
+    await getNewValuesForStudentDataObject();
+    student.id = -999;
+    var myAPI = new studentInfoApi;
+    var _response = await myAPI.AddOrUpdateStudentRecordFromSearch(student);
+    if(_response > 0)
+    {
+      history.push(
+        {
+          pathname: '/StudentDataEntry',
+          search: '?id=' + _response,
+          fullName: student.FirstName + ' ' + student.LastName
+  
+        })
+    }
+  }
+
 
   async function EditStudent(){
+
+    if(student.id != '' && 
+    student.schoolName != '' &
+    student.studentID != '')
+    {
+
+    }
+    else{
+      return;
+    }
     
     setShow(false)
       await getNewValuesForStudentDataObject();
@@ -328,68 +358,12 @@ function handleChange (e){
      
   }
 
-  async function ADD_New_Item(){
-
-    /*
-    //this is for the item DD type we are updating
-    var _ItemTypeSelect = document.getElementById('selDDSelections');
-  
-    var _ItemNameNew  = document.getElementById('oldValue').value;
-  
-    if(_ItemTypeSelect.value != "--Select--")
-    {
-       
-    }
-    else{
-      toggleAddNewDDItem();
-      return;
-    }
-  
-    var DDType = '';
-   
-  
-    switch (_ItemTypeSelect.value) {
-      case 'Foods To Be Omitted':
-        DDType = 'FTBO'
-        break;
-      case 'Nutrition Supplements':
-        DDType = 'NUTR_SUB'
-        break;
-      case 'Milk Substitutes':
-        DDType = 'MILK_SUB'
-        break;
-        case 'Training Types':
-          DDType = 'TRAINING'
-          break;
-      default:
-        break;
-    }
-  
-  
-    //console.log("Drop Down Type :" + DDType)
-  
-    var argument  = '';
-  
-     if (_ItemNameNew.length > 0
-     )
-     {
-        argument += _ItemNameNew
-        argument += "|";
-        argument += DDType
-     } 
-     
-  
-     //console.log("SQL Statement :" + argument)
-     //console.log("Inside of the ADD_New_DDItem method")
-  
-  
-    var myAPI = new studentInfoApi;
-    await myAPI.ADD_DDListItem(argument)
+  async function ADD_New_Item(e){
+     e.preventDefault()
+     setShow2(true);  //you have to set the visibilty of the modal first before calling the WS to populate drop-downs
     
-    setShow2(false);
-    onDDChangedAddNewItem();
-    */
-      
+     await fetchSchoolListingData();
+     await fetchSchoolYears();
   }
 
   function handleChangeFromStudentDataEntry (e){
@@ -521,7 +495,6 @@ function handleChange (e){
     await populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
     await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
     await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
-    //console.log(student)
 
    }
 
@@ -821,12 +794,34 @@ function formatDate(date) {
          <br></br>
          <Row>
            <Col sm={12}>
-             <Button variant="outline-primary" onClick={() => searchMixed()}>Search</Button>
+             <Button variant="outline-primary" 
+                onClick={() => searchMixed()}>Search</Button>
            </Col>
          </Row>
 
         <br></br>
         <hr></hr>
+        <Row>
+         
+          <Col sm={2}>
+        
+          </Col>
+          <Col sm={2}>
+         
+          </Col>
+          <Col sm={2}>
+          
+          </Col>
+          <Col sm={2}>
+         
+          </Col>
+          <Col sm={4}>
+          <Button variant="outline-primary" 
+                   onClick={(e) => ADD_New_Item(e)}
+                   style={{marginLeft:185}}
+                   >Add New Student</Button>
+          </Col>
+        </Row>
         <Row>
           <Col sm={12}> 
             <h2>Search Results</h2>
@@ -857,17 +852,17 @@ function formatDate(date) {
 
                     />
 
-                    {/*
+                    
                     <ModalForStudentSearch
                        actionLabel = "Add"
                        title = "Student"
                        showPrimaryModal={show2}
                        close="Close"
                        Submit="Submit"
-                       handleClickOne={() => ADD_New_Item}
+                       handleClickOne={() => AddNewStudentRecord}
                        handleClosePrimary={() => closeModalSecondary}
                     />
-                  */}
+                  
                 
                   </Col>
                 </Row>
