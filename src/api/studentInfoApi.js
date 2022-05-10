@@ -293,6 +293,20 @@ export class studentInfoApi {
       
     }
 
+    async  AddOrUpdateStudentRecordFromSearch(studentRecord){
+        var url = Config.REST_URL + '/api/StudentEntryData/AddOrUpdateStudentRecordFromSearch/';
+        try {
+             return await axios.post(url, studentRecord)
+             .then(res => {
+                 return res.data;
+             });
+        } catch(err) {
+         console.log("Issue writing student record error = : " + err)
+         return false;
+        }
+       
+     }
+
     async  insertLogData(Log){
         var url = Config.REST_URL + '/api/Admin/insertLogData/';
         try {

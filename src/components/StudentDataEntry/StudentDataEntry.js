@@ -215,7 +215,7 @@ function StudentDataEntry() {
    async function fetchSearchDDListDataFTBO() {        
     let _DD_LIST_DATA = [];
     var myAPI = new studentInfoApi;
-    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Foods To Be Ommitted')
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Foods To Be Omitted')
 
     var _DDSSelect = document.getElementById('ddFTBOList'); 
       //clear list to add new ones
@@ -230,7 +230,7 @@ function StudentDataEntry() {
    async function fetchSearchDDListDataNutSub() {        
     let _DD_LIST_DATA = [];
     var myAPI = new studentInfoApi;
-    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Nutrition Supplement')
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Nutrition Supplements')
 
     var _DDSSelect = document.getElementById('ddNutSubList'); 
       //clear list to add new ones
@@ -245,7 +245,7 @@ function StudentDataEntry() {
    async function fetchSearchDDListDataMilkSub() {        
     let _DD_LIST_DATA = [];
     var myAPI = new studentInfoApi;
-    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Milk Substitute')
+    _DD_LIST_DATA = await myAPI.fetchSearchDDListData('Milk Substitutes')
 
     var _DDSSelect = document.getElementById('ddMilkSubList'); 
       //clear list to add new ones
