@@ -340,8 +340,13 @@ function handleChange (e){
   }
 
   async function AddNewStudentRecord() {
-    if(student.studentID.length > 4 && 
-      student.schoolName.length > 4 )
+   
+
+   
+    await getNewValuesForStudentDataObject();
+
+    if(student.Student_ID.length > 4 && 
+      student.School.length > 4 )
     {
 
     }
@@ -350,7 +355,7 @@ function handleChange (e){
     }
 
     setShow2(false)
-    await getNewValuesForStudentDataObject();
+
     student.id = -999;
     var myAPI = new studentInfoApi;
     var _response = await myAPI.AddOrUpdateStudentRecordFromSearch(student);
@@ -368,19 +373,20 @@ function handleChange (e){
 
 
   async function EditStudent(){
-
-    if(student.id != '' && 
-    student.schoolName.length > 5 &
-    student.studentID.length >  5)
-    {
-
-    }
-    else{
-      return;
-    }
     
-    setShow(false)
+
       await getNewValuesForStudentDataObject();
+
+      if(student.id != '' && 
+      student.School.length > 5 &
+      student.Student_ID.length >  2)
+      {
+        setShow(false)
+      }
+      else{
+        return;
+      }
+      
       
       var myAPI = new studentInfoApi;
       var _response = await myAPI.AddOrUpdateStudentRecordFromSearch(student);
