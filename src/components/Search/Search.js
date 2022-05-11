@@ -59,6 +59,8 @@ function Search() {
                                               SchoolYear  :'',
                                               SupplementNameMore  :'',
                                               Texture_Modification2  :''});
+
+  const [checked, setChecked] = useState(false);
     
   
  useEffect(() => {
@@ -70,6 +72,43 @@ useEffect(() => {
 
 },[]);
 
+
+function twoCallsForCheckInactive(e)
+{
+  e.preventDefault();
+  setChecked(e.target.checked);
+  fetchInactiveStudents(e);
+}
+
+async function fetchInactiveStudents(e) { 
+  e.preventDefault();  
+  
+  let _SEARCH_DATA = [];
+
+  var chk_element = document.getElementById('checkInactiveStudents');
+  if(chk_element.checked) {} else 
+  {
+    setSearchResults([])
+    setChecked(false)
+    return;
+  }
+
+  var myAPI = new studentInfoApi;
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchInactiveStudents();
+    setSearchResults(_SEARCH_DATA)
+  }
+  catch(err)
+  {
+    console.log(err)
+    setSearchResults([]);
+  }
+  
+  //chk_element.checked = true
+  setChecked(true)
+
+}
   async function fetchSearchData(_SEARCH_STRING_) {         
       let _SEARCH_DATA = [];
       var myAPI = new studentInfoApi;
@@ -331,8 +370,8 @@ function handleChange (e){
   async function EditStudent(){
 
     if(student.id != '' && 
-    student.schoolName != '' &
-    student.studentID != '')
+    student.schoolName.length > 5 &
+    student.studentID.length >  5)
     {
 
     }
@@ -803,8 +842,15 @@ function formatDate(date) {
         <hr></hr>
         <Row>
          
-          <Col sm={2}>
-        
+          <Col sm={3}>
+          <input
+                      type="checkbox"
+                      name='checkInactiveStudents'
+                      id='checkInactiveStudents'
+                      checked={checked}
+                      onChange={(e)=> fetchInactiveStudents(e)}
+                       />
+                      <label style={{marginLeft:5}}>Inactive Students</label>
           </Col>
           <Col sm={2}>
          
@@ -815,10 +861,10 @@ function formatDate(date) {
           <Col sm={2}>
          
           </Col>
-          <Col sm={4}>
+          <Col sm={3}>
           <Button variant="outline-primary" 
                    onClick={(e) => ADD_New_Item(e)}
-                   style={{marginLeft:185}}
+                   
                    >Add New Student</Button>
           </Col>
         </Row>

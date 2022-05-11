@@ -1301,7 +1301,7 @@ async function  logChanges(e)
                       name='Date_Received'
                       id='Date_Received'
                       onChange={handleChange}
-                      style={{ width: 200 ,marginLeft:20}} />
+                      style={{ width: 200 ,marginLeft:10}} />
                   </Form.Group>
 
                   
@@ -1459,9 +1459,6 @@ async function  logChanges(e)
 
                     <hr></hr> 
 
-                    
-
-             
                     <Row>
                     <label  style={{ fontWeight:'bold' }}>Supplements and Milk Substitute</label>
                     </Row>
@@ -1534,9 +1531,8 @@ async function  logChanges(e)
           
 
                     <Row className="mb-6"> 
-                    <label>Other Supplements</label>
-                        <Form.Group as={Col}>
-                          {/*<Form.Label>Other Supplements</Form.Label>*/}
+                    <label style={{marginLeft:10}}>Other Supplements</label>
+                        <Form.Group as={Col} style={{marginLeft:10}}>
                           <Form.Control
                           as="textarea"
                           name='SupplementNameMore'

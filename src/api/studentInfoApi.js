@@ -96,6 +96,7 @@ export class studentInfoApi {
  
      }
 
+     //
      async  fetchSearchData(_SEARCH_STRING_){
         var url = Config.REST_URL + '/api/StudentEntryData/fetchStudentEntryDataAdminAndSearch/'
         url +=_SEARCH_STRING_;
@@ -112,6 +113,23 @@ export class studentInfoApi {
         }
  
      }
+
+     async  fetchInactiveStudents(){
+        var url = Config.REST_URL + '/api/StudentEntryData/fetchInactiveStudents/'
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
 
      async  fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_){
         var url = Config.REST_URL + '/api/StudentEntryData/fetchStudentEntryDataAdminAndSearchLikeClauses/'
