@@ -346,9 +346,11 @@ function handleChange (e){
     await getNewValuesForStudentDataObject();
 
     if(student.Student_ID.length > 4 && 
-      student.School.length > 4 )
+      student.School.length > 4  &&
+      student.School !='--Select--')
     {
-
+       //console.log('School Length ' + student.School.length + ' And School Name ' + student.School)
+       //return;
     }
     else{
       return;
@@ -379,8 +381,11 @@ function handleChange (e){
 
       if(student.id != '' && 
       student.School.length > 5 &
-      student.Student_ID.length >  2)
+      student.Student_ID.length >  2 &
+      student.School !='--Select--')
       {
+        //console.log('School Length ' + student.School.length + ' And School Name ' + student.School + 'And Student ID = ' +student.Student_ID) 
+        //return;
         setShow(false)
       }
       else{
