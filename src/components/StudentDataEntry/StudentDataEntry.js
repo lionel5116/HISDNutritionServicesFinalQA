@@ -401,10 +401,14 @@ async function fetchSchoolWideTrainingNotes(_school) {
         student.FirstName != '' &&
         student.LastName != '' )
         {
-            //we are good to go       
+            //we are good to go  
+            //console.log(student);
+            //return;     
   
         }
         else{
+          //console.log(student);
+          //return;
           openAlertError('You must have at least the following: StudentID,School,First and Last Name!!!!');
           setrecordSuccessShowHide('block')
           return;
@@ -637,7 +641,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
           case 'Student_ID':
               setStudent({ ...student, Student_ID: value });
               setStudentID(student.Student_ID)
-              if(_studentid_ != '')
+              if(student.Student_ID != '')
               {
                 setShouldDisplayAttachment('block')
               }
@@ -1051,8 +1055,8 @@ async function  logChanges(e)
       studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
       //set this because the onChange is not fired
       student.Student_ID = studentIDField.value;
-      setStudendID(student.studentID)
-      if(_studentid_ != '')
+      setStudentID(student.studentID)
+      if(student.studentID != '')
       {
         setShouldDisplayAttachment('block')
       }
