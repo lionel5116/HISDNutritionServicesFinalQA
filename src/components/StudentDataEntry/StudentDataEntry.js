@@ -953,9 +953,9 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
   {
     if(_DATA[0].NameOfInstitution !='')
     {
-      student.schoolName = _DATA[0].NameOfInstitution;
+      student.School = _DATA[0].NameOfInstitution;
       //YOU CAN ONLY DO AWAITS INSIDE OF AN ASYNC FUNCTION!!!!
-      await setDropDownValuesAndSchoolListings(student.schoolName);
+      await setDropDownValuesAndSchoolListings(student.School);
     }
 
     var _Birthday = document.getElementById('Birthday')
