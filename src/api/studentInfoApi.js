@@ -181,6 +181,22 @@ export class studentInfoApi {
  
      }
 
+     async  getCurrentSchoolYear(){
+        var url = Config.REST_URL + '/api/Admin/getCurrentSchoolYear/'
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible bad endpoint " + err)
+          return []
+        }
+ 
+     }
+
      async  UpdateDDListItem(strFieldValues){
         var url = Config.REST_URL + '/api/Admin/UpdateDDListItem/'
         url +=strFieldValues;

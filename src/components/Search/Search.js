@@ -377,7 +377,17 @@ function handleChange (e){
   async function EditStudent(){
     
 
+      var myAPI = new studentInfoApi;
+      var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+     
+
       await getNewValuesForStudentDataObject();
+
+      if(student.SchoolYear != _current_SchoolYear)
+      {
+           return;  //if not current school year, don't allow edit
+      }
+
 
       if(student.id != '' && 
       student.School.length > 5 &
@@ -544,7 +554,7 @@ function handleChange (e){
     setStudentID(_DD_STUDENT_RECORD_DATA[0].Student_ID)
     await populateFormWithStudentData(_DD_STUDENT_RECORD_DATA);
     await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
-    await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
+    await setValueSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
 
    }
 
@@ -583,10 +593,11 @@ async function fetchSchoolYears() {
 
  }
 
-async function setDropDownValuesForSchoolYear(schoolYear)
+async function setValueSchoolYear(schoolYear)
 {
-  var _SchoolYear = document.getElementById('dd_school_years_modal');
+  var _SchoolYear = document.getElementById('SchoolYear');
   _SchoolYear.value = schoolYear
+  _SchoolYear.readOnly = true;
 }
 
 async function populateFormWithStudentData(fieldData)
@@ -737,6 +748,10 @@ function formatDate(date) {
   {
     dataField: 'School',
     text: 'School',
+  },
+  {
+    dataField: 'SchoolYear',
+    text: 'SchoolYear',
   },
   {
     dataField: 'currStudentYesNo',
@@ -902,7 +917,7 @@ function formatDate(date) {
                       title = "Student"
                       showPrimaryModal={show}
                       close="Close"
-                      Submit="Submit"
+                      Submit="View/Submit"
                       handleClickOne={() => EditStudent}
                       handleClosePrimary={() => closeModalPrimary}
                       handleChange={() => handleChange}

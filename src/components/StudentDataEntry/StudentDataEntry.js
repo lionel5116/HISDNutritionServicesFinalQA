@@ -128,12 +128,15 @@ function StudentDataEntry() {
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
         setFullNameFromSearch(location.fullName)
         student.id = id;
+       
         fetchSingeRecordByRecordID(id) ;
         setStudentID(student.Student_ID);
     }
     else{
+      //means this is a new record
       //this used to be in a reusable control, moved this component
       fetchSchoolListingData();
+      setSchoolYearValue('new');
     }
     
    }, [location]);
@@ -187,7 +190,7 @@ function StudentDataEntry() {
     //by the time this the base fields are rendered, we ca.sn now set the drop-downs for the
     //School Year and School (using async to pause the thread)
     await setDropDownValuesAndSchoolListings(_DD_STUDENT_RECORD_DATA[0].School)
-    await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
+    //await setDropDownValuesForSchoolYear(_DD_STUDENT_RECORD_DATA[0].SchoolYear)
 
     if(_DD_STUDENT_RECORD_DATA[0].School != "")
     {
@@ -436,9 +439,13 @@ async function fetchSchoolWideTrainingNotes(_school) {
     {
      
 
-    student.SchoolYear= fieldData[0].SchoolYear
     student.School= fieldData[0].School
     student.Menu_Color= fieldData[0].Menu_Color
+
+    var _SchoolYear = document.getElementById('SchoolYear');
+    _SchoolYear.value  = fieldData[0].SchoolYear
+    student.SchoolYear = _SchoolYear.value;
+    setSchoolYearValue('existing');
 
      var _Student_ID = document.getElementById('Student_ID');
      _Student_ID.value = fieldData[0].Student_ID
@@ -620,6 +627,33 @@ async function fetchSchoolWideTrainingNotes(_school) {
  
     }
 
+    async function setSchoolYearValue(mode)
+    {
+      var myAPI = new studentInfoApi;
+      var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      var _SchoolYear = document.getElementById('SchoolYear');
+
+      var btnSubmitSaveButton = document.getElementById('btnAddOrUpdateStudentRecord')
+
+      if(mode == 'new')
+      {
+        _SchoolYear.value = _current_SchoolYear
+        _SchoolYear.readOnly = true;
+      }
+      else if(mode == 'existing' )
+      {
+        _SchoolYear.readOnly = true;
+        console.log(_current_SchoolYear);
+        if(student.SchoolYear != _current_SchoolYear)
+        {
+          btnSubmitSaveButton.disabled = true;
+        }
+      }
+
+
+ 
+    }
+
    function renderMultiSelectsWithValuesFromFetch(elementSelectedID,fieldValue)
    {
     if (fieldValue.length > 2) {
@@ -666,9 +700,11 @@ async function fetchSchoolWideTrainingNotes(_school) {
               setStudent({ ...student, Birthday: value });
               break;
 
+          /*
           case 'ddSchoolYears':
               setStudent({ ...student, SchoolYear: value });
               break;
+          */
 
           case 'Date_Received':
               setStudent({ ...student, Date_Received: value });
@@ -1049,12 +1085,22 @@ async function  logChanges(e)
 
    //UTILITY METHODS
   //Utility Methods *****
-  const generateStudentID =()=>
-    {
+   async function generateStudentID() {
+  
       var studentIDField = document.getElementById('Student_ID');
       studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
       //set this because the onChange is not fired
       student.Student_ID = studentIDField.value;
+
+      //set school year dropdown value to current school year
+      //var myAPI = new studentInfoApi;
+      //var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      
+      //var _ddSchoolYears = document.getElementById('ddSchoolYears');
+      //console.log(_current_SchoolYear)
+      //_ddSchoolYears.value = _current_SchoolYear;
+      
+
       setStudentID(student.studentID)
       if(student.studentID != '')
       {
@@ -1111,6 +1157,13 @@ async function  logChanges(e)
       console.log("Value for School " + currentSchoolName);
       console.log("Value for MedicalCondition " + currentMedicalCondition);
     }
+
+    async function getCurrentSchoolYear() {        
+      let _current_SchoolYear = '';
+      var myAPI = new studentInfoApi;
+      _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      return _current_SchoolYear;
+     }
 
     
       //attachments
@@ -1217,7 +1270,7 @@ async function  logChanges(e)
                     <Button
                       variant="warning"
                       type="button"
-                      onClick={() => generateStudentID()}
+                      onClick={(e) => generateStudentID(e)}
                  
                     >
                       Generate Temp Student ID
@@ -1309,11 +1362,12 @@ async function  logChanges(e)
                     School Year
                   </Col>
                   <Col sm={5}>
-                    <SchoolYearDropDown
-                      handleChange={(e) => handleChange(e)}
-                      name="ddSchoolYears"
-                      id="ddSchoolYears"
-                    />
+                      <input
+                      type="text"
+                      name="SchoolYear"
+                      id="SchoolYear"
+                      style={{ width:300}}
+                    ></input>
                   </Col>
                 </Row>
 
@@ -1709,6 +1763,8 @@ async function  logChanges(e)
                 <Button
                   variant="primary"
                   onClick={(e) => AddOrUpdateStudentRecord(e)}
+                  id='btnAddOrUpdateStudentRecord'
+                  name='btnAddOrUpdateStudentRecord'
                 >
                   Save
                 </Button>

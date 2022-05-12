@@ -89,22 +89,18 @@ function ModalForStudentSearch(props) {
             </Col>
           </Row>
           <br></br>
-          <Row>
-            <Col
-              sm={1.75}
-              style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
-            >
-              School Year
-            </Col>
-            <Col sm={5}>
-              <select
-                class="form-select form-select-sm"
-                aria-label=".form-select-sm example"
-                style={{ width: 150 }}
-                name='dd_school_years_modal'
-                id='dd_school_years_modal'
-              ></select>
-            </Col>
+          <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    School Year
+                  </Col>
+                  <Col sm={5}>
+                      <input
+                      type="text"
+                      name="SchoolYear"
+                      id="SchoolYear"
+                      style={{ width:300}}
+                    ></input>
+                  </Col>
           </Row>
           <br></br>
           <Row>

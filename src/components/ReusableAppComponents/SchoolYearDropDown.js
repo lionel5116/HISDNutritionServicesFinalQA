@@ -11,8 +11,19 @@ function SchoolYearDropDown(props) {
   async function fetchSchoolYears() {         
     let _SCHOOL_YEAR_DATA = [];
     var myAPI = new studentInfoApi;
-    _SCHOOL_YEAR_DATA = await myAPI.fetchSchoolYears()
-   
+    
+    /*
+    if(props.mode = 'new record')
+    {
+      _SCHOOL_YEAR_DATA = await myAPI.getCurrentSchoolYear()
+    }
+    else if (props.mode = 'existing record'){
+      _SCHOOL_YEAR_DATA = await myAPI.fetchSchoolYears()
+    }
+    */
+    
+    _SCHOOL_YEAR_DATA = await myAPI.fetchSchoolYears();
+
     var _DDSchoolYearSelect = document.getElementById('ddSchoolYears'); 
 
     _DDSchoolYearSelect.options[_DDSchoolYearSelect.options.length] = new Option('--Select--');
