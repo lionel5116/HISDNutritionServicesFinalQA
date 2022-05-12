@@ -1167,521 +1167,554 @@ async function  logChanges(e)
     <div>
       <main>
         <Container>
-        <AlertDismissible 
-             show = {showAlert}
-             toogleAlert = {(e) => closeAlert(e)}
-             msgClass = {successMsg}
-             msgBody = {msgBody}
-             msgBody2 = {msgBody2}
-            />
+          <AlertDismissible
+            show={showAlert}
+            toogleAlert={(e) => closeAlert(e)}
+            msgClass={successMsg}
+            msgBody={msgBody}
+            msgBody2={msgBody2}
+          />
 
-        <h1>Student Record</h1> 
-          <Form style={{display:recordSuccessShowHide}}>
-        
-              <Row style={{display:'none'}}>
-               <Button variant="warning" type="button"
-                      onClick={() =>test()}
-                      >
-                      Testing Something with DD Lists
-                    </Button>
-               </Row>
+          <h1>Student Record</h1>
+          <Form style={{ display: recordSuccessShowHide }}>
+            <Row style={{ display: "none" }}>
+              <Button variant="warning" type="button" onClick={() => test()}>
+                Testing Something with DD Lists
+              </Button>
+            </Row>
 
-              <Tabs>
+            <Tabs>
               <Tab eventKey="StudentInformation" title="Student Information">
-                  <h2><label>{storeFullNameFromSearch}</label></h2>
-                <Row className="mb-3">
-                  <Form.Group as={Col} >
-                    <Form.Label>Student ID*</Form.Label>
-                    <Form.Control
+                <h2>
+                  <label>{storeFullNameFromSearch}</label>
+                </h2>
+                <Row className="mb-6">
+                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    Student ID*
+                  </Col>
+                  <Col sm={10}>
+                    <input
                       type="text"
-                      name='Student_ID'
-                      id='Student_ID'
+                      name="Student_ID"
+                      id="Student_ID"
                       onChange={handleChange}
+                      style={{ width:300,marginRight:10}}
+                    ></input>
 
-                    />
-                  </Form.Group>
-
-                  <Form.Group as={Col} >
-
-                    <Button variant="primary" type="button"
+                    <Button
+                      variant="primary"
+                      type="button"
                       onClick={(e) => searchStudent(e)}
-                      style={{ marginTop: 30 }}>
+                      style={{marginRight:10}}
+                    >
                       Search Student
                     </Button>
 
-                    <Button variant="warning" type="button"
+                    <Button
+                      variant="warning"
+                      type="button"
                       onClick={() => generateStudentID()}
-                      style={{ marginLeft: 10, marginTop: 30 }}>
-                      Generate StudentID
+                 
+                    >
+                      Generate Temp Student ID
                     </Button>
+                  </Col>
 
-                  </Form.Group>
+                </Row>
 
-                  <Form.Group as={Col} >
+                <Row>
+                  <Form.Group as={Col}>
                     <input
                       type="checkbox"
-                      name='Current_Student'
-                      id='Current_Student'
+                      name="Current_Student"
+                      id="Current_Student"
                       onChange={handleChange}
-                      style={{ marginLeft: 10, marginTop: 30 }} />
-                      <Form.Label style={{ marginTop: 30 ,marginRight:20}}>Current Student</Form.Label>
-                  </Form.Group>
-                </Row>
-               
-               <Row>        
-                <Col sm={1.75} style={{marginRight:20,marginLeft:20}}>
-                   School Name
-                </Col>   
-                    <Col sm={5}>        
-                           <select class="form-select form-select-sm" 
-                            aria-label=".form-select-sm example" 
-                            style={{ width: 300 }} 
-                            name='ddSchoolListings'
-                            id='ddSchoolListings'
-                            onChange={handleChange}>
-                            </select>
-                            </Col>
-                   </Row>
-
-                   <br></br>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} >
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name='FirstName'
-                      id='FirstName'
-                      onChange={handleChange}
-
+                      style={{ marginRight:10}}
                     />
+                    <Form.Label 
+                    >
+                      Current Student
+                    </Form.Label>
                   </Form.Group>
+                </Row>
 
-                  <Form.Group as={Col} >
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control
+                <Row>
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    School Name
+                  </Col>
+                  <Col sm={5}>
+                    <select
+                      class="form-select form-select-sm"
+                      aria-label=".form-select-sm example"
+                      style={{ width: 300 }}
+                      name="ddSchoolListings"
+                      id="ddSchoolListings"
+                      onChange={handleChange}
+                    ></select>
+                  </Col>
+                </Row>
+
+                <br></br>
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    First Name
+                  </Col>
+                  <Col sm={5}>
+                    <input
                       type="text"
-                      name='LastName'
-                      id='LastName'
+                      name="FirstName"
+                      id="FirstName"
                       onChange={handleChange}
+                      style={{ width:300}}
+                    ></input>
+                  </Col>
+                </Row>
 
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    Last Name
+                  </Col>
+                  <Col sm={5}>
+                    <input
+                      type="text"
+                      name="LastName"
+                      id="LastName"
+                      onChange={handleChange}
+                      style={{ width:300}}
+                    ></input>
+                  </Col>
+                </Row>
+
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    Date of Birth
+                  </Col>
+                  <Col sm={5}>
+                    <input
+                      type="date"
+                      name="Birthday"
+                      id="Birthday"
+                      onChange={handleChange}
+                      style={{ width:150}}
+                    ></input>
+                  </Col>
+                </Row>
+
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    School Year
+                  </Col>
+                  <Col sm={5}>
+                    <SchoolYearDropDown
+                      handleChange={(e) => handleChange(e)}
+                      name="ddSchoolYears"
+                      id="ddSchoolYears"
                     />
-                  </Form.Group>
-
-
-                  <Form.Group className="mb-3">
-                    <Form.Label>Birthday</Form.Label>
-                    <Form.Control
-                      type="date"
-                      name='Birthday'
-                      id='Birthday'
-                      onChange={handleChange}
-                      style={{ width: 200 }} />
-                  </Form.Group>
-
-                  <Form.Group as={Col} >
-                    <Form.Label>School Year</Form.Label>
-                      <SchoolYearDropDown 
-                          handleChange = {(e) =>handleChange(e)}
-                          name='ddSchoolYears'
-                          id='ddSchoolYears'
-                          />
-                    
-                   
-                  </Form.Group>
-
+                  </Col>
                 </Row>
-  
+
                 <Row className="mb-3">
-
-                <Form.Group className="mb-3">
-                    <Form.Label style={{ marginLeft:20}}>Date Received</Form.Label>
-                    <Form.Control
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    Date Received
+                  </Col>
+                  <Col sm={5}>
+                    <input
                       type="date"
-                      name='Date_Received'
-                      id='Date_Received'
+                      name="Date_Received"
+                      id="Date_Received"
                       onChange={handleChange}
-                      style={{ width: 200 ,marginLeft:10}} />
-                  </Form.Group>
-
-                  
-                  <Form.Group className="mb-3">
-                    <Form.Label style={{ marginLeft:50}}>Date Processed</Form.Label>
-                    <Form.Control
-                      type="date"
-                      name='Date_Processed'
-                      id='Date_Processed'
-                      onChange={handleChange}
-                      style={{ width: 200 ,marginLeft:50}} />
-                  </Form.Group>
+                      style={{ width:150}}
+                    ></input>
+                  </Col>
                 </Row>
-               
+
                 <Row className="mb-3">
-                <Form.Group className="mb-3">
-                    <Form.Label style={{ marginLeft:10}}> Processing Notes</Form.Label>
-                    <Form.Control
-                    as="textarea"
-                    name='Notes'
-                    id='Notes'
-                    onChange={handleChange}
-                   
-                    style={{ height: '100px',width:1000,marginLeft:10 }}
-                   />
-                  </Form.Group>
-
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                    Date Processed
+                  </Col>
+                  <Col sm={5}>
+                    <input
+                      type="date"
+                      name="Date_Processed"
+                      id="Date_Processed"
+                      onChange={handleChange}
+                      style={{ width:150}}
+                    ></input>
+                  </Col>
                 </Row>
 
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  Notes
+                  </Col>
+                  <Col sm={5}>
+                    <textarea
+                      name="Notes"
+                      id="Notes"
+                      onChange={handleChange}
+                      style={{ height: "100px", width: 750}}
+                    ></textarea>
+                  </Col>
+                </Row>
+              </Tab>
 
-               </Tab>
-
-               <Tab eventKey="DietaryAccommodations" title="Dietary Accommodations">
-
-               <Row className="mb-3"> 
-               <Form.Group className="mb-3">
+              <Tab
+                eventKey="DietaryAccommodations"
+                title="Dietary Accommodations"
+              >
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
                     <Form.Label>Medical Diagnosis</Form.Label>
                     <Form.Control
-                    as="textarea"
-                    name='Medical_Condition'
-                    id='Medical_Condition'
-                    onChange={handleChange}
-                   
-                    style={{ height: '100px',width:500 }}
-                   />
+                      as="textarea"
+                      name="Medical_Condition"
+                      id="Medical_Condition"
+                      onChange={handleChange}
+                      style={{ height: "100px", width: 500 }}
+                    />
                   </Form.Group>
-               </Row>
+                </Row>
 
-               <Row className="mb-3" style={{ display: 'block' }}> 
-                    <input
-                      type="checkbox"
-                      name='Disabled'
-                      id='Disabled'
-                      onChange={handleChange}
-                      />
-                      <Form.Label >Disabled</Form.Label>
-                      <br></br>
-                      <input
-                      type="checkbox"
-                      name='LTA'
-                      id='LTA'
-                      onChange={handleChange}
-                       />
-                       <Form.Label >LTA</Form.Label>
-                       <br></br>
-                       <input
-                      type="checkbox"
-                      name='NeedsF_U'
-                      id='NeedsF_U'
-                      onChange={handleChange}
-                       />
-                       <Form.Label >Needs F/U</Form.Label>
-               </Row>
+                <Row className="mb-3" style={{ display: "block" }}>
+                  <input
+                    type="checkbox"
+                    name="Disabled"
+                    id="Disabled"
+                    onChange={handleChange}
+                  />
+                  <Form.Label>Disabled</Form.Label>
+                  <br></br>
+                  <input
+                    type="checkbox"
+                    name="LTA"
+                    id="LTA"
+                    onChange={handleChange}
+                  />
+                  <Form.Label>LTA</Form.Label>
+                  <br></br>
+                  <input
+                    type="checkbox"
+                    name="NeedsF_U"
+                    id="NeedsF_U"
+                    onChange={handleChange}
+                  />
+                  <Form.Label>Needs F/U</Form.Label>
+                </Row>
 
-                <hr></hr>   
-            
-               <Row>
-               <Form.Group as={Col} >
-               <Form.Label style={myStyles.genericDropDownHeaderLabels}>Foods to be Ommitted</Form.Label>
-               <GenericMultiSelectCombo 
-                   name_ddLeft = 'ddFTBOList'
-                   name_ddRight = 'ddFTBOList_Selected'
-                   buttonRight = 'btnSelectRightFTBO'
-                   buttonLeft = 'btnSelectLeftFTBO'
-                   label_ddLeft = 'Available Foods to Exclude'
-                   label_ddRight = 'Selected Foods to Exclude'
-                   handleClickRight = {(e) =>handleClickRightFTBO(e)}
-                   handleClickLeft = {(e) =>handleClickLeftFTBO(e)}
-                />
-                
-               </Form.Group >
-               </Row>
-               {/*<Row style={{display:'none'}}> */}
-               <Row style={{display:'none'}}>
-               <Col sm={6}>
-                  <input type='text' 
-                   id='Foods_to_be_Omitted'
-                   name='Foods_to_be_Omitted' 
-                   onChange={handleChange}/>
-                </Col>
-               </Row>
-  
-                    <br></br>
-                  
-                  <Row className="mb-6">
-                    <label>Allowable Substitutes</label>
+                <hr></hr>
+
+                <Row>
                   <Form.Group as={Col}>
-                            {/*<Form.Label>Substitution</Form.Label>*/}
-                            <Form.Control
-                            as="textarea"
-                            name='Substitution'
-                            id='Substitution'
-                            style={{ height: '100px',width:350 }}
-                            onChange={handleChange}
-                            
-                        />
-                        </Form.Group>
-                  </Row>
-
-                    <Row className="mb-6" style={{ display: 'block' }}>
-                    
-                          <Form.Group as={Col}>
-                            <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
-                   
-                            <Form.Control as="select"
-                                
-                                name='ddMenuColor'
-                                id='ddMenuColor'
-                                style={myStyles.ddMenuColorPaddingAndWidth}
-                                onChange={handleChange}
-                              >
-                                <option></option>
-                                <option>Blue</option>
-                                <option>Red</option>
-                                <option>Green</option>
-                            </Form.Control>
-                        </Form.Group>
-
-                        <br></br>
-                        
-                        <Form.Group as={Col}>
-                            <Form.Label style={myStyles.ddlabel}>Menu Code</Form.Label>
-                    
-                            <Form.Control as="select"
-                                name='ddMenuCode'
-                                id='ddMenuCode'
-                                style={myStyles.ddMenuColorPaddingAndWidth}
-                                onChange={handleChange}
-                            >
-                                <option></option>
-                            </Form.Control>
-                        </Form.Group>
-
-                    </Row>
-
-                    <hr></hr> 
-
-                    <Row>
-                    <label  style={{ fontWeight:'bold' }}>Supplements and Milk Substitute</label>
-                    </Row>
-                    <br></br>
-
-                    <Row>
-                    <Form.Group as={Col} >
-                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>Nutrition Supplement</Form.Label>
-                    <GenericMultiSelectCombo 
-                        name_ddLeft = 'ddNutSubList'
-                        name_ddRight = 'ddNutSubList_Selected'
-                        buttonRight = 'btnSelectRightNutSub'
-                        buttonLeft = 'btnSelectLeftNutSub'
-                        label_ddLeft = 'Available Milk Substitutes'
-                        label_ddRight = 'Selected Milk Substitutes'
-                        handleClickRight = {(e) =>handleClickRightNutSub(e)}
-                        handleClickLeft = {(e) =>handleClickLeftNutSub(e)}
-                      />
-                      
-                    </Form.Group >
-                    </Row>
-
-                <Row style={{display:'none'}}>
-                  <Col sm={6}>
-                    <input type='text' 
-                    id='SupplementName'
-                    name='SupplementName' 
-                    onChange={handleChange}/>
-                  </Col>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>
+                      Foods to be Ommitted
+                    </Form.Label>
+                    <GenericMultiSelectCombo
+                      name_ddLeft="ddFTBOList"
+                      name_ddRight="ddFTBOList_Selected"
+                      buttonRight="btnSelectRightFTBO"
+                      buttonLeft="btnSelectLeftFTBO"
+                      label_ddLeft="Available Foods to Exclude"
+                      label_ddRight="Selected Foods to Exclude"
+                      handleClickRight={(e) => handleClickRightFTBO(e)}
+                      handleClickLeft={(e) => handleClickLeftFTBO(e)}
+                    />
+                  </Form.Group>
                 </Row>
-                    <br></br>
-
-                    <Row>
-                    <Form.Group as={Col} >
-                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>Milk Substitute</Form.Label>
-                    <GenericMultiSelectCombo 
-                        name_ddLeft = 'ddMilkSubList'
-                        name_ddRight = 'ddMilkSubList_Selected'
-                        buttonRight = 'btnSelectRightMilkSub'
-                        buttonLeft = 'btnSelectLeftMilkSub'
-                        label_ddLeft = 'Available Nutrition Supplements'
-                        label_ddRight = 'Selected Nutrition Supplements'
-                        handleClickRight = {(e) =>handleClickRightMilkSub(e)}
-                        handleClickLeft = {(e) =>handleClickLeftMilkSub(e)}
-                      />
-                      
-                    </Form.Group >
-                    </Row>
-
-                <Row style={{display:'none'}}>
+                {/*<Row style={{display:'none'}}> */}
+                <Row style={{ display: "none" }}>
                   <Col sm={6}>
-                    <input type='text' 
-                    id='Milk_Sub_Name'
-                    name='Milk_Sub_Name' 
-                    onChange={handleChange}/>
+                    <input
+                      type="text"
+                      id="Foods_to_be_Omitted"
+                      name="Foods_to_be_Omitted"
+                      onChange={handleChange}
+                    />
                   </Col>
                 </Row>
 
-            
-                    <Row className="mb-3" style={{ display: 'block' }}>
-                      <input
-                        type="checkbox"
-                        name='NPO'
-                        id='NPO'
-                        onChange={handleChange}
-                        style={{ marginLeft: 10,marginTop: 30 }} />
-                        <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
-                  
-                    </Row>
-          
+                <br></br>
 
-                    <Row className="mb-6"> 
-                    <label style={{marginLeft:10}}>Other Supplements</label>
-                        <Form.Group as={Col} style={{marginLeft:10}}>
-                          <Form.Control
-                          as="textarea"
-                          name='SupplementNameMore'
-                          id='SupplementNameMore'
-                          onChange={handleChange}
-                        
-                          style={{ height: '100px',width:350 }}
-                        />
-                        </Form.Group>
-                    </Row>
+                <Row className="mb-6">
+                  <label>Allowable Substitutes</label>
+                  <Form.Group as={Col}>
+                    {/*<Form.Label>Substitution</Form.Label>*/}
+                    <Form.Control
+                      as="textarea"
+                      name="Substitution"
+                      id="Substitution"
+                      style={{ height: "100px", width: 350 }}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Row>
 
-                 <hr></hr>
-                   <Row>
-                    <label  style={{ fontWeight:'bold' }}>Texture Modification</label>
-                    </Row>
-                    <Row className="mb-6">
-                        
-                        <Form.Group as={Col} >
-                            <Form.Label style={myStyles.ddlabel}>Liquids</Form.Label>
-                            <Form.Control as="select"
-                                name='Texture_Modification'
-                                id='Texture_Modification'
-                                style={myStyles.ddMenuTextureModPaddingAndWidth}
-                                onChange={handleChange}   
-                            >
-                            <option></option>
-                            <option>Mildly Thick Liquid (Level 2)</option>
-                            <option>Moderately Thick Liquid (Level 3)</option>
-                            <option>Extremely Thick Liquid (Level 4)</option>
-                            </Form.Control>
-                        </Form.Group>
+                <Row className="mb-6" style={{ display: "block" }}>
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
 
-                        <Form.Group as={Col} >
-                            <Form.Label style={myStyles.ddlabel}>Solids</Form.Label>
-                            <Form.Control as="select"
-                                name='Texture_Modification2'
-                                id='Texture_Modification2'
-                                style={myStyles.ddMenuTextureModPaddingAndWidth}
-                                onChange={handleChange}
-                            >
-                            <option></option>
-                            <option>Soft & Bite-Sized Solids (Level 6)</option>
-                            <option>Minced & Moist Solids (Level 5)</option>
-                            <option>Pureed Solids (Level 4)</option>
-                            </Form.Control>
-                        </Form.Group>
+                    <Form.Control
+                      as="select"
+                      name="ddMenuColor"
+                      id="ddMenuColor"
+                      style={myStyles.ddMenuColorPaddingAndWidth}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                      <option>Blue</option>
+                      <option>Red</option>
+                      <option>Green</option>
+                    </Form.Control>
+                  </Form.Group>
 
-                    </Row>
-               </Tab>
+                  <br></br>
 
-               <Tab eventKey="Documentation" title="Documentation">
-               <br></br>
-                    <Row className="mb-3"> 
-                      <Form.Group className="mb-3">
-                      <Form.Label>Current Order Date</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name='CurrentOrderDate'
-                        id='CurrentOrderDate'
-                        onChange={handleChange}
-                        style={{ width: 200 }} />
-                    </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.ddlabel}>Menu Code</Form.Label>
 
-                    </Row>
+                    <Form.Control
+                      as="select"
+                      name="ddMenuCode"
+                      id="ddMenuCode"
+                      style={myStyles.ddMenuColorPaddingAndWidth}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                    </Form.Control>
+                  </Form.Group>
+                </Row>
 
-                    <Row className="mb-3"> 
-                        <Form.Group className="mb-3">
-                          <Form.Label>Physician Diet Order Notes</Form.Label>
-                          <Form.Control
-                          as="textarea"
-                          name='Diet_Order_Notes'
-                          id='Diet_Order_Notes'
-                          onChange={handleChange}
-                        
-                          style={{ height: '100px',width:1000 }}
-                        />
-                        </Form.Group>
-                    </Row>
-                    <hr></hr>
-                    <UploadFilesLight 
-                        btnFetchAttachments = 'btnFetchAttachments'
-                        displayAttachments = {shouldDisplayAttachment}
-                        studentID = {_studentid_}
-                        tblFiles = {tblFiles}
-                        fetchAttachments = {(e) => fetchAttachments(e)}
-                        
-                     />
+                <hr></hr>
 
-               </Tab>
+                <Row>
+                  <label style={{ fontWeight: "bold" }}>
+                    Supplements and Milk Substitute
+                  </label>
+                </Row>
+                <br></br>
 
-               <Tab eventKey="Training" title="Training">
-                   <br></br>
-                    <Row className="mb-3"> 
-                    <Form.Group className="mb-3">
-                          <Form.Label>School-Wide Training</Form.Label>
-                          <Form.Control
-                          as="textarea"
-                          name='txtSchoolWideTraining'
-                          id='txtSchoolWideTraining'
-                          style={{ height: '100px',width:1000 }}
-                          readOnly 
-                        />
-                        </Form.Group>
-                    </Row>
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>
+                      Nutrition Supplement
+                    </Form.Label>
+                    <GenericMultiSelectCombo
+                      name_ddLeft="ddNutSubList"
+                      name_ddRight="ddNutSubList_Selected"
+                      buttonRight="btnSelectRightNutSub"
+                      buttonLeft="btnSelectLeftNutSub"
+                      label_ddLeft="Available Milk Substitutes"
+                      label_ddRight="Selected Milk Substitutes"
+                      handleClickRight={(e) => handleClickRightNutSub(e)}
+                      handleClickLeft={(e) => handleClickLeftNutSub(e)}
+                    />
+                  </Form.Group>
+                </Row>
 
-                    <Row className="mb-3"> 
-                    <Form.Group className="mb-3">
-                          <Form.Label>School Training Notes</Form.Label>
-                          <Form.Control
-                          as="textarea"
-                          name='txtSchoolTraining'
-                          id='txtSchoolTraining'
-                          style={{ height: '100px',width:1000 }}
-                          readOnly 
-                        />
-                        </Form.Group>
-                    </Row>      
-                </Tab>
+                <Row style={{ display: "none" }}>
+                  <Col sm={6}>
+                    <input
+                      type="text"
+                      id="SupplementName"
+                      name="SupplementName"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                </Row>
+                <br></br>
 
-                <Tab eventKey="Communication" title="Communication">
-                   <br></br>
-                    <Row className="mb-3"> 
-                    <Form.Group className="mb-3">
-                          <Form.Label>Student Communication Notes</Form.Label>
-                          <Form.Control
-                          as="textarea"
-                          name='txtStudentCommunicationNotes'
-                          id='txtStudentCommunicationNotes'
-                          style={{ height: '100px',width:1000 }}
-                          readOnly 
-                        />
-                        </Form.Group>
-                    </Row>
-                </Tab>
-              </Tabs>
-            
-        
+                <Row>
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>
+                      Milk Substitute
+                    </Form.Label>
+                    <GenericMultiSelectCombo
+                      name_ddLeft="ddMilkSubList"
+                      name_ddRight="ddMilkSubList_Selected"
+                      buttonRight="btnSelectRightMilkSub"
+                      buttonLeft="btnSelectLeftMilkSub"
+                      label_ddLeft="Available Nutrition Supplements"
+                      label_ddRight="Selected Nutrition Supplements"
+                      handleClickRight={(e) => handleClickRightMilkSub(e)}
+                      handleClickLeft={(e) => handleClickLeftMilkSub(e)}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row style={{ display: "none" }}>
+                  <Col sm={6}>
+                    <input
+                      type="text"
+                      id="Milk_Sub_Name"
+                      name="Milk_Sub_Name"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                </Row>
+
+                <Row className="mb-3" style={{ display: "block" }}>
+                  <input
+                    type="checkbox"
+                    name="NPO"
+                    id="NPO"
+                    onChange={handleChange}
+                    style={{ marginLeft: 10, marginTop: 30 }}
+                  />
+                  <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
+                </Row>
+
+                <Row className="mb-6">
+                  <label style={{ marginLeft: 10 }}>Other Supplements</label>
+                  <Form.Group as={Col} style={{ marginLeft: 10 }}>
+                    <Form.Control
+                      as="textarea"
+                      name="SupplementNameMore"
+                      id="SupplementNameMore"
+                      onChange={handleChange}
+                      style={{ height: "100px", width: 350 }}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <hr></hr>
+                <Row>
+                  <label style={{ fontWeight: "bold" }}>
+                    Texture Modification
+                  </label>
+                </Row>
+                <Row className="mb-6">
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.ddlabel}>Liquids</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="Texture_Modification"
+                      id="Texture_Modification"
+                      style={myStyles.ddMenuTextureModPaddingAndWidth}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                      <option>Mildly Thick Liquid (Level 2)</option>
+                      <option>Moderately Thick Liquid (Level 3)</option>
+                      <option>Extremely Thick Liquid (Level 4)</option>
+                    </Form.Control>
+                  </Form.Group>
+
+                  <Form.Group as={Col}>
+                    <Form.Label style={myStyles.ddlabel}>Solids</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="Texture_Modification2"
+                      id="Texture_Modification2"
+                      style={myStyles.ddMenuTextureModPaddingAndWidth}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                      <option>Soft & Bite-Sized Solids (Level 6)</option>
+                      <option>Minced & Moist Solids (Level 5)</option>
+                      <option>Pureed Solids (Level 4)</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Row>
+              </Tab>
+
+              <Tab eventKey="Documentation" title="Documentation">
+                <br></br>
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Current Order Date</Form.Label>
+                    <Form.Control
+                      type="date"
+                      name="CurrentOrderDate"
+                      id="CurrentOrderDate"
+                      onChange={handleChange}
+                      style={{ width: 200 }}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Physician Diet Order Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="Diet_Order_Notes"
+                      id="Diet_Order_Notes"
+                      onChange={handleChange}
+                      style={{ height: "100px", width: 1000 }}
+                    />
+                  </Form.Group>
+                </Row>
+                <hr></hr>
+                <UploadFilesLight
+                  btnFetchAttachments="btnFetchAttachments"
+                  displayAttachments={shouldDisplayAttachment}
+                  studentID={_studentid_}
+                  tblFiles={tblFiles}
+                  fetchAttachments={(e) => fetchAttachments(e)}
+                />
+              </Tab>
+
+              <Tab eventKey="Training" title="Training">
+                <br></br>
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label>School-Wide Training</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="txtSchoolWideTraining"
+                      id="txtSchoolWideTraining"
+                      style={{ height: "100px", width: 1000 }}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label>School Training Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="txtSchoolTraining"
+                      id="txtSchoolTraining"
+                      style={{ height: "100px", width: 1000 }}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Row>
+              </Tab>
+
+              <Tab eventKey="Communication" title="Communication">
+                <br></br>
+                <Row className="mb-3">
+                  <Form.Group className="mb-3">
+                    <Form.Label>Student Communication Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      name="txtStudentCommunicationNotes"
+                      id="txtStudentCommunicationNotes"
+                      style={{ height: "100px", width: 1000 }}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Row>
+              </Tab>
+            </Tabs>
+
             <br></br>
-          <Row>
-            <Col sm={12}>
-              <Button variant="primary" onClick={(e) => AddOrUpdateStudentRecord(e)}>Save</Button>
-            </Col>
-          </Row>
+            <Row>
+              <Col sm={12}>
+                <Button
+                  variant="primary"
+                  onClick={(e) => AddOrUpdateStudentRecord(e)}
+                >
+                  Save
+                </Button>
+              </Col>
+            </Row>
           </Form>
         </Container>
       </main>
-
     </div>
-  )
+  );
 }
 
 const myStyles = {
