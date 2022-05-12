@@ -1189,7 +1189,7 @@ async function  logChanges(e)
                   <label>{storeFullNameFromSearch}</label>
                 </h2>
                 <Row className="mb-6">
-                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150,color:'red'}}>
                     Student ID*
                   </Col>
                   <Col sm={10}>
