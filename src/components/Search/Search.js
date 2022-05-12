@@ -374,8 +374,10 @@ function handleChange (e){
   }
 
 
-  async function EditStudent(){
-    
+   async function  EditStudent(){
+
+    // console.log("In EditStudent function.....")
+     //return;
 
       var myAPI = new studentInfoApi;
       var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
@@ -383,19 +385,13 @@ function handleChange (e){
 
       await getNewValuesForStudentDataObject();
 
-      if(student.SchoolYear != _current_SchoolYear)
-      {
-           return;  //if not current school year, don't allow edit
-      }
-
 
       if(student.id != '' && 
       student.School.length > 5 &
       student.Student_ID.length >  2 &
       student.School !='--Select--')
       {
-        //console.log('School Length ' + student.School.length + ' And School Name ' + student.School + 'And Student ID = ' +student.Student_ID) 
-        //return;
+        
         setShow(false)
       }
       else{
@@ -403,8 +399,20 @@ function handleChange (e){
       }
       
       
+      if(student.SchoolYear != _current_SchoolYear)
+      {
+        history.push(
+          {
+            pathname: '/StudentDataEntry',
+            search: '?id=' + student.id,
+            fullName: student.FirstName + ' ' + student.LastName
+    
+          })
+          return;
+      }
+      
       var myAPI = new studentInfoApi;
-      var _response = await myAPI.AddOrUpdateStudentRecordFromSearch(student);
+     var _response = await myAPI.AddOrUpdateStudentRecordFromSearch(student);
       if(_response > 0)
       {
         history.push(
@@ -545,7 +553,7 @@ function handleChange (e){
 
   async function fetchSingeRecordByRecordID(id) { 
     await fetchSchoolListingData();
-    await fetchSchoolYears();
+    //await fetchSchoolYears();
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
@@ -649,7 +657,7 @@ async function populateFormWithStudentData(fieldData)
 
 async function getNewValuesForStudentDataObject()
 {
-    var _SchoolYear = document.getElementById('dd_school_years_modal');
+    var _SchoolYear = document.getElementById('SchoolYear');
     student.SchoolYear= _SchoolYear.value;
 
     var _school = document.getElementById('ddSchoolListings2');
