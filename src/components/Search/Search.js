@@ -138,8 +138,26 @@ async function fetchInactiveStudents(e) {
   }
   
   setSearchResults(_SEARCH_DATA)
-  //console.log(_SEARCH_DATA)
+
 }
+
+async function fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING) {         
+  let _SEARCH_DATA = [];
+  var myAPI = new studentInfoApi;
+
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES_SearchObject(_SEARCH_STRING)
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  
+  setSearchResults(_SEARCH_DATA)
+
+}
+
 
 function handleChange (e){
   const { name, value } = e.target;
@@ -150,7 +168,15 @@ function handleChange (e){
      //only three values FirstName,LastName,School
   const searchMixed = () => {
 
+    var oSearchObject = {
+      searchType : '',
+      firstName : '',
+      lastName : '',
+      school : '',
+    }
+
     var _SEARCH_STRING = '';
+    var _SEARCH_STRING_NEW = '';
 
     var studentID = document.getElementById('txtStudentID');
     var FirstName = document.getElementById('txtFirstName');
@@ -185,15 +211,13 @@ function handleChange (e){
               //Search By First Name 
               //only three values FirstName,LastName,School
               console.log('Search By First Name')
-              _SEARCH_STRING += FirstName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "-"
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "-"
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "FIRST_NAME"
-              console.log("SEARCH_TYPE : FIRST_NAME");
-              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+          
+             
+              _SEARCH_STRING_NEW = "FIRST_NAME";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += FirstName.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+       
 
 
             }
@@ -204,16 +228,12 @@ function handleChange (e){
               School.value == "--Select--") {
               //Search By Last Name 
               console.log('Search By Last Name ')
-              _SEARCH_STRING += "-"
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += LastName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "-"
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "LAST_NAME"
+             
 
-              console.log("SEARCH_TYPE : LAST_NAME");
-              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+              _SEARCH_STRING_NEW = "LAST_NAME";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
 
             }
@@ -254,15 +274,13 @@ function handleChange (e){
               School.value == "--Select--") {
               //Search By Last Name and First Name
               console.log('Search By Last Name and First Name')
-              _SEARCH_STRING += FirstName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += LastName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "-"
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "LAST_FIRST_NAME"
-              console.log("SEARCH_TYPE : LAST_FIRST_NAME");
-              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+            
+              _SEARCH_STRING_NEW = "LAST_FIRST_NAME";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value;
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += FirstName.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
             }
             else if (studentID.value == "" &&
@@ -272,16 +290,48 @@ function handleChange (e){
               School.value != "--Select--") {
               //Search By Last Name and First Name and School Name
               console.log('Search By Last Name and First Name and School Name')
-              _SEARCH_STRING += FirstName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += LastName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += School.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "LAST_FIRST_NAME_SCHOOL"
+            
 
-              console.log("SEARCH_TYPE : LAST_FIRST_NAME_SCHOOL");
-              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+              _SEARCH_STRING_NEW = "LAST_FIRST_NAME_SCHOOL";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value;
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += FirstName.value;
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += School.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+
+            }
+            else if (studentID.value == "" &&
+              FirstName.value != "" &&
+              LastName.value == "" &&
+              SchoolYear.value == "--Select--" &&
+              School.value != "--Select--") {
+              console.log('FIRST_NAME_SCHOOL')
+            
+
+              _SEARCH_STRING_NEW = "FIRST_NAME_SCHOOL";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += FirstName.value;
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += School.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+
+            }
+            else if (studentID.value == "" &&
+              FirstName.value == "" &&
+              LastName.value == "" &&
+              SchoolYear.value != "--Select--" &&
+              School.value != "--Select--") {
+              console.log('SCHOOL_NAME_SCHOOL_YEAR')
+            
+
+              _SEARCH_STRING_NEW = "SCHOOL_NAME_SCHOOL_YEAR";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += School.value;
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += SchoolYear.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
             }
             else {
@@ -297,20 +347,20 @@ function handleChange (e){
               School.value != "--Select--") {
               //Search By all criteria
               console.log('Search all criteria')
-              _SEARCH_STRING += studentID.value;
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += FirstName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += LastName.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += School.value
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += SchoolYear.value;
-              _SEARCH_STRING += "|"
-              _SEARCH_STRING += "ALL_CRITERIA"
+             
 
-              console.log("SEARCH_TYPE : ALL_CRITERIA");
-              fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+              _SEARCH_STRING_NEW = "ALL_CRITERIA";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value
+              _SEARCH_STRING_NEW += "|"
+              _SEARCH_STRING_NEW += FirstName.value
+              _SEARCH_STRING_NEW += "|"
+              _SEARCH_STRING_NEW += School.value
+              _SEARCH_STRING_NEW += "|"
+ 		          _SEARCH_STRING_NEW += SchoolYear.value;
+              _SEARCH_STRING_NEW += "|"
+              _SEARCH_STRING_NEW += studentID.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
             }
             else {
@@ -376,15 +426,12 @@ function handleChange (e){
 
    async function  EditStudent(){
 
-    // console.log("In EditStudent function.....")
-     //return;
-
+    console.log("In EditStudent function.....")
+     
       var myAPI = new studentInfoApi;
       var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
-     
 
       await getNewValuesForStudentDataObject();
-
 
       if(student.id != '' && 
       student.School.length > 5 &
@@ -674,25 +721,17 @@ async function getNewValuesForStudentDataObject()
      var _LastName = document.getElementById('LastName');
      student.LastName = _LastName.value;
    
+    
+     /*you only format date when you are retrieving, not updating/editing */
      var _Birthday = document.getElementById('Birthday');
-     var dtTemp = new Date(_Birthday.value)
-     var formmatteTrueDate = formatDate(dtTemp).split(' ');
-     _Birthday.value = formmatteTrueDate[0]
      student.Birthday = _Birthday.value;
-
     
      var _Date_Received = document.getElementById('Date_Received');
-     var dtTemp = new Date(_Date_Received.value)
-     var formmatteTrueDate = formatDate(dtTemp).split(' ');
-     _Date_Received.value  = formmatteTrueDate[0]
      student.Date_Received = _Date_Received.value;
  
      var _Date_Processed = document.getElementById('Date_Processed');
-     var dtTemp = new Date(_Date_Processed.value)
-     var formmatteTrueDate = formatDate(dtTemp).split(' ');
-     _Date_Processed.value  = formmatteTrueDate[0]
      student.Date_Processed = _Date_Processed.value;
-
+    
 
      var _Notes = document.getElementById('Notes');
      student.Notes = _Notes.value
@@ -784,8 +823,8 @@ function formatDate(date) {
                Student ID
            </Col>
            <Col sm={1.5}>
-             <BootStrapSelectForSearch name ="selStudentID" />
-           </Col>
+                <label style={{ width:110}}>equals</label>
+            </Col>
            <Col sm={2}>
                <input type='text' id='txtStudentID' style={{ width:300}}/>
            </Col>
@@ -822,8 +861,8 @@ function formatDate(date) {
                School
            </Col>
            <Col sm={1.5}>
-               <BootStrapSelectForSearch />
-           </Col>
+                <label style={{ width:110}}>equals</label>
+            </Col>
            <Col sm={2}>
                <SchoolListDropDown 
                  handleChange = {(e) =>handleChange(e)}
@@ -837,8 +876,8 @@ function formatDate(date) {
                School Year
            </Col>
            <Col sm={1.5}>
-               <BootStrapSelectForSearch />
-           </Col>
+                <label style={{ width:110}}>equals</label>
+            </Col>
            <Col sm={2}>
               <SchoolYearDropDown 
                name='ddSchoolYears'

@@ -367,6 +367,24 @@ function CellFormatterSearchStudent(cell, row) {
 
   }
 
+  async function fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING) {         
+    let _SEARCH_DATA = [];
+    var myAPI = new studentInfoApi;
+  
+    try
+    {
+      _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES_SearchObject(_SEARCH_STRING)
+    }
+    catch(err)
+    {
+      console.log(err)
+    }
+    
+    setSearchStudents(_SEARCH_DATA)
+  
+  }
+
+
 
 const searchMixed = (e) => {
 
@@ -377,6 +395,7 @@ const searchMixed = (e) => {
   e.preventDefault();
 
   var _SEARCH_STRING = '';
+  var _SEARCH_STRING_NEW = '';
 
   var studentID = document.getElementById('txtStudentID');
   var LastName = document.getElementById('txtLastName');
@@ -403,16 +422,11 @@ const searchMixed = (e) => {
             LastName.value != "" &&
             School.value == "--Select--") {
             //Search By Last Name 
-            _SEARCH_STRING += "-"
-            _SEARCH_STRING += "|"
-            _SEARCH_STRING += LastName.value
-            _SEARCH_STRING += "|"
-            _SEARCH_STRING += "-"
-            _SEARCH_STRING += "|"
-            _SEARCH_STRING += "LAST_NAME"
-
-
-            fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+         
+            _SEARCH_STRING_NEW = "LAST_NAME";
+            _SEARCH_STRING_NEW +="|";
+            _SEARCH_STRING_NEW += LastName.value;
+            fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
           }
           else if (studentID.value == "" &&
@@ -439,15 +453,14 @@ const searchMixed = (e) => {
           School.value != "--Select--" ) {
           //Search By all criteria
 
-          _SEARCH_STRING += studentID.value;
-          _SEARCH_STRING += "|"
-          _SEARCH_STRING += LastName.value
-          _SEARCH_STRING += "|"
-          _SEARCH_STRING += School.value
-          _SEARCH_STRING += "|"
-          _SEARCH_STRING += "ALL_CRITERIA_STUD_COMM"
-
-          fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING);
+          _SEARCH_STRING_NEW = "ALL_CRITERIA_STUD_COMM";
+          _SEARCH_STRING_NEW +="|";
+          _SEARCH_STRING_NEW += studentID.value;
+          _SEARCH_STRING_NEW += "|"
+          _SEARCH_STRING_NEW += LastName.value
+          _SEARCH_STRING_NEW += "|"
+          _SEARCH_STRING_NEW += School.value
+          fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
 
         }
         else {

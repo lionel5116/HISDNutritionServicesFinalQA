@@ -148,6 +148,24 @@ export class studentInfoApi {
  
      }
 
+
+     async  fetchSearchData_LIKE_CLAUSES_SearchObject(_SEARCH_OBJECT_){
+        var url = Config.REST_URL + '/api/StudentEntryData/studentSearchScreenLikeClausesUsingObject/'
+        url += _SEARCH_OBJECT_;
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
      async  fetchStudentTempIDRecords(){
         var url = Config.REST_URL + '/api/Admin/fetchStudentTempIDRecords/'
         try

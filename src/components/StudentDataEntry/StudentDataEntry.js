@@ -80,7 +80,8 @@ function StudentDataEntry() {
                                               Inactive  :'',
                                               SchoolYear  :'',
                                               SupplementNameMore  :'',
-                                              Texture_Modification2  :''});
+                                              Texture_Modification2  :'',
+                                              Menu_Code_Custom:''});
 
     const [currentSchoolName,setCurrentSchoolName]= useState('');
     const [currentMedicalCondition,setcurrentMedicalCondition]= useState('');
@@ -137,6 +138,10 @@ function StudentDataEntry() {
       //this used to be in a reusable control, moved this component
       fetchSchoolListingData();
       setSchoolYearValue('new');
+
+      var _Current_Student = document.getElementById('Current_Student');
+      _Current_Student.checked = true
+      student.Current_Student = 1;
     }
     
    }, [location]);
@@ -510,6 +515,12 @@ async function fetchSchoolWideTrainingNotes(_school) {
      _Milk_Sub_Name.value = fieldData[0].Milk_Sub_Name
      renderMultiSelectsWithValuesFromFetch('ddMilkSubList_Selected', _Milk_Sub_Name.value)
      student.Milk_Sub_Name = _Milk_Sub_Name.value;
+
+     //new fields added
+     //menu code custom
+     var _Menu_Code_Custom = document.getElementById('Menu_Code_Custom');
+     _Menu_Code_Custom.value = fieldData[0].Menu_Code_Custom
+     student.Menu_Code_Custom = _Menu_Code_Custom.value;
    
 
      //Check Boxes
@@ -745,6 +756,9 @@ async function fetchSchoolWideTrainingNotes(_school) {
           case 'ddMenuCode':
             setStudent({ ...student, Menu_Code: value });
           break;
+          case 'Menu_Code_Custom':
+            setStudent({ ...student, Menu_Code_Custom: value });
+           break;
           case 'Texture_Modification':
             setStudent({ ...student, Texture_Modification: value });
           break;
@@ -797,7 +811,7 @@ async function fetchSchoolWideTrainingNotes(_school) {
       //console.log("Calling populateMenuCodeDropDown method...for color " + _ddMenuColor.value);
       const listBlueCycle = ['AF-CF','AF','AF + D','AF + D(Compliant)','AF + S','AF + S(Compliant)','CHO 60','Renal','Renal + Milk','Low PRO','Prader - Willi','Custom(with free textbox)'];
       const listGreen = ['DF','DFWEF','EF','EFDF','Poultry','Custom(with free textbox)']
-      const listRed = ['WEF','Beef','SF','Citrus','Tomato','Sesame','Apples','Strawberry','Berries','Chocolate','Cinnamon','Pineapple','Carrot','Beans/ Peas/ Lentils','Custom(with free textbox)'];
+      const listRed = ['WEF','Beef','SF','Citrus','Tomato','Sesame','Apples','Strawberry','Berries','Chocolate','Cinnamon','Pineapple','Carrot','Beans/ Peas/ Lentils',,'Coconut','Custom(with free textbox)'];
      
       switch( _ddMenuColor.value) {
         case 'Blue':
@@ -1541,6 +1555,22 @@ async function  logChanges(e)
                   </Form.Group>
                 </Row>
 
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,width:150}}>
+                     Menu Code Custom
+                </Col>
+                  <Col sm={5}>
+                    <input
+                      type="text"
+                      name="Menu_Code_Custom"
+                      id="Menu_Code_Custom"
+                      onChange={handleChange}
+                      style={{ width:300}}
+                    ></input>
+                  </Col>
+                </Row>
+
+
                 <hr></hr>
 
                 <Row>
@@ -1560,8 +1590,8 @@ async function  logChanges(e)
                       name_ddRight="ddNutSubList_Selected"
                       buttonRight="btnSelectRightNutSub"
                       buttonLeft="btnSelectLeftNutSub"
-                      label_ddLeft="Available Milk Substitutes"
-                      label_ddRight="Selected Milk Substitutes"
+                      label_ddLeft="Available Nutrition Supplements"
+                      label_ddRight="Selected Nutrition Supplements"
                       handleClickRight={(e) => handleClickRightNutSub(e)}
                       handleClickLeft={(e) => handleClickLeftNutSub(e)}
                     />
@@ -1590,8 +1620,8 @@ async function  logChanges(e)
                       name_ddRight="ddMilkSubList_Selected"
                       buttonRight="btnSelectRightMilkSub"
                       buttonLeft="btnSelectLeftMilkSub"
-                      label_ddLeft="Available Nutrition Supplements"
-                      label_ddRight="Selected Nutrition Supplements"
+                      label_ddLeft="Available Milk Substitutes"
+                      label_ddRight="Selected Milk Substitutes"
                       handleClickRight={(e) => handleClickRightMilkSub(e)}
                       handleClickLeft={(e) => handleClickLeftMilkSub(e)}
                     />
