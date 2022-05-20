@@ -9,11 +9,16 @@ import {
   import { TrashFill  } from 'react-bootstrap-icons';
   import studentInfoApi from '../../api/studentInfoApi';
   import Config from '../../api/config'
+  import AlertSmall from '../ReusableAppComponents/AlertSmall';
+
 
 //https://www.filestack.com/fileschool/react/react-file-upload/
 function UploadFilesLight(props)
 {
     const [file, setFile] = useState('')
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgBody,setmsgBody] = useState('');
+    const [alertClassType,setalertClassType] = useState('alert alert-primary');
 
     //const [tblFiles, setTblFileData] = useState([])
 
@@ -37,11 +42,28 @@ function UploadFilesLight(props)
         'content-type': 'multipart/form-data',
       },
     };
-    axios.post(url, formData, config).then((response) => {
-      console.log(response.data);
-    });
 
-     {props.fetchAttachments()}
+    try{
+
+      axios.post(url, formData, config).then((response) => {
+        console.log(response.data);
+      });
+
+      setShowAlert(true)
+      setmsgBody("File Uploaded...hit the Fetch Attachments to Refresh...")
+      setalertClassType('alert alert-success') 
+    }
+    catch(error)
+    {
+      console.log(error);
+      setShowAlert(true)
+      setmsgBody("There was an issue writing training notes")
+      setalertClassType('alert alert-danger')  
+    }
+   
+
+
+     {props.fetchAttachments(event)}
   }
 
   function renderShowsTotal(start, to, total) {
@@ -61,11 +83,24 @@ async function deleteAttachment(id) {
   try
   {
     results = await myAPI.deleteAttachment(id)
+    setShowAlert(true)
+    setmsgBody("File deleted, hit the Fetch Attachments to Refresh...")
+    setalertClassType('alert alert-success') 
   }
   catch(err)
   {
     console.log(err)
+    setShowAlert(true)
+    setmsgBody("There was an issue deleting the attachment!!")
+    setalertClassType('alert alert-danger') 
   }
+
+}
+
+
+const closeAlert = (e) => {
+  e.preventDefault();
+  setShowAlert(false);
 
 }
 
@@ -101,6 +136,12 @@ function CellFormatteDelete(cell, row) {
   return (
     <div className="UploadFilesLight" style={{display:props.displayAttachments}}>
       <Container>
+      <AlertSmall
+         show={showAlert}
+         msgBody={msgBody}
+         alertClassType={alertClassType}
+         toogleAlert={(e) => closeAlert(e)}
+        />
         <Row>
           <Col sm={12}>
             <form>
