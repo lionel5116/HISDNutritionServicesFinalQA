@@ -114,6 +114,23 @@ export class studentInfoApi {
  
      }
 
+     async  deleteAttachment(_id){
+        var url = Config.REST_URL + '/api/UploadFiles/deleteAttachment/'
+        url +=_id;
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue procesing delete of attachment.. possible url invalid character sent: " + err)
+          return []
+        }
+ 
+     }
+
      async  fetchInactiveStudents(){
         var url = Config.REST_URL + '/api/StudentEntryData/fetchInactiveStudents/'
         try
@@ -321,12 +338,15 @@ export class studentInfoApi {
      async  writeTrainingRecord(trainingRecord){
       
        var url = Config.REST_URL + '/api/Communications/saveTrainingNotes/';
-
+       
        try {
         return await axios.post(url, trainingRecord)
-        .then(res => console.log(res.data));
+        .then(res => {
+            return res.data;
+        });
        } catch(err) {
-        console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return 0
        }
       
     }
@@ -391,11 +411,13 @@ export class studentInfoApi {
      }
 
 
-     async  fetchSchoolTrainingNotes(_school,_noteType){
+     async  fetchSchoolTrainingNotes(_school,_noteType,_schoolYear){
         var url = Config.REST_URL + '/api/Admin/fetchSchoolTrainingNotes/'
         url +=_school;
         url += ",";
         url += _noteType;
+        url += ",";
+        url += _schoolYear;
         try
         {
             return await axios.get(url)

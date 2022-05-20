@@ -2,8 +2,7 @@ import React,{useState} from 'react'
 import {Button,
    } from 'react-bootstrap';
 function AlertDismissible(props) {
-    //const [show, setShow] = useState(true);
-  
+    
     return (props.show) && (
         <div class={props.msgClass} role="alert">
             <h4 class="alert-heading">Information !</h4>

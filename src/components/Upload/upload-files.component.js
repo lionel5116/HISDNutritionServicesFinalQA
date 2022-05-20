@@ -6,8 +6,8 @@ import {
   Row,
   Col} from 'react-bootstrap';
   import {BootstrapTable,TableHeaderColumn,Grid} from "react-bootstrap-table";
-
-  import studentInfoApi from '../../api/studentInfoApi'
+  import { TrashFill  } from 'react-bootstrap-icons';
+  import studentInfoApi from '../../api/studentInfoApi';
   import Config from '../../api/config'
 
 //https://www.filestack.com/fileschool/react/react-file-upload/
@@ -53,21 +53,33 @@ function UploadFilesLight(props)
 }
 
 
-/*
-async function fetchAttachments()
-{
-  let _attachments = [];
+async function deleteAttachment(id) {  
+  console.log("Row ID " + id)  
+
+  let results = '';
   var myAPI = new studentInfoApi;
-  if(props.studentID !='') {} else {return;}
-  _attachments =await myAPI.getAttachmentsAxios(props.studentID)
-  //console.log(_attachments)
-  setTblFileData(_attachments)
+  try
+  {
+    results = await myAPI.deleteAttachment(id)
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+
 }
-*/
 
 
 function CellFormatter(cell, row) {
   return (<div><a href={Config.REST_URL + '/api/UploadFiles/DownloadFile/' + row.id}>{cell}</a></div>);
+}
+
+function CellFormatteDelete(cell, row) {
+  return ( <div>
+    <TrashFill 
+      onClick={()=>deleteAttachment(row.id)}/>
+  </div>
+ );
 }
 
   const options = {
@@ -122,7 +134,8 @@ function CellFormatter(cell, row) {
             >
               <TableHeaderColumn row="1" width="33%" editable={false} isKey dataField="id" dataFormat={CellFormatter}>Download</TableHeaderColumn>
               <TableHeaderColumn row="1" width="33%" dataField="Student_ID">Student ID</TableHeaderColumn>
-              <TableHeaderColumn row="1" width="33%" dataField="Name">Name</TableHeaderColumn>           
+              <TableHeaderColumn row="1" width="33%" dataField="Name">Name</TableHeaderColumn>  
+              <TableHeaderColumn row="1" width="33%" editable={false} dataField="id" dataFormat={CellFormatteDelete}>Delete</TableHeaderColumn>         
             </BootstrapTable>
           </Col>
         </Row>

@@ -433,8 +433,11 @@ function handleChange (e){
 
       await getNewValuesForStudentDataObject();
 
+     console.log("student id: " + student.id)
+     console.log("School Value: " + student.School)
+
       if(student.id != '' && 
-      student.School.length > 5 &
+      student.School.length > 2 &
       student.Student_ID.length >  2 &
       student.School !='--Select--')
       {

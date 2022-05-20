@@ -1,5 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
+import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 import {Button,
     Container,
     Row,
@@ -16,6 +17,8 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import {BinocularsFill} from 'react-bootstrap-icons';
 import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
 
+import AlertSmall from '../ReusableAppComponents/AlertSmall';
+
 
 function Communications() {
   const [SchoolTraining, setSchoolTraining] = useState({});
@@ -23,6 +26,11 @@ function Communications() {
   const [showNotesAndSaveButton, setshowNotesAndSaveButton] = useState('none');
   const [showBootStrapTable, setshowBootStrapTable] = useState('none');
   const [studentInfo, setstudentInfo] = useState('');
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [msgBody,setmsgBody] = useState('');
+  const [alertClassType,setalertClassType] = useState('alert alert-primary');
+
 
 
     useEffect(() => {
@@ -115,59 +123,69 @@ function Communications() {
 
     var isValid = validateForm(e)
     console.log(isValid);
- 
-   //if all entries are filled in.. proceed, otherwise exit
-   if(isValid){} else {return;}
+  
+    //if all entries are filled in.. proceed, otherwise exit
+    if(isValid){
+      setShowAlert(false)
+      setalertClassType('alert alert-primary')  //alert alert-success
+      setmsgBody("")
+    } else {
+      setShowAlert(true)
+      setalertClassType('alert alert-danger')
+      setmsgBody("Need Valid: school, Year, notes entered and training(s) selected!!!!...")
+      return;
+    }
 
    
-
     var newDate = new Date().toLocaleString();
     var _SchoolName = document.getElementById('ddSchoolListings');
     var _Note = document.getElementById('Notes');
+    var _SchoolYear = document.getElementById('ddSchoolYears');
 
-  
-    //had to use an vanilla object because of the dropdown selected action when looping
-    //does not work with useState very well
-    //this is for the selected trainings only, not the notes themselvs
     var TrainingObj = {NoteType: 'School Wide Training', 
-                       Note:'',
+                       Note:_Note.value,
                        SchoolName:_SchoolName.value,
                        DateEntered:newDate,
-                       Student_ID:''};//vanilla object
+                       Student_ID:'',
+                       SchoolYear: _SchoolYear.value};//vanilla object
                       
-   
-    var _TrainingObj = {};
+    var TrainingObjWithTrainings = {};
 
     //you want to add all of the different trainings on the selected school
     var _mySelect2 = document.getElementById('ddTrainingList_Selected');
-    Array.from(_mySelect2.options).forEach(function(option_element) {
-      let option_text = option_element.text;
-      let option_value = option_element.value;
+    if(_mySelect2.length > 0)
+    {
+      Array.from(_mySelect2.options).forEach(function(option_element) {
+        let option_text = option_element.text;
+        let option_value = option_element.value;
+        
+        TrainingObjWithTrainings = {...TrainingObj,TrainingType:option_value} 
       
-      _TrainingObj = {...TrainingObj,TrainingType:option_value} 
-    
-      //HOWEVER SINCE THIS IS INSIDE OF A LOOP AND NEEDSTO GET CALLED EVERY N TIMES (O-n), useEffect would not work
-      //setSchoolTraining({ ...SchoolTraining, TrainingType: option_value });
-
-      writeTrainingRecord(_TrainingObj)
-    });
-
-
+        writeTrainingRecord(TrainingObjWithTrainings)
+      });
+    }
    
+
+       /*
       //now write School Training notes for the notes section
       //if any data exists in the note field
-      if(_Note.value.length > 5) {
+      if(_SchoolName.value != '' &&
+          _SchoolName.value != '--Select--' &&
+          _Note.value !='' && 
+          _Note.value.length > 5) {
           TrainingObj = {NoteType: 'School Training', 
           Note: _Note.value,
           SchoolName:_SchoolName.value,
           DateEntered:newDate,
           Student_ID:''};//vanilla object
-        writeTrainingRecord(_TrainingObj)
+         writeTrainingRecord(TrainingObj)
       }                
+     */
 
     _SchoolName.value = '--Select--';
     _Note.value = '';
     removeOptions(_mySelect2);
+  
   }
 
   const saveCommNotes = (e) =>
@@ -208,23 +226,21 @@ function Communications() {
     var _SchoolName = document.getElementById('ddSchoolListings');
     var _Note = document.getElementById('Notes');
     var _mySelect2 = document.getElementById('ddTrainingList_Selected');
+    var _SchoolYear = document.getElementById('ddSchoolYears');
     var lengthOfListOptions = _mySelect2.length;
     
     //for school wide training (from drop - downs)
-    if(_SchoolName.value != '' &&
-      _SchoolName.value != '--Select--' &&
-      lengthOfListOptions > 0)
+      if(_SchoolName.value != '' &&
+        _SchoolName.value != '--Select--' &&
+        _SchoolYear.value  != '' && 
+        _SchoolYear.value  != '--Select--' &&
+        lengthOfListOptions > 0 &&
+        _Note.value !='' && 
+        _Note.value.length > 5)
       {
         bIsValid =  true;
       }
-      else if (_SchoolName.value != '' &&
-              _SchoolName.value != '--Select--' &&
-              _Note.value !='')
-      {
-        //for notes only for the school
-        bIsValid =  true;
-      }
-      
+     
       return bIsValid;
   }
 
@@ -250,7 +266,19 @@ function Communications() {
 
   async function writeTrainingRecord(trainingRecord) { 
       var myAPI = new studentInfoApi;
-      var _response = await myAPI.writeTrainingRecord(trainingRecord)
+      var _response  = await myAPI.writeTrainingRecord(trainingRecord)
+      console.log(_response);
+      if(_response == 0)
+      {
+        setShowAlert(true)
+        setmsgBody("There was an issue writing training notes")
+        setalertClassType('alert alert-danger')  
+      }
+      else if (_response == 1 ){
+        setShowAlert(true)
+        setmsgBody("Note Record(s) added...")
+        setalertClassType('alert alert-success')  
+      }
   }
 
 
@@ -258,23 +286,13 @@ function Communications() {
   function handleChange (e){
     const { name, value } = e.target;
     e.preventDefault();
-   
-   return;   //this will only work if you are fetching values soley from an onchange event for every control on your form
-
-    switch (name) {
-        case 'ddSchoolListings':
-          setSchoolTraining({ ...SchoolTraining, SchoolName: value });
-            break;
-        case 'Notes':
-          setSchoolTraining({ ...SchoolTraining, Note: value });
-            break;
-        default:
-            break;
-    }
-
   }
 
-
+  const closeAlert = (e) => {
+    e.preventDefault();
+    setShowAlert(false);
+  
+}
 
   //for the row height fix
   const rowStyle = {  height: '10px', padding: '2px 0' };
@@ -474,6 +492,12 @@ const searchMixed = (e) => {
     <div>
       <main>
         <Container>
+        <AlertSmall
+         show={showAlert}
+         msgBody={msgBody}
+         alertClassType={alertClassType}
+         toogleAlert={(e) => closeAlert(e)}
+        />
           <h1>Communications</h1>
           <br></br>
           <Form>
@@ -491,6 +515,20 @@ const searchMixed = (e) => {
                     />
                   </Col>
                 </Row>
+               
+
+                <br></br>
+                <Row>
+                <Col sm={1.75} style={{marginLeft: 12 ,marginRight:5}}>
+                      School Year
+                  </Col>
+                  <Col sm={2}>
+                      <SchoolYearDropDown 
+                      name='ddSchoolYears'
+                      onChange={(e) => handleChange(e)}/>
+                  </Col>
+                </Row>
+
                 <br></br>
 
                 <GenericMultiSelectCombo

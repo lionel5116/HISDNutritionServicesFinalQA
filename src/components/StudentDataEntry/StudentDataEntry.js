@@ -199,7 +199,7 @@ function StudentDataEntry() {
 
     if(_DD_STUDENT_RECORD_DATA[0].School != "")
     {
-      await fetchSchoolWideTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School);
+      await fetchSchoolWideTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School,_DD_STUDENT_RECORD_DATA[0].SchoolYear);
     }
 
     if(_DD_STUDENT_RECORD_DATA[0].School != "")
@@ -284,10 +284,10 @@ function StudentDataEntry() {
 
 //school wide training and communication notes
 
-async function fetchSchoolWideTrainingNotes(_school) {        
+async function fetchSchoolWideTrainingNotes(_school,_year) {        
   let _SCHOOL_NOTE_DATA = [];
   var myAPI = new studentInfoApi;
-  _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolTrainingNotes(_school,'School Wide Training')
+  _SCHOOL_NOTE_DATA = await myAPI.fetchSchoolTrainingNotes(_school,'School Wide Training',_year)
   var _txtSchoolWideTraining = document.getElementById('txtSchoolWideTraining');
   _txtSchoolWideTraining.value = _SCHOOL_NOTE_DATA;
 
@@ -1194,7 +1194,7 @@ async function  logChanges(e)
     }
 
 
-    //alerets
+    //alerts
     const openAlert = () => {
         setsuccessMsg('alert alert-success')
         setmsgBody("Student Information Add/Update Information")
