@@ -113,9 +113,7 @@ function Communications() {
     }
  }
  
- // using the function:
  
-
   const saveTrainingNotes = (e) =>
   {
     
@@ -152,6 +150,7 @@ function Communications() {
     var TrainingObjWithTrainings = {};
 
     //you want to add all of the different trainings on the selected school
+    //TrainingType IS ADDED BELOW********
     var _mySelect2 = document.getElementById('ddTrainingList_Selected');
     if(_mySelect2.length > 0)
     {
@@ -197,19 +196,32 @@ function Communications() {
     console.log(isValid);
  
 
-   if(isValid){} else {return;}
+
+   //if all entries are filled in.. proceed, otherwise exit
+   if(isValid){
+    setShowAlert(false)
+    setalertClassType('alert alert-primary')  //alert alert-success
+    setmsgBody("")
+  } else {
+    setShowAlert(true)
+    setalertClassType('alert alert-danger')
+    setmsgBody("Need Valid: Year, notes and studentID selected/entered !!...")
+    return;
+  }
 
     var newDate = new Date().toLocaleString();
     var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
     var _studentID = document.getElementById('txtStudentIDHidden');
     var _Note = document.getElementById('CommNotes');
+    var _SchoolYear = document.getElementById('ddSchoolYears');
 
     var TrainingObj = {NoteType: 'Communication', 
                        Note: _Note.value,
                        SchoolName: '',
                        DateEntered:newDate,
                        TrainingType:'',
-                       Student_ID:_studentID.value};//vanilla object
+                       Student_ID:_studentID.value,
+                       SchoolYear: _SchoolYear.value};//vanilla object
                       
                        writeTrainingRecord(TrainingObj)
 
@@ -250,6 +262,7 @@ function Communications() {
     var bIsValid = false;
     var _SchoolName = document.getElementById('ddSchoolListings_SearchStudent');
     var _Note = document.getElementById('CommNotes');
+    var _SchoolYear = document.getElementById('ddSchoolYears');
 
     //studentID was written to a hidden field on select
     var _studentID = document.getElementById('txtStudentIDHidden');
@@ -257,7 +270,9 @@ function Communications() {
     
       if(
       _Note.value !='' && 
-      _studentID.value !='')
+      _studentID.value !='' &&
+      _SchoolYear.value  != '' && 
+      _SchoolYear.value  != '--Select--')
       {
         bIsValid =  true;
       }
@@ -271,12 +286,12 @@ function Communications() {
       if(_response == 0)
       {
         setShowAlert(true)
-        setmsgBody("There was an issue writing training notes")
+        setmsgBody("There was an issue writing training or communication notes")
         setalertClassType('alert alert-danger')  
       }
       else if (_response == 1 ){
         setShowAlert(true)
-        setmsgBody("Note Record(s) added...")
+        setmsgBody("Note(s) added...")
         setalertClassType('alert alert-success')  
       }
   }
@@ -339,8 +354,8 @@ const selectedStudentRecord = (e,_studentID,_setstudentInfo) =>
 
 function CellFormatterSearchStudent(cell, row) {
   //build string for label to display
-  var _setstudentInfo = row.Student_ID;
-      _setstudentInfo += ":";
+  var _setstudentInfo = "Student: " + row.Student_ID;
+      _setstudentInfo += "->";
       _setstudentInfo += row.LastName;
       _setstudentInfo += ",";
       _setstudentInfo += row.FirstName;
@@ -501,7 +516,21 @@ const searchMixed = (e) => {
           <h1>Communications</h1>
           <br></br>
           <Form>
+          <Row>
+                <Col sm={1.75} style={{marginLeft: 12 ,marginRight:5}}>
+                      School Year
+                  </Col>
+                  <Col sm={2}>
+                      <SchoolYearDropDown 
+                      name='ddSchoolYears'
+                      onChange={(e) => handleChange(e)}/>
+                  </Col>
+                </Row>
+
+                <br></br>
             <Tabs>
+          
+
               <Tab eventKey="SchoolTrainingNotes" title="School Training Notes">
                 <h2>School Training Notes</h2>
                 <Row>
@@ -518,18 +547,7 @@ const searchMixed = (e) => {
                
 
                 <br></br>
-                <Row>
-                <Col sm={1.75} style={{marginLeft: 12 ,marginRight:5}}>
-                      School Year
-                  </Col>
-                  <Col sm={2}>
-                      <SchoolYearDropDown 
-                      name='ddSchoolYears'
-                      onChange={(e) => handleChange(e)}/>
-                  </Col>
-                </Row>
-
-                <br></br>
+              
 
                 <GenericMultiSelectCombo
                   name_ddLeft="ddTrainingList"
@@ -610,7 +628,7 @@ const searchMixed = (e) => {
                     School
                   </Col>
                   <Col sm={1.5}>
-                    <BootStrapSelectForSearch name="selStudentID" />
+                    <label style={{ width:110}}>equals</label>
                   </Col>
                   <Col sm={4}>
                     <SchoolListDropDown

@@ -209,7 +209,7 @@ function StudentDataEntry() {
     
     if(_DD_STUDENT_RECORD_DATA[0].Student_ID != "")
     {
-      await fetchCommNotes(_DD_STUDENT_RECORD_DATA[0].Student_ID);
+      await fetchCommNotes(_DD_STUDENT_RECORD_DATA[0].Student_ID,_DD_STUDENT_RECORD_DATA[0].SchoolYear);
     }
     
 
@@ -303,10 +303,10 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
    
     }
 
-  async function fetchCommNotes(_studentID) {        
+  async function fetchCommNotes(_studentID,_year) {        
     let _SCHOOL_NOTE_DATA = [];
     var myAPI = new studentInfoApi;
-    _SCHOOL_NOTE_DATA = await myAPI.fetchCommNotes(_studentID)
+    _SCHOOL_NOTE_DATA = await myAPI.fetchCommNotes(_studentID,_year)
     //console.log(_SCHOOL_NOTE_DATA);
     var _txtStudentCommunicationNotes = document.getElementById('txtStudentCommunicationNotes');
     _txtStudentCommunicationNotes.value = _SCHOOL_NOTE_DATA;

@@ -434,11 +434,13 @@ export class studentInfoApi {
 
 
 
-     async  fetchCommNotes(_studentID){
+     async  fetchCommNotes(_studentID,_schoolYear){
         var url = Config.REST_URL + '/api/Admin/fetchCommNotes/'
         url +=_studentID;
         url += ",";
         url += "Communication";
+        url += ",";
+        url += _schoolYear;
         console.log(url);
         try
         {
