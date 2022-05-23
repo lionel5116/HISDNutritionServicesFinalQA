@@ -5,7 +5,12 @@ import studentInfoApi from '../../api/studentInfoApi';
 import {ListGroup,Form,Container} from 'react-bootstrap';
 import axios from 'axios';
 import uniqueid from 'uniqid'
-import {BootstrapTable,TableHeaderColumn,Grid,Row,Col} from "react-bootstrap-table";
+//import {BootstrapTable,TableHeaderColumn,Grid,Row,Col} from "react-bootstrap-table";
+
+//react bootstrap table next
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+
 
 
 
@@ -31,7 +36,7 @@ export class StudentInformationReport extends Component {
    
 
     componentDidMount(){
-        this.fetchStudentSampleData();
+        this.fetchStudentData();
     }
 
 
@@ -45,6 +50,7 @@ export class StudentInformationReport extends Component {
         );
     }
 
+    /*
     async loadStudentSampleData()
     {
         let studentSampleData = [];
@@ -63,8 +69,9 @@ export class StudentInformationReport extends Component {
                done: true
               });
     }
+  */
 
-    async fetchStudentSampleData()
+    async fetchStudentData()
     {
         let studentSampleData = [];
          var myAPI = new studentInfoApi;
@@ -86,6 +93,7 @@ export class StudentInformationReport extends Component {
  
     render() {
 
+        {/*
         const options = {
             exportCSVText: 'Export CSV',
             insertText: 'Insert',
@@ -101,6 +109,53 @@ export class StudentInformationReport extends Component {
             lastPage: 'Last',
             paginationShowsTotal: this.renderShowsTotal
           };
+        */}
+
+        const rowStyle = {  height: '10px', padding: '2px 0' };
+
+        const columns = [
+        {
+          dataField: 'LastName',
+          text: 'Last Name',
+        },
+        {
+          dataField: 'FirstName',
+          text: 'First Name',
+        },
+        {
+          dataField: 'Menu_Color',
+          text: 'Menu_Color',
+        },
+        {
+          dataField: 'Menu_Code',
+          text: 'Menu_Code',
+        },
+        {
+          dataField: 'Foods_to_be_Omitted',
+          text: 'Foods to be Omitted',
+        },
+        {
+          dataField: 'Texture_Modification',
+          text: 'Texture Modification',
+      
+        },
+        {
+          dataField: 'SupplementName',
+          text: 'SupplementName',
+      
+        },
+        {
+          dataField: 'Milk_Sub_Name',
+          text: 'Milk Sub Name',
+      
+        },
+        {
+          dataField: 'School',
+          text: 'School',
+        },
+      
+
+        ];
 
         if(!this.state.done) {
             return (
@@ -114,7 +169,9 @@ export class StudentInformationReport extends Component {
                 <Container>
                   <div ref={this.wrapper}>
                             <h2>Student Information Report</h2>
-                            <BootstrapTable data={this.state.axiosRecsStudent} striped hover options={options}
+                           {/*
+                           
+                           <BootstrapTable data={this.state.axiosRecsStudent} striped hover options={options}
                                 pagination
                                 deleteRow={true} selectRow={selectRowProp}
                                 insertRow
@@ -122,7 +179,7 @@ export class StudentInformationReport extends Component {
                                 searchPlaceholder= {'Filter Your Search'}
                             >
                                 <TableHeaderColumn row="1" width="1%" editable={false} isKey dataField="id" hidden="true">ID</TableHeaderColumn>
-                                {/*<TableHeaderColumn row="1" width="6%" dataField="Student_ID">Student_ID</TableHeaderColumn>*/}
+                           
                                 <TableHeaderColumn row="1" width="10%" dataField="LastName">LastName</TableHeaderColumn>
                                 <TableHeaderColumn row="1" width="10%" dataField="FirstName" >FirstName</TableHeaderColumn>
                                 <TableHeaderColumn row="1" width="5%" dataField="Menu_Color" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Menu Color</TableHeaderColumn>
@@ -132,7 +189,17 @@ export class StudentInformationReport extends Component {
                                 <TableHeaderColumn row="1" width="15%" dataField="Substitution" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Substitution</TableHeaderColumn>
                                 <TableHeaderColumn row="1" width="15%" dataField="Foods_to_be_Omitted" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Omitted Foods</TableHeaderColumn>
                                 <TableHeaderColumn row="1" width="15%" dataField="Texture_Modification" filter={{ type: 'TextFilter', delay: 1000}} dataSort>Texture Mod</TableHeaderColumn>
-                            </BootstrapTable>
+                            </BootstrapTable>    
+                        */}
+                             <BootstrapTable
+                              striped
+                              hover
+                              data={this.state.axiosRecsStudent}
+                              columns={columns}
+                              pagination={paginationFactory()}
+                              rowStyle={rowStyle}
+
+                            />
                         </div>
                 </Container>
               </div>

@@ -4,8 +4,10 @@ import { BrowserRouter,Route,HashRouter } from 'react-router-dom'
 import {Form,FormControl,NavDropdown,Container} from 'react-bootstrap';
 import NavbarMain from './NavbarMain/NavbarMain';
 import Login from './Login/Login';
-import StudentInformationReport from './Reports/StudentInformationReport';
-import StudentInformationTempIDSReport from './Reports/StudentInformationTempIDSReport'
+//import StudentInformationReport from './Reports/StudentInformationReport';
+import StudentInformationReportNew from './Reports/StudentInformationReportNew';
+//import StudentInformationTempIDSReport from './Reports/StudentInformationTempIDSReport'
+import StudentInformationTempIDSReportNew from './Reports/StudentInformationTempIDSReportNew';
 import './App.css';
 import NutritionLogin from './Login/NutritionLogin';
 import HISDReportsMenu from './Reports/HISDReportsMenu';
@@ -39,12 +41,12 @@ function App() {
           <Route
             exact
             path='/StudentInformationReport'
-            component={StudentInformationReport}
+            component={StudentInformationReportNew}
           />
            <Route
             exact
             path='/StudentInformationTempIDSReport'
-            component={StudentInformationTempIDSReport}
+            component={StudentInformationTempIDSReportNew}
           />
 
           <Route
