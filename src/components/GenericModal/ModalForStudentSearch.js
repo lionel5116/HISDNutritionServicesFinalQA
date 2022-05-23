@@ -82,7 +82,7 @@ function ModalForStudentSearch(props) {
               sm={1.75}
               style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
             >
-              Birthday
+              Date of Birth
             </Col>
             <Col sm={2}>
               <input type="date" id="Birthday" style={{ width: 300 }} />

@@ -81,7 +81,8 @@ function StudentDataEntry() {
                                               SchoolYear  :'',
                                               SupplementNameMore  :'',
                                               Texture_Modification2  :'',
-                                              Menu_Code_Custom:''});
+                                              Menu_Code_Custom:'',
+                                              FTBO_Custom:''});
 
     const [currentSchoolName,setCurrentSchoolName]= useState('');
     const [currentMedicalCondition,setcurrentMedicalCondition]= useState('');
@@ -127,7 +128,12 @@ function StudentDataEntry() {
     {
         //console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
-        setFullNameFromSearch(location.fullName)
+        var studentLabel = "Student: ";
+        studentLabel += location.studentID;
+        studentLabel += "->";
+        studentLabel += location.fullName;
+
+        setFullNameFromSearch(studentLabel)
         student.id = id;
        
         fetchSingeRecordByRecordID(id) ;
@@ -521,6 +527,11 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      var _Menu_Code_Custom = document.getElementById('Menu_Code_Custom');
      _Menu_Code_Custom.value = fieldData[0].Menu_Code_Custom
      student.Menu_Code_Custom = _Menu_Code_Custom.value;
+
+     //FTBO_Custom
+     var _FTBO_Custom = document.getElementById('FTBO_Custom');
+     _FTBO_Custom.value = fieldData[0].FTBO_Custom
+     student.FTBO_Custom = _FTBO_Custom.value;
    
 
      //Check Boxes
@@ -741,11 +752,13 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
             setStudent({ ...student, Medical_Condition: value });  
             break;
          
-          /*DROP- DOWNS - SUPPLEMENTS  - HIDDEN FIELDS*/
+          /*DROP- DOWNS - SUPPLEMENTS  - HIDDEN FIELDS*/ //
           case 'Foods_to_be_Omitted':
                 setStudent({ ...student, Foods_to_be_Omitted: value }); 
               break; 
-
+          case 'FTBO_Custom':
+                setStudent({ ...student, FTBO_Custom: value }); 
+              break; 
           case 'Substitution':
             setStudent({ ...student, Substitution: value });
           break;
@@ -1253,14 +1266,17 @@ async function  logChanges(e)
                 Testing Something with DD Lists
               </Button>
             </Row>
-
+            <Row>
+              <Col sm={12} style={{paddingRight:10,marginLeft:12,width:150,color:'blue'}}>
+              <label>{storeFullNameFromSearch}</label>
+              </Col>
+            </Row>
+        
             <Tabs>
               <Tab eventKey="StudentInformation" title="Student Information">
-                <h2>
-                  <label>{storeFullNameFromSearch}</label>
-                </h2>
+               
                 <Row className="mb-6">
-                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150,color:'red'}}>
+                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:300,color:'red'}}>
                     Student ID*
                   </Col>
                   <Col sm={10}>
@@ -1503,6 +1519,24 @@ async function  logChanges(e)
                     />
                   </Col>
                 </Row>
+
+                <br></br>
+
+                <Row className="mb-3">
+                <Col sm={1.75} style={{paddingRight:10,width:150}}>
+                  FTBO Custom
+                </Col>
+                  <Col sm={5}>
+                    <input
+                      type="text"
+                      name="FTBO_Custom"
+                      id="FTBO_Custom"
+                      onChange={handleChange}
+                      style={{ width:300}}
+                    ></input>
+                  </Col>
+                </Row>
+
 
                 <br></br>
 

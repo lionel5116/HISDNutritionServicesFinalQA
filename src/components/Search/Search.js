@@ -417,7 +417,8 @@ function handleChange (e){
         {
           pathname: '/StudentDataEntry',
           search: '?id=' + _response,
-          fullName: student.FirstName + ' ' + student.LastName
+          fullName: student.LastName + ',' + student.FirstName,
+          studentID: student.Student_ID
   
         })
     }
@@ -435,6 +436,7 @@ function handleChange (e){
 
      console.log("student id: " + student.id)
      console.log("School Value: " + student.School)
+     console.log("StudentID Value: " + student.Student_ID)
 
       if(student.id != '' && 
       student.School.length > 2 &
@@ -455,8 +457,8 @@ function handleChange (e){
           {
             pathname: '/StudentDataEntry',
             search: '?id=' + student.id,
-            fullName: student.FirstName + ' ' + student.LastName
-    
+            fullName: student.LastName + ',' + student.FirstName,
+            studentID: student.Student_ID
           })
           return;
       }
@@ -469,7 +471,8 @@ function handleChange (e){
           {
             pathname: '/StudentDataEntry',
             search: '?id=' + student.id,
-            fullName: student.FirstName + ' ' + student.LastName
+            fullName: student.LastName + ',' + student.FirstName,
+            studentID: student.Student_ID
     
           })
       }
