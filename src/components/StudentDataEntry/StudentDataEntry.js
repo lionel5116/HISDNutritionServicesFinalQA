@@ -1063,8 +1063,8 @@ async function  logChanges(e)
       var _txtSchoolWideTraining = document.getElementById('txtSchoolWideTraining');
       var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
 
-      var dtTemp  = new Date();
-      var formmatteTrueDate = formatDate(dtTemp).split(' ');
+     
+      var dateTimeCurrent = new Date().toISOString();
 
       if(currentSchoolName != _DDSchoolListingSelect.value)
       {
@@ -1073,9 +1073,8 @@ async function  logChanges(e)
           changeSchool += currentSchoolName;
           changeSchool += " To ";
           changeSchool += _DDSchoolListingSelect.value;
-          //console.log("Log not for change school " + changeSchool);
 
-          logObject.LogDate = formmatteTrueDate[0]
+          logObject.LogDate = dateTimeCurrent;
           logObject.ChangeType = 'SchoolName'
           logObject.ChangeNotes = changeSchool;
           logObject.studentID = student.studentID;
@@ -1095,9 +1094,8 @@ async function  logChanges(e)
           sMedicalCondition += currentMedicalCondition;
           sMedicalCondition += " To ";
           sMedicalCondition += _Medical_Condition.value
-          //console.log("Log not for medical condition " + sMedicalCondition);
-
-            logObject.LogDate = formmatteTrueDate[0];
+  
+            logObject.LogDate = dateTimeCurrent;
             logObject.ChangeType = 'Medical Condition Change'
             logObject.ChangeNotes = sMedicalCondition;
             logObject.studentID = student.studentID;

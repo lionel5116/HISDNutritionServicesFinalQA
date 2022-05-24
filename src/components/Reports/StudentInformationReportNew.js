@@ -28,6 +28,17 @@ function StudentInformationReportNew() {
         settblStudentResults(studentSampleData)
       
     }
+
+    const MyExportCSV = (props) => {
+      const handleClick = () => {
+        props.onExport();
+      };
+      return (
+        <div>
+          <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
+        </div>
+      );
+    };
   
     const rowStyle = {  height: '10px', padding: '2px 0' };
 
@@ -95,7 +106,8 @@ function StudentInformationReportNew() {
         dataField: 'id',
         text: 'id',
         style: { width: '10px' },
-        hidden :true
+        hidden :true,
+        csvExport: false
       },
     ];
 
@@ -110,15 +122,17 @@ function StudentInformationReportNew() {
                  keyField="id"
                  data={tblStudentResults}
                  columns={columns}
-                 exportCSV
-                 
+                 exportCSV = {{
+                  onlyExportFiltered: true,
+                  exportAll:false
+                 }}
                   >
                  {
                      props=> (
                          <div>
-                              <ExportCSVButton { ...props.csvProps }>Export</ExportCSVButton>
-                            
-                            <hr />
+                              {/*<ExportCSVButton { ...props.csvProps }>Export</ExportCSVButton>*/}
+                              <MyExportCSV { ...props.csvProps } />
+                              <hr />
                             <BootstrapTable { ...props.baseProps }
                               striped
                               hover 
@@ -127,6 +141,8 @@ function StudentInformationReportNew() {
                               filter={ filterFactory()}
 
                             />
+                             
+                             
                          </div>
                      )
 

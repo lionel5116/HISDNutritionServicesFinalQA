@@ -11,6 +11,7 @@ import { Pencil  } from 'react-bootstrap-icons';
 //react bootstrap table next
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 //for modal
 import GenericModal from '../GenericModal/GenericModal';
@@ -76,7 +77,7 @@ function Administration() {
     }
 
     toggleAddNewDDItem();
-    console.log("Button State is" + disableAddNewDDItem)
+    //console.log("Button State is" + disableAddNewDDItem)
   }
 
   const onDDChangedAddNewItem = () =>
@@ -127,7 +128,12 @@ async function fetchStudentTempIDRecords() {
 }
 
 async function archiveSchoolYear(){
-  console.log("Archving school year....")
+
+  const confirmBox = window.confirm(
+    "Do you really want to archive this school year ?"
+  )
+  if (confirmBox === true) {} else {return;}
+
   var SchoolYear = document.getElementById('ddSchoolYears');
   var myAPI = new studentInfoApi;
   if (SchoolYear.value != "--Select--" &&
@@ -137,6 +143,8 @@ async function archiveSchoolYear(){
     {
        await myAPI.archiveSchoolYear(SchoolYear.value)
        SchoolYear.value = "--Select--";
+       await logChanges("Archived School Year",SchoolYear.value)
+       fetchLogs();
     }
     catch(err)
     {
@@ -164,8 +172,7 @@ async function fetchLogs() {
 
 
 function showRowDetailInfo(_name){
-  console.log("Data from row from an external function",_name)
-
+  
   setItemName(_name)  // const [_ItemName,setItemName]  = useState("")
 
   setShow(true)
@@ -189,11 +196,11 @@ async function updateDDItem(){
 
   //grab the old value from what was set when the item was selected - DEBBI CHANGE
   var oldValue = _ItemName;  //const [_ItemName,setItemName]  = useState("")
-  console.log("Old Value:" + oldValue)
+ 
 
   //Whatever they overwrite from the single field (is the new value)
   var _ItemNameNew  = document.getElementById('oldValue').value;
-  console.log("New Value:" + _ItemNameNew)
+ 
   
 
   var DDType = '';
@@ -217,8 +224,6 @@ async function updateDDItem(){
   }
 
 
-  console.log("Drop Down Type :" + DDType)
-
   var argument  = '';
 
    if (_ItemNameNew.length > 0
@@ -232,13 +237,14 @@ async function updateDDItem(){
    } 
    
 
-   console.log("SQL Statement :" + argument)
+  await logChanges("UpdateDDItem",argument)
 
 
   var myAPI = new studentInfoApi;
   await myAPI.UpdateDDListItem(argument)
   setShow(false);
   onDDChanged();
+  fetchLogs();
     
 }
 
@@ -284,10 +290,13 @@ async function DeleteDDListItem(){
    {} else {return;}
 
 
+   await logChanges("DeleteDDListItem",argument)
+
   var myAPI = new studentInfoApi;
   await myAPI.DeleteDDListItem(argument)
   setShow(false);
   onDDChanged();
+  fetchLogs();
     
 }
 
@@ -329,8 +338,6 @@ async function ADD_New_DDItem(){
   }
 
 
-  //console.log("Drop Down Type :" + DDType)
-
   var argument  = '';
 
    if (_ItemNameNew.length > 0
@@ -342,15 +349,15 @@ async function ADD_New_DDItem(){
    } 
    
 
-   //console.log("SQL Statement :" + argument)
-   //console.log("Inside of the ADD_New_DDItem method")
-
+   await logChanges("ADD_DDItem",argument)
 
   var myAPI = new studentInfoApi;
   await myAPI.ADD_DDListItem(argument)
   
   setShow2(false);
   onDDChangedAddNewItem();
+
+  fetchLogs();
     
 }
 async function EditStudentID(){
@@ -371,13 +378,48 @@ async function EditStudentID(){
    } 
    
 
+   await logChanges("EditStudentID",argument)
 
   var myAPI = new studentInfoApi;
   await myAPI.UpdateStudentTempID(argument)
   
   setShow3(false);
   fetchStudentTempIDRecords();
+  fetchLogs();
     
+}
+
+//logging
+async function  logChanges(sChangeType,changeNote)
+{
+   //e.preventDefault();
+
+  var myAPI = new studentInfoApi;
+  
+
+      var logObject = {
+        LogDate: '',
+        ChangeType: '',
+        ChangeNotes: '',
+        Student_ID: '',
+        SchoolName: '',
+        SchoolNotes: '',
+        UserMakingChange:''
+      };
+
+
+      var dateTimeCurrent = new Date().toISOString();
+
+          logObject.LogDate = dateTimeCurrent;
+          logObject.ChangeType = sChangeType;
+          logObject.ChangeNotes = changeNote;
+          logObject.studentID = '';
+          logObject.schoolName = '';
+          logObject.SchoolNotes = '';
+          logObject.UserMakingChange = '';
+
+           await myAPI.insertLogData(logObject)
+     
 }
 
       const rowStyle = {  height: '10px', padding: '2px 0' };
@@ -430,18 +472,21 @@ async function EditStudentID(){
     {
       dataField: 'LogDate',
       text: 'Log Date',
+      sort: true
     }, 
     {
       dataField: 'ChangeType',
       text: 'Change Type',
+      sort: true,
+      filter: textFilter()
     }, 
     {
       dataField: 'UserMakingChange',
       text: 'User Name',
     }, 
     {
-      dataField: 'Change Notes',
-      text: 'ChangeNotes',
+      dataField: 'ChangeNotes',
+      text: 'Change Notes',
     }, 
   ];
 
@@ -658,6 +703,7 @@ async function EditStudentID(){
                       columns={columnsLogs}
                       pagination={paginationFactory()}
                       rowStyle={rowStyle}
+                      filter={ filterFactory()}
                     />
                   </Col>
                 </Row>
