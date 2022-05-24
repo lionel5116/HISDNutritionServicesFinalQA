@@ -441,7 +441,7 @@ export class studentInfoApi {
         url += "Communication";
         url += ",";
         url += _schoolYear;
-        console.log(url);
+        //console.log(url);
         try
         {
             return await axios.get(url)

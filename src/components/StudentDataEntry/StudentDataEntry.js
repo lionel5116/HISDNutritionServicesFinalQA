@@ -665,7 +665,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
       else if(mode == 'existing' )
       {
         _SchoolYear.readOnly = true;
-        console.log(_current_SchoolYear);
+        //console.log(_current_SchoolYear);
         if(student.SchoolYear != _current_SchoolYear)
         {
           btnSubmitSaveButton.disabled = true;
@@ -1200,7 +1200,7 @@ async function  logChanges(e)
 
       let _attachments = [];
       var myAPI = new studentInfoApi;
-      //console.log("Inside of fetchAttachments")
+ 
       if( _studentid_!='') {} else {return;}
       _attachments =await myAPI.getAttachmentsAxios(_studentid_)
       setTblFileData(_attachments)

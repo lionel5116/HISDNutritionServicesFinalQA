@@ -6,7 +6,7 @@ import {
   Row,
   Col} from 'react-bootstrap';
   import {BootstrapTable,TableHeaderColumn,Grid} from "react-bootstrap-table";
-  import { TrashFill  } from 'react-bootstrap-icons';
+  import { TrashFill,ArrowClockwise  } from 'react-bootstrap-icons';
   import studentInfoApi from '../../api/studentInfoApi';
   import Config from '../../api/config'
   import AlertSmall from '../ReusableAppComponents/AlertSmall';
@@ -33,7 +33,7 @@ function UploadFilesLight(props)
     if(file != '') {} else {return;}
     if(props.studentID !='') {} else {return;}
 
-    console.log(url)
+   // console.log(url)
     const formData = new FormData();
     formData.append('file', file);
     formData.append('fileName', file.name);
@@ -46,11 +46,13 @@ function UploadFilesLight(props)
     try{
 
       axios.post(url, formData, config).then((response) => {
-        console.log(response.data);
+        //console.log(response.data);
+        var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
+        _btnfetchAttach.click();
       });
 
       setShowAlert(true)
-      setmsgBody("File Uploaded...hit the Fetch Attachments to Refresh...")
+      setmsgBody("File Uploaded..")
       setalertClassType('alert alert-success') 
     }
     catch(error)
@@ -63,7 +65,8 @@ function UploadFilesLight(props)
    
 
 
-     {props.fetchAttachments(event)}
+     //{props.fetchAttachments(event)}
+    
   }
 
   function renderShowsTotal(start, to, total) {
@@ -76,16 +79,23 @@ function UploadFilesLight(props)
 
 
 async function deleteAttachment(id) {  
-  console.log("Row ID " + id)  
+  //console.log("Row ID " + id)  
+
+  const confirmBox = window.confirm(
+    "Do you really want to delete this item?"
+  )
+  if (confirmBox === true) {} else {return;}
 
   let results = '';
   var myAPI = new studentInfoApi;
   try
   {
     results = await myAPI.deleteAttachment(id)
+    var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
+    _btnfetchAttach.click();
     setShowAlert(true)
-    setmsgBody("File deleted, hit the Fetch Attachments to Refresh...")
-    setalertClassType('alert alert-success') 
+    setmsgBody("File deleted.")
+    setalertClassType('alert alert-warning') 
   }
   catch(err)
   {
@@ -161,7 +171,7 @@ function CellFormatteDelete(cell, row) {
                    onClick={props.fetchAttachments}
                    id={props.btnFetchAttachments}
                    name={props.btnFetchAttachments}
-                   >Fetch Attachments</Button>
+                   ><ArrowClockwise /></Button>
           </Col>
         </Row>
    

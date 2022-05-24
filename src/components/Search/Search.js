@@ -193,12 +193,12 @@ function handleChange (e){
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
               //Search By Student ID  - WORKS!!!
-              console.log('Search By Student ID')
+             // console.log('Search By Student ID')
               _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
               _SEARCH_STRING += "'";
               _SEARCH_STRING += studentID.value;
               _SEARCH_STRING += "'";
-              console.log(_SEARCH_STRING);
+             // console.log(_SEARCH_STRING);
               fetchSearchData(_SEARCH_STRING);
 
 
@@ -210,7 +210,7 @@ function handleChange (e){
               School.value == "--Select--") {
               //Search By First Name 
               //only three values FirstName,LastName,School
-              console.log('Search By First Name')
+             // console.log('Search By First Name')
           
              
               _SEARCH_STRING_NEW = "FIRST_NAME";
@@ -227,7 +227,7 @@ function handleChange (e){
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
               //Search By Last Name 
-              console.log('Search By Last Name ')
+             // console.log('Search By Last Name ')
              
 
               _SEARCH_STRING_NEW = "LAST_NAME";
@@ -248,7 +248,7 @@ function handleChange (e){
               _SEARCH_STRING += "'";
               _SEARCH_STRING += SchoolYear.value;
               _SEARCH_STRING += "'";
-              console.log(_SEARCH_STRING);
+             // console.log(_SEARCH_STRING);
               fetchSearchData(_SEARCH_STRING);
 
             }
@@ -273,7 +273,7 @@ function handleChange (e){
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
               //Search By Last Name and First Name
-              console.log('Search By Last Name and First Name')
+             // console.log('Search By Last Name and First Name')
             
               _SEARCH_STRING_NEW = "LAST_FIRST_NAME";
               _SEARCH_STRING_NEW +="|";
@@ -289,7 +289,7 @@ function handleChange (e){
               SchoolYear.value == "--Select--" &&
               School.value != "--Select--") {
               //Search By Last Name and First Name and School Name
-              console.log('Search By Last Name and First Name and School Name')
+              //console.log('Search By Last Name and First Name and School Name')
             
 
               _SEARCH_STRING_NEW = "LAST_FIRST_NAME_SCHOOL";
@@ -427,16 +427,16 @@ function handleChange (e){
 
    async function  EditStudent(){
 
-    console.log("In EditStudent function.....")
+    //console.log("In EditStudent function.....")
      
       var myAPI = new studentInfoApi;
       var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
 
       await getNewValuesForStudentDataObject();
 
-     console.log("student id: " + student.id)
-     console.log("School Value: " + student.School)
-     console.log("StudentID Value: " + student.Student_ID)
+    // console.log("student id: " + student.id)
+    // console.log("School Value: " + student.School)
+   //  console.log("StudentID Value: " + student.Student_ID)
 
       if(student.id != '' && 
       student.School.length > 2 &
