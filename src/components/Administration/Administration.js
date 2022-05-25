@@ -16,12 +16,16 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 //for modal
 import GenericModal from '../GenericModal/GenericModal';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
+import AlertSmall from '../ReusableAppComponents/AlertSmall';
     
 
 let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types'];
 
 var itemTypeSelected = ''
 import studentInfoApi from '../../api/studentInfoApi';
+
+
+
 
 function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
@@ -40,6 +44,10 @@ function Administration() {
 
 
   const [_studentIDTemp,setstudentIDTemp]  = useState("")
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [msgBody,setmsgBody] = useState('');
+  const [alertClassType,setalertClassType] = useState('alert alert-primary');
   
 
   useEffect(() => {
@@ -142,9 +150,13 @@ async function archiveSchoolYear(){
     try
     {
        await myAPI.archiveSchoolYear(SchoolYear.value)
+      
        SchoolYear.value = "--Select--";
        await logChanges("Archived School Year",SchoolYear.value)
        fetchLogs();
+        setShowAlert(true)
+       setmsgBody("School Year Archived... New Student Entries will reflect new school year ")
+       setalertClassType('alert alert-success') 
     }
     catch(err)
     {
@@ -167,7 +179,6 @@ async function fetchLogs() {
     console.log(err)
   }
   setSearchResultsLogs(_SEARCH_DATA)
-  //console.log(_SEARCH_DATA)
 }
 
 
@@ -422,6 +433,12 @@ async function  logChanges(sChangeType,changeNote)
      
 }
 
+const closeAlert = (e) => {
+  e.preventDefault();
+  setShowAlert(false);
+
+}
+
       const rowStyle = {  height: '10px', padding: '2px 0' };
 
       const columns = [{
@@ -536,6 +553,12 @@ async function  logChanges(sChangeType,changeNote)
     <div>
       <main>
         <Container>
+        <AlertSmall
+         show={showAlert}
+         msgBody={msgBody}
+         alertClassType={alertClassType}
+         toogleAlert={(e) => closeAlert(e)}
+        />
           <h1>Administration</h1>
           <br></br>
           <Form>

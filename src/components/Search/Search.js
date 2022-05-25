@@ -377,6 +377,16 @@ function handleChange (e){
     setShow(true);
   }
 
+  async function setSchoolYearValue()
+  {
+      var myAPI = new studentInfoApi;
+      var _current_SchoolYear = await myAPI.fetchMAXSchoolYear();
+      var _SchoolYear = document.getElementById('SchoolYear');
+      _SchoolYear.value = _current_SchoolYear
+      _SchoolYear.readOnly = true;
+
+  }
+
   /*MODAL ACTIONS */
   const closeModalPrimary = () =>
   {
@@ -484,7 +494,8 @@ function handleChange (e){
      setShow2(true);  //you have to set the visibilty of the modal first before calling the WS to populate drop-downs
     
      await fetchSchoolListingData();
-     await fetchSchoolYears();
+     //await fetchSchoolYears();
+     await setSchoolYearValue();
   }
 
   function handleChangeFromStudentDataEntry (e){
@@ -767,17 +778,7 @@ function formatDate(date) {
   function CellFormatter(cell, row) {
     
     return (
-       /*
-       <div><BinocularsFill 
-        onClick={() => history.push(
-          {
-            pathname: '/StudentDataEntry',
-            search: '?id=' + row.id,
-            fullName: row.FirstName + ' ' + row.LastName
-
-          }
-        )}/></div>
-        */
+     
         <div>
             <Pencil 
               onClick={()=>showRowDetailInfo(row.id)}/>

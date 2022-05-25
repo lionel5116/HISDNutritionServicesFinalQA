@@ -232,6 +232,22 @@ export class studentInfoApi {
  
      }
 
+     async  fetchMAXSchoolYear(){
+        var url = Config.REST_URL + '/api/Admin/fetchMAXSchoolYear/'
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible bad endpoint " + err)
+          return []
+        }
+ 
+     }
+
      async  UpdateDDListItem(strFieldValues){
         var url = Config.REST_URL + '/api/Admin/UpdateDDListItem/'
         url +=strFieldValues;

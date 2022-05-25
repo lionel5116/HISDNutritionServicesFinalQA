@@ -652,7 +652,8 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
     async function setSchoolYearValue(mode)
     {
       var myAPI = new studentInfoApi;
-      var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      //var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      var _current_SchoolYear = await myAPI.fetchMAXSchoolYear();
       var _SchoolYear = document.getElementById('SchoolYear');
 
       var btnSubmitSaveButton = document.getElementById('btnAddOrUpdateStudentRecord')
@@ -665,15 +666,11 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
       else if(mode == 'existing' )
       {
         _SchoolYear.readOnly = true;
-        //console.log(_current_SchoolYear);
         if(student.SchoolYear != _current_SchoolYear)
         {
           btnSubmitSaveButton.disabled = true;
         }
       }
-
-
- 
     }
 
    function renderMultiSelectsWithValuesFromFetch(elementSelectedID,fieldValue)
@@ -1108,7 +1105,6 @@ async function  logChanges(e)
       }
 }
 
-   //UTILITY METHODS
   //Utility Methods *****
    async function generateStudentID() {
   
@@ -1117,15 +1113,7 @@ async function  logChanges(e)
       //set this because the onChange is not fired
       student.Student_ID = studentIDField.value;
 
-      //set school year dropdown value to current school year
-      //var myAPI = new studentInfoApi;
-      //var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
-      
-      //var _ddSchoolYears = document.getElementById('ddSchoolYears');
-      //console.log(_current_SchoolYear)
-      //_ddSchoolYears.value = _current_SchoolYear;
-      
-
+     
       setStudentID(student.studentID)
       if(student.studentID != '')
       {
