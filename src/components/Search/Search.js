@@ -437,16 +437,13 @@ function handleChange (e){
 
    async function  EditStudent(){
 
-    //console.log("In EditStudent function.....")
      
       var myAPI = new studentInfoApi;
-      var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      //var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+      var _current_SchoolYear = await myAPI.fetchMAXSchoolYear();
 
       await getNewValuesForStudentDataObject();
 
-    // console.log("student id: " + student.id)
-    // console.log("School Value: " + student.School)
-   //  console.log("StudentID Value: " + student.Student_ID)
 
       if(student.id != '' && 
       student.School.length > 2 &
