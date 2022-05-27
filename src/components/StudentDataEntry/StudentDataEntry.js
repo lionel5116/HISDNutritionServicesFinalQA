@@ -333,6 +333,10 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
 
         var element = '';
 
+        //make sure we get school year
+        element = document.getElementById('SchoolYear');
+        student.SchoolYear = element.value;
+
         //set the hidden suplement field values
         element = document.getElementById('Foods_to_be_Omitted');
         student.Foods_to_be_Omitted = element.value;
@@ -413,17 +417,16 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
       if(student.Student_ID != '' &&
         student.School != '' &&
         student.FirstName != '' &&
-        student.LastName != '' )
+        student.LastName != '' &&
+        student.schoolYear != '')
         {
-            //we are good to go  
-            //console.log(student);
-            //return;     
+            
   
         }
         else{
           //console.log(student);
           //return;
-          openAlertError('You must have at least the following: StudentID,School,First and Last Name!!!!');
+          openAlertError('You must have at least the following: StudentID,School,First and Last Name and School Year!!!!');
           setrecordSuccessShowHide('block')
           return;
         }
@@ -661,6 +664,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
       if(mode == 'new')
       {
         _SchoolYear.value = _current_SchoolYear
+        student.schoolYear = _SchoolYear.value;
         _SchoolYear.readOnly = true;
       }
       else if(mode == 'existing' )
@@ -718,12 +722,9 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
           case 'Birthday':
               setStudent({ ...student, Birthday: value });
               break;
-
-          /*
-          case 'ddSchoolYears':
+          case 'SchoolYear':
               setStudent({ ...student, SchoolYear: value });
-              break;
-          */
+             break;
 
           case 'Date_Received':
               setStudent({ ...student, Date_Received: value });
@@ -1382,6 +1383,7 @@ async function  logChanges(e)
                       type="text"
                       name="SchoolYear"
                       id="SchoolYear"
+                      onChange={handleChange}
                       style={{ width:300}}
                     ></input>
                   </Col>

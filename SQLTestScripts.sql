@@ -6,7 +6,7 @@ SELECT TOP (1000) [Year]
   DELETE 
   SchoolYears
   WHERE 
-  Year = '2020-2021'
+  Year = '2022-2023'
 
 
   
