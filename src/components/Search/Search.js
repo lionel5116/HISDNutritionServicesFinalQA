@@ -513,11 +513,19 @@ function handleChange (e){
 
   async function ADD_New_Item(e){
      e.preventDefault()
+    
+    /*
      setShow2(true);  //you have to set the visibilty of the modal first before calling the WS to populate drop-downs
     
      await fetchSchoolListingData();
      //await fetchSchoolYears();
      await setSchoolYearValue();
+     */
+     history.push(
+      {
+        pathname: '/StudentDataEntry'
+
+      })
   }
 
   function handleChangeFromStudentDataEntry (e){

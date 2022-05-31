@@ -394,8 +394,12 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
         }
         else{
          
-          openAlertError('You must have at least the following: StudentID,School,First and Last Name and School Year!!!!');
-          setrecordSuccessShowHide('block')
+          //openAlertError('You must have at least the following: StudentID,School,First and Last Name and School Year!!!!');
+          //setrecordSuccessShowHide('block')
+          const confirmBox = window.confirm(
+            "You must have at least the following: StudentID,School,First and Last Name and School Year"
+          )
+          if (confirmBox === true) {return} else {return;}
           return;
         }
 
@@ -407,12 +411,22 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      
       if(_response)
       {
-         openAlert();
+         //openAlert();
         //setrecordSuccessShowHide('none')
+        const confirmBox = window.confirm(
+          "Record added/updated"
+        )
+        if (confirmBox === true) {return} else {return;}
+        return;
       }
       else{
-        openAlertError('There was a problem adding or updating the record');
-        setrecordSuccessShowHide('block')
+        //openAlertError('There was a problem adding or updating the record');
+        //setrecordSuccessShowHide('block')
+        const confirmBox = window.confirm(
+          "There was a problem adding/updating the record"
+        )
+        if (confirmBox === true) {return} else {return;}
+        return;
       }
 
     }
@@ -947,9 +961,6 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      }
 //END HANDLE -CLICK METHODS FOR DROPDOWN LISTS (SUPPLEMENTS)  *******
 
-//SEARCH DATA WAREHOUSE FOR STUDENT INFORMATION - test records below
-//1979794
-//1979797
 const searchStudent = (e) =>
 {
   e.preventDefault();
@@ -1078,6 +1089,8 @@ async function  logChanges(e)
    async function generateStudentID() {
   
       var studentIDField = document.getElementById('Student_ID');
+      var _btnGenerateStudentId = document.getElementById('btnGenerateStudentId');
+
       studentIDField.value = 'STID_' + generateUUIDUsingMathRandom().substring(0,12);
       //set this because the onChange is not fired
       student.Student_ID = studentIDField.value;
@@ -1086,6 +1099,7 @@ async function  logChanges(e)
       setStudentID(student.studentID)
       if(student.studentID != '')
       {
+        _btnGenerateStudentId.disabled = true;
         setShouldDisplayAttachment('block')
       }
       else{
@@ -1256,6 +1270,7 @@ async function  logChanges(e)
                     <Button
                       variant="warning"
                       type="button"
+                      id="btnGenerateStudentId"
                       onClick={(e) => generateStudentID(e)}
                  
                     >
