@@ -7,6 +7,7 @@ import {Button,
     Col,Form,Tabs,Tab} from 'react-bootstrap';
 import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
 import { Pencil  } from 'react-bootstrap-icons';
+import {TrashFill}from 'react-bootstrap-icons';
 
 //react bootstrap table next
 import BootstrapTable from 'react-bootstrap-table-next';
@@ -17,6 +18,7 @@ import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 import GenericModal from '../GenericModal/GenericModal';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 import AlertSmall from '../ReusableAppComponents/AlertSmall';
+import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
     
 
 let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types'];
@@ -31,6 +33,7 @@ function Administration() {
   const [tblSearchResults, setSearchResults] = useState([])
   const [tblSearchTempIDS, setSearchResultsTempIDs] = useState([]);
   const [tblSearchResultsLogs, setSearchResultsLogs] = useState([]);
+  const [tblSearchResultsDelete, setSearchResultsDelete] = useState([])
 
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -400,10 +403,33 @@ async function EditStudentID(){
     
 }
 
+
+
+async function DeleteStudentRecord(e,id){
+  e.preventDefault();
+  const confirmBox = window.confirm(
+    "Do you really want to delete this student record?"
+  )
+  if (confirmBox === true) {} else {return;}
+
+  
+   await logChanges("DeleteStudent","Deleted Student ID " + id)
+
+  var strSQLStatement = "DELETE StudentEntryData WHERE id = " ; 
+  strSQLStatement += id;
+  
+
+  var myAPI = new studentInfoApi;
+  await myAPI.DeleteStudentRecord(strSQLStatement)
+
+  setSearchResultsDelete([]);
+
+}
+
 //logging
 async function  logChanges(sChangeType,changeNote)
 {
-   //e.preventDefault();
+ 
 
   var myAPI = new studentInfoApi;
   
@@ -444,6 +470,7 @@ const closeAlert = (e) => {
       const columns = [{
         dataField: 'ItemName',
         text: 'Item Name',
+        sort: true
       }, 
       {
         dataField: 'ItemName',
@@ -463,10 +490,12 @@ const closeAlert = (e) => {
       {
         dataField: 'LastName',
         text: 'Last Name',
+        sort: true
       }, 
       {
         dataField: 'FirstName',
         text: 'First Name',
+        sort: true
       }, 
       {
         dataField: 'School',
@@ -527,6 +556,16 @@ const closeAlert = (e) => {
         );
       }
 
+      
+      function CellFormatterDeleteStudent(cell, row) {
+        return (
+          <div>
+            <TrashFill 
+              onClick={(e)=>DeleteStudentRecord(e,row.id)}/>
+          </div>
+        );
+      }
+
   /* MODAL ACTIONS */
   const closeModalPrimary = () =>
   {
@@ -548,24 +587,191 @@ const closeAlert = (e) => {
  }
 
 
+ async function fetchSearchData(_SEARCH_STRING_) {         
+  let _SEARCH_DATA = [];
+  var myAPI = new studentInfoApi;
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchSearchData(_SEARCH_STRING_)
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  setSearchResultsDelete(_SEARCH_DATA)
+
+}
+
+async function fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRING) {         
+  let _SEARCH_DATA = [];
+  var myAPI = new studentInfoApi;
+
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRING)
+  }
+  catch(err)
+  {
+    console.log(err)
+  }
+  
+  setSearchResultsDelete(_SEARCH_DATA)
+
+}
+
+ const searchMixed = async () => {
+
+  var oSearchObject = {
+    searchType : '',
+    firstName : '',
+    lastName : '',
+    school : '',
+  }
+
+  var myAPI = new studentInfoApi;
+  var _current_SchoolYear = await myAPI.fetchMAXSchoolYear();
+
+  var _SEARCH_STRING = '';
+  var _SEARCH_STRING_NEW = '';
+
+  var studentID = document.getElementById('txtStudentID');
+  var FirstName = document.getElementById('txtFirstName');
+  var LastName = document.getElementById('txtLastName');
+  var SchoolYear = document.getElementById('ddSchoolYears');
+  var School = document.getElementById('ddSchoolListings');
+
+  var ddLastNameSearchCrit = document.getElementById('selLastName');
+  var ddFirstNameSearchCrit = document.getElementById('selFirstName');
+
+
+          if (studentID.value != "" &&
+            FirstName.value == "" &&
+            LastName.value == "" ) {
+           
+            _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
+            _SEARCH_STRING += "'";
+            _SEARCH_STRING += studentID.value;
+            _SEARCH_STRING += "'";
+
+            _SEARCH_STRING += "AND SchoolYear = ";
+            _SEARCH_STRING += "'";
+            _SEARCH_STRING += _current_SchoolYear;
+            _SEARCH_STRING += "'";
+       
+            fetchSearchData(_SEARCH_STRING);
+
+          }
+          else if (studentID.value == "" &&
+            FirstName.value != "" &&
+            LastName.value == "" ) {
+       
+           
+              if(ddFirstNameSearchCrit.value == 'equals')
+              {
+                _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE FirstName =";
+                _SEARCH_STRING += "'";
+                _SEARCH_STRING += FirstName.value;
+                _SEARCH_STRING += "'";
+
+                _SEARCH_STRING += "AND SchoolYear = ";
+                _SEARCH_STRING += "'";
+                _SEARCH_STRING += _current_SchoolYear;
+                _SEARCH_STRING += "'";
+
+                fetchSearchData(_SEARCH_STRING);
+
+              }
+              else if(ddFirstNameSearchCrit.value == 'contains')
+              {
+                _SEARCH_STRING_NEW = "FIRST_NAME";
+                _SEARCH_STRING_NEW +="|";
+                _SEARCH_STRING_NEW += FirstName.value;
+                fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRING_NEW)
+              }
+
+          }
+          else if (studentID.value == "" &&
+            FirstName.value == "" &&
+            LastName.value != "") {
+          
+            if(ddLastNameSearchCrit.value == 'equals')
+            {
+              _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE LastName =";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += LastName.value;
+              _SEARCH_STRING += "'";
+
+              _SEARCH_STRING += "AND SchoolYear = ";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += _current_SchoolYear;
+              _SEARCH_STRING += "'";
+
+              fetchSearchData(_SEARCH_STRING);
+            }
+            else if(ddLastNameSearchCrit.value == 'contains')
+            {
+              _SEARCH_STRING_NEW = "LAST_NAME";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value;
+              fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRING_NEW)
+            }
+   
+          }
+          else {
+            setSearchResultsDelete([])
+          }
+      }  
+     
+
+
+ const columnsDeleteStudents = [
+  {
+    dataField: 'LastName',
+    text: 'Last Name',
+    sort: true
+  },
+  {
+    dataField: 'FirstName',
+    text: 'First Name',
+    sort: true
+  },
+  {
+    dataField: 'School',
+    text: 'School',
+  },
+  {
+    dataField: 'SchoolYear',
+    text: 'SchoolYear',
+  },
+  {
+    dataField: 'currStudentYesNo',
+    text: 'Current',
+  },
+  {
+    dataField: 'id',
+    text: 'Delete',
+    formatter: CellFormatterDeleteStudent,
+    style: { width: '10px' }
+  },
+  ];
 
   return (
     <div>
       <main>
         <Container>
-        <AlertSmall
-         show={showAlert}
-         msgBody={msgBody}
-         alertClassType={alertClassType}
-         toogleAlert={(e) => closeAlert(e)}
-        />
+          <AlertSmall
+            show={showAlert}
+            msgBody={msgBody}
+            alertClassType={alertClassType}
+            toogleAlert={(e) => closeAlert(e)}
+          />
           <h1>Administration</h1>
           <br></br>
           <Form>
             <Tabs>
               <Tab eventKey="TempStudentIDS" title="Temp Student ID">
                 <h2>Temp Student ID</h2>
-                <Row style={{ display: 'none' }}>
+                <Row style={{ display: "none" }}>
                   <Col sm={6}>
                     <Button
                       variant="primary"
@@ -597,7 +803,7 @@ const closeAlert = (e) => {
                 <br></br>
 
                 <Row>
-                  <Col sm={1.75} style={{ paddingRight: 40 ,marginLeft:12}}>
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 12 }}>
                     Choose List
                   </Col>
                   <Col sm={4}>
@@ -643,7 +849,7 @@ const closeAlert = (e) => {
                   <Col sm={12}>
                     <GenericModal
                       id="oldValue"
-                      title = {_ItemNameSelected}
+                      title={_ItemNameSelected}
                       actionLabel="Edit"
                       showPrimaryModal={show}
                       close="Close"
@@ -657,7 +863,7 @@ const closeAlert = (e) => {
 
                     <GenericModal
                       id="oldValue"
-                      title =  {_ItemNameSelected}
+                      title={_ItemNameSelected}
                       actionLabel="Add"
                       showPrimaryModal={show2}
                       close="Close"
@@ -708,7 +914,7 @@ const closeAlert = (e) => {
 
               <Tab eventKey="ActivityLogs" title="Activity Logs">
                 <h2>Activity Logs</h2>
-                <Row style={{ display: 'none' }}>
+                <Row style={{ display: "none" }}>
                   <Col>
                     <Button variant="primary" onClick={() => fetchLogs()}>
                       View Logs
@@ -726,7 +932,91 @@ const closeAlert = (e) => {
                       columns={columnsLogs}
                       pagination={paginationFactory()}
                       rowStyle={rowStyle}
-                      filter={ filterFactory()}
+                      filter={filterFactory()}
+                    />
+                  </Col>
+                </Row>
+              </Tab>
+              <Tab eventKey="DeleteStudents" title="Delete Students">
+                <Row>
+                  <Col sm={12}>
+                    <h2>Delete Students</h2>
+                    <br></br>
+                    <Row>
+                      <Col
+                        sm={1.75}
+                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                      >
+                        Student ID
+                      </Col>
+                      <Col sm={1.5}>
+                        <label style={{ width: 110 }}>equals</label>
+                      </Col>
+                      <Col sm={2}>
+                        <input
+                          type="text"
+                          id="txtStudentID"
+                          style={{ width: 300 }}
+                        />
+                      </Col>
+                    </Row>
+                    <br></br>
+                    <Row>
+                      <Col
+                        sm={1.75}
+                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                      >
+                        Last Name
+                      </Col>
+                      <Col sm={1.5}>
+                        <BootStrapSelectForSearch name="selLastName" />
+                      </Col>
+                      <Col sm={2}>
+                        <input
+                          type="text"
+                          id="txtLastName"
+                          style={{ width: 300 }}
+                        />
+                      </Col>
+                    </Row>
+
+                    <br></br>
+                    <Row>
+                      <Col
+                        sm={1.75}
+                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                      >
+                        First Name
+                      </Col>
+                      <Col sm={1.5}>
+                        <BootStrapSelectForSearch name="selFirstName" />
+                      </Col>
+                      <Col sm={2}>
+                        <input
+                          type="text"
+                          id="txtFirstName"
+                          style={{ width: 300 }}
+                        />
+                      </Col>
+                    </Row>
+
+                    <br></br>
+                    <Row>
+                      <Col sm={12}>
+                        <Button variant="outline-primary" 
+                            onClick={() => searchMixed()}>Search</Button>
+                      </Col>
+                    </Row>
+
+                    <br></br>
+                    <BootstrapTable
+                      striped
+                      hover
+                      keyField="id"
+                      data={tblSearchResultsDelete}
+                      columns={columnsDeleteStudents}
+                      pagination={paginationFactory()}
+                      rowStyle={rowStyle}
                     />
                   </Col>
                 </Row>

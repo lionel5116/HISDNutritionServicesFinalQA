@@ -445,13 +445,14 @@ const searchMixed = (e) => {
   var lblStudentInfoField = document.getElementById('lblStudentInfo');
   lblStudentInfoField.innerHTML = '';
 
+  var ddLastNameSearchCrit = document.getElementById('selLastName');
+
   if(ddMatch.value == 'anyCriteria')
   {
           if (studentID.value != "" &&
             LastName.value == "" &&
             School.value == "--Select--") {
-            //Search By Student ID  - WORKS!!!
-            console.log('Search By Student ID')
+           
             _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
             _SEARCH_STRING += "'";
             _SEARCH_STRING += studentID.value;
@@ -463,20 +464,30 @@ const searchMixed = (e) => {
           else if (studentID.value == "" &&
             LastName.value != "" &&
             School.value == "--Select--") {
-            //Search By Last Name 
-         
-           // console.log('LAST_NAME');
+     
 
-            _SEARCH_STRING_NEW = "LAST_NAME";
-            _SEARCH_STRING_NEW +="|";
-            _SEARCH_STRING_NEW += LastName.value;
-            fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+            if(ddLastNameSearchCrit.value == 'equals')
+            {
+              _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE LastName =";
+              _SEARCH_STRING += "'";
+              _SEARCH_STRING += LastName.value;
+              _SEARCH_STRING += "'";
+              fetchSearchData(_SEARCH_STRING);
+            }
+            else if(ddLastNameSearchCrit.value == 'contains')
+            {
+              _SEARCH_STRING_NEW = "LAST_NAME";
+              _SEARCH_STRING_NEW +="|";
+              _SEARCH_STRING_NEW += LastName.value;
+              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+            }
+
 
           }
           else if (studentID.value == "" &&
             LastName.value == "" &&
             School.value != "--Select--") {
-            //Search By School Name  - WORKS!!!
+   
             console.log('Search By School Name')
             _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
             _SEARCH_STRING += "'";
@@ -626,7 +637,7 @@ const searchMixed = (e) => {
                     Last Name
                   </Col>
                   <Col sm={1.5}>
-                    <BootStrapSelectForSearch name="selStudentID" />
+                    <BootStrapSelectForSearch name="selLastName" />
                   </Col>
                   <Col sm={4}>
                     <input type="text" id="txtLastName" style={{ width:300}} />

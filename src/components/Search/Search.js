@@ -61,6 +61,8 @@ function Search() {
                                               Texture_Modification2  :''});
 
   const [checked, setChecked] = useState(false);
+
+ 
     
   
  useEffect(() => {
@@ -184,6 +186,10 @@ function handleChange (e){
     var SchoolYear = document.getElementById('ddSchoolYears');
     var School = document.getElementById('ddSchoolListings');
 
+    var ddLastNameSearchCrit = document.getElementById('selLastName');
+    var ddFirstNameSearchCrit = document.getElementById('selFirstName');
+
+
     var ddMatch = document.getElementById('ddMatch');
      if(ddMatch.value == 'anyCriteria')
      {
@@ -192,13 +198,12 @@ function handleChange (e){
               LastName.value == "" &&
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
-              //Search By Student ID  - WORKS!!!
-             // console.log('Search By Student ID')
+             
               _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE Student_ID =";
               _SEARCH_STRING += "'";
               _SEARCH_STRING += studentID.value;
               _SEARCH_STRING += "'";
-             // console.log(_SEARCH_STRING);
+         
               fetchSearchData(_SEARCH_STRING);
 
 
@@ -208,17 +213,25 @@ function handleChange (e){
               LastName.value == "" &&
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
-              //Search By First Name 
-              //only three values FirstName,LastName,School
-             // console.log('Search By First Name')
-          
+         
              
-              _SEARCH_STRING_NEW = "FIRST_NAME";
-              _SEARCH_STRING_NEW +="|";
-              _SEARCH_STRING_NEW += FirstName.value;
-              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
-       
+                if(ddFirstNameSearchCrit.value == 'equals')
+                {
+                  _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE FirstName =";
+                  _SEARCH_STRING += "'";
+                  _SEARCH_STRING += FirstName.value;
+                  _SEARCH_STRING += "'";
 
+                  fetchSearchData(_SEARCH_STRING);
+
+                }
+                else if(ddFirstNameSearchCrit.value == 'contains')
+                {
+                  _SEARCH_STRING_NEW = "FIRST_NAME";
+                  _SEARCH_STRING_NEW +="|";
+                  _SEARCH_STRING_NEW += FirstName.value;
+                  fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+                }
 
             }
             else if (studentID.value == "" &&
@@ -226,29 +239,35 @@ function handleChange (e){
               LastName.value != "" &&
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
-              //Search By Last Name 
-             // console.log('Search By Last Name ')
-             
-
-              _SEARCH_STRING_NEW = "LAST_NAME";
-              _SEARCH_STRING_NEW +="|";
-              _SEARCH_STRING_NEW += LastName.value;
-              fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
-
-
+            
+              if(ddLastNameSearchCrit.value == 'equals')
+              {
+                _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE LastName =";
+                _SEARCH_STRING += "'";
+                _SEARCH_STRING += LastName.value;
+                _SEARCH_STRING += "'";
+                fetchSearchData(_SEARCH_STRING);
+              }
+              else if(ddLastNameSearchCrit.value == 'contains')
+              {
+                _SEARCH_STRING_NEW = "LAST_NAME";
+                _SEARCH_STRING_NEW +="|";
+                _SEARCH_STRING_NEW += LastName.value;
+                fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING_NEW)
+              }
+     
             }
             else if (studentID.value == "" &&
               FirstName.value == "" &&
               LastName.value == "" &&
               SchoolYear.value != "--Select--" &&
               School.value == "--Select--") {
-              //Search By School Year - WORKS!!!
-              console.log('Search By School Year ')
+         
+       
               _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE SchoolYear =";
               _SEARCH_STRING += "'";
               _SEARCH_STRING += SchoolYear.value;
               _SEARCH_STRING += "'";
-             // console.log(_SEARCH_STRING);
               fetchSearchData(_SEARCH_STRING);
 
             }
@@ -435,11 +454,17 @@ function handleChange (e){
   }
 
 
-   async function  EditStudent(){
-
-     
+   async function  EditStudent(e){
+      e.preventDefault();
+      //for logging
+      var logResponse = await logChanges(e);
+      if(logResponse == 'SUCCESS')
+      {
+         console.log("Successfully wrote log.. School Name Change - Edit Student from Search")
+      }
+    
       var myAPI = new studentInfoApi;
-      //var _current_SchoolYear = await myAPI.getCurrentSchoolYear();
+
       var _current_SchoolYear = await myAPI.fetchMAXSchoolYear();
 
       await getNewValuesForStudentDataObject();
@@ -723,6 +748,8 @@ async function getNewValuesForStudentDataObject()
 
     var _school = document.getElementById('ddSchoolListings2');
     student.School= _school.value;
+    //do this for writing logs
+    setCurrentSchoolName(_school.value);
 
      var _Student_ID = document.getElementById('Student_ID');
      student.Student_ID = _Student_ID.value;
@@ -784,6 +811,62 @@ function formatDate(date) {
         );
   }
 
+  
+//logging
+async function  logChanges(e)
+{
+  e.preventDefault();
+
+  var myAPI = new studentInfoApi;
+  
+
+      var logObject = {
+        LogDate: '',
+        ChangeType: '',
+        ChangeNotes: '',
+        Student_ID: '',
+        SchoolName: '',
+        SchoolNotes: '',
+        UserMakingChange:''
+      };
+
+      
+      var _DDSchoolListingSelect = document.getElementById('ddSchoolListings2');
+      var dateTimeCurrent = new Date().toISOString();
+
+      var success = '';
+
+      if(currentSchoolName != _DDSchoolListingSelect.value)
+      {
+          var changeSchool = "School Name changed from ";
+          changeSchool += currentSchoolName;
+          changeSchool += " To ";
+          changeSchool += _DDSchoolListingSelect.value;
+
+          logObject.LogDate = dateTimeCurrent;
+          logObject.ChangeType = 'SchoolName'
+          logObject.ChangeNotes = changeSchool;
+          logObject.studentID = student.studentID;
+          logObject.schoolName = currentSchoolName;
+          logObject.SchoolNotes = '';
+          logObject.UserMakingChange = '';
+
+          try{
+            success = await myAPI.insertLogData(logObject)
+            success.then(() => {
+              return 'SUCCESS'
+            }).catch(() => {
+              return 'FAILED'
+            })
+          }
+          catch(error)
+          {
+            return 'FAILED'
+          }
+          
+      }
+}
+
      //for the row height fix
   const rowStyle = {  height: '10px', padding: '2px 0' };
 
@@ -791,10 +874,12 @@ function formatDate(date) {
   {
     dataField: 'LastName',
     text: 'Last Name',
+    sort: true
   },
   {
     dataField: 'FirstName',
     text: 'First Name',
+    sort: true
   },
   {
     dataField: 'School',
@@ -969,7 +1054,7 @@ function formatDate(date) {
                       showPrimaryModal={show}
                       close="Close"
                       Submit="View/Submit"
-                      handleClickOne={() => EditStudent}
+                      handleClickOne={(e) => EditStudent}
                       handleClosePrimary={() => closeModalPrimary}
                       handleChange={() => handleChange}
 

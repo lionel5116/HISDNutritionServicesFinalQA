@@ -282,7 +282,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
     let _SCHOOL_NOTE_DATA = [];
     var myAPI = new studentInfoApi;
     _SCHOOL_NOTE_DATA = await myAPI.fetchCommNotes(_studentID,_year)
-    //console.log(_SCHOOL_NOTE_DATA);
+   
     var _txtStudentCommunicationNotes = document.getElementById('txtStudentCommunicationNotes');
     _txtStudentCommunicationNotes.value = _SCHOOL_NOTE_DATA;
    
@@ -393,8 +393,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
   
         }
         else{
-          //console.log(student);
-          //return;
+         
           openAlertError('You must have at least the following: StudentID,School,First and Last Name and School Year!!!!');
           setrecordSuccessShowHide('block')
           return;
@@ -408,8 +407,8 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      
       if(_response)
       {
-        openAlert();
-        setrecordSuccessShowHide('none')
+         openAlert();
+        //setrecordSuccessShowHide('none')
       }
       else{
         openAlertError('There was a problem adding or updating the record');
@@ -956,10 +955,11 @@ const searchStudent = (e) =>
   e.preventDefault();
   
   var studentIDField = document.getElementById('Student_ID')
+  var btnSearchStudent = document.getElementById('btnSearchStudentNaturalKey');
   if(studentIDField.value != '')
   {
     fetchSingleStudentByStudentNaturalKey(studentIDField.value);
-    
+    btnSearchStudent.disabled = true;
   }
   else
   {
@@ -977,7 +977,7 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
   let _DATA = [];
   var myAPI = new studentInfoApi;
   _DATA = await myAPI.fetchSingleStudentByStudentNaturalKey(_studentID)
-  //console.log(_DATA);
+  
   if(_DATA.length > 0)
   {
     if(_DATA[0].NameOfInstitution !='')
@@ -1001,7 +1001,7 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
   }
   else{
-    openAlertError('No records returned for that student ID !!!!');
+    openAlertError('No records match the criteria');
     setrecordSuccessShowHide('block')
   }
   
@@ -1165,11 +1165,11 @@ async function  logChanges(e)
     //alerts
     const openAlert = () => {
         setsuccessMsg('alert alert-success')
-        setmsgBody("Student Information Add/Update Information")
-        setmsgBody2("Successfully wrote record!!!")
-        
+        setmsgBody("Success")
+        setmsgBody2("Success")
+
         //determines whether we should redirect to main menu (works with const closeAlert = (e) => {)
-        setshouldReturnToMain(true)
+        //setshouldReturnToMain(true)
         setShowAlert(true);
     }
 
@@ -1246,6 +1246,7 @@ async function  logChanges(e)
                     <Button
                       variant="primary"
                       type="button"
+                      id="btnSearchStudentNaturalKey"
                       onClick={(e) => searchStudent(e)}
                       style={{marginRight:10}}
                     >
