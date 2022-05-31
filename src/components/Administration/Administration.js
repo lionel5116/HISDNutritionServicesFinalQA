@@ -193,7 +193,7 @@ function showRowDetailInfo(_name){
 }
 
 function showRowDetailInfoTempIDS(_studentID){
-  console.log("TempIDS  - Data from row from an external function",_studentID)
+  //console.log("TempIDS  - Data from row from an external function",_studentID)
   setstudentIDTemp(_studentID)//const [_studentIDTemp,setstudentIDTemp]  = useState("")
   setShow3(true)
   setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_studentID); }, 500);

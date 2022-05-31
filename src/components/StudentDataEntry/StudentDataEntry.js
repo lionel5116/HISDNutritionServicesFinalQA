@@ -87,46 +87,15 @@ function StudentDataEntry() {
     const [currentSchoolName,setCurrentSchoolName]= useState('');
     const [currentMedicalCondition,setcurrentMedicalCondition]= useState('');
 
-  
-/*SELECT TOP (1000) 
-      [id][LastName]
-      ,[FirstName]
-      ,[School]
-      ,[Disabled]
-      ,[LTA]
-      ,[SupplementName]
-      ,[CurrentOrderDate]
-      ,[Diet_Order_Notes]
-      ,[Notes]
-      ,[NeedsF_U]
-      ,[Date_Processed]
-      ,[Date_Received]
-      ,[Current_Student]
-      ,[Milk_Sub]
-      ,[Medical_Condition]
-      ,[Foods_to_be_Omitted]
-      ,[Substitution]
-      ,[Texture_Modification]
-      ,[Milk_Sub_Name]
-      ,[Menu_Code]
-      ,[Birthday]
-      ,[Student_ID]
-      ,[NPO]
-      ,[Menu_Color]
-      ,[SchoolYear]
-      ,[SupplementNameMore]
-      ,[Texture_Modification2]
-  FROM [HISDNutritionalServices].[dbo].[StudentEntryData]
-  where id = 4557
-  */
 
-    //STID_24c6b43f-625
+
+ 
    //useEffect Methods ***********
    useEffect(() => {
     const _queryID = location.search;
     if(_queryID != '')
     {
-        //console.log("Record ID from search " + _queryID.substring(_queryID.indexOf('=') + 1));
+        
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
         var studentLabel = "Student: ";
         studentLabel += location.studentID;
@@ -452,7 +421,6 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
     async function populateFormWithStudentData(fieldData)
     {
      
-
     student.School= fieldData[0].School
     student.Menu_Color= fieldData[0].Menu_Color
 

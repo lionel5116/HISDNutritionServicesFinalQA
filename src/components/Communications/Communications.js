@@ -376,15 +376,18 @@ function CellFormatterSearchStudent(cell, row) {
       if(_SEARCH_DATA.length > 0)
       {
         setshowBootStrapTable('block')
+        
       }
     }
     catch (err) {
       console.log(err)
       setshowBootStrapTable('none')
     }
+    
     setSearchStudents(_SEARCH_DATA)
   }
 
+  /*
   async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {
     let _SEARCH_DATA = [];
     var myAPI = new studentInfoApi;
@@ -398,8 +401,8 @@ function CellFormatterSearchStudent(cell, row) {
 
     setSearchStudents(_SEARCH_DATA)
 
-  }
-
+  }*/
+  
   async function fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING) {         
     let _SEARCH_DATA = [];
     var myAPI = new studentInfoApi;
@@ -407,14 +410,20 @@ function CellFormatterSearchStudent(cell, row) {
     try
     {
       _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES_SearchObject(_SEARCH_STRING)
+      if(_SEARCH_DATA.length > 0)
+      {
+        setshowBootStrapTable('block')
+        
+      }
     }
     catch(err)
     {
       console.log(err)
+      setshowBootStrapTable('none')
     }
-    
-    setSearchStudents(_SEARCH_DATA)
   
+    setSearchStudents(_SEARCH_DATA)
+
   }
 
 
@@ -456,6 +465,8 @@ const searchMixed = (e) => {
             School.value == "--Select--") {
             //Search By Last Name 
          
+           // console.log('LAST_NAME');
+
             _SEARCH_STRING_NEW = "LAST_NAME";
             _SEARCH_STRING_NEW +="|";
             _SEARCH_STRING_NEW += LastName.value;
