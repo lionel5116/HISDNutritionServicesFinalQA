@@ -1236,16 +1236,31 @@ async function  logChanges(e)
               </Button>
             </Row>
             <Row>
-              <Col sm={12} style={{paddingRight:10,marginLeft:12,width:150,color:'blue'}}>
-              <label>{storeFullNameFromSearch}</label>
+              <Col
+                sm={12}
+                style={{
+                  paddingRight: 10,
+                  marginLeft: 12,
+                  width: 150,
+                  color: "blue",
+                }}
+              >
+                <label>{storeFullNameFromSearch}</label>
               </Col>
             </Row>
-        
+
             <Tabs>
               <Tab eventKey="StudentInformation" title="Student Information">
-               
                 <Row className="mb-6">
-                 <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:300,color:'red'}}>
+                  <Col
+                    sm={1.75}
+                    style={{
+                      paddingRight: 10,
+                      marginLeft: 12,
+                      width: 300,
+                      color: "red",
+                    }}
+                  >
                     Student ID*
                   </Col>
                   <Col sm={10}>
@@ -1254,7 +1269,7 @@ async function  logChanges(e)
                       name="Student_ID"
                       id="Student_ID"
                       onChange={handleChange}
-                      style={{ width:300,marginRight:10}}
+                      style={{ width: 300, marginRight: 10 }}
                     ></input>
 
                     <Button
@@ -1262,7 +1277,7 @@ async function  logChanges(e)
                       type="button"
                       id="btnSearchStudentNaturalKey"
                       onClick={(e) => searchStudent(e)}
-                      style={{marginRight:10}}
+                      style={{ marginRight: 10 }}
                     >
                       Search Student
                     </Button>
@@ -1272,12 +1287,10 @@ async function  logChanges(e)
                       type="button"
                       id="btnGenerateStudentId"
                       onClick={(e) => generateStudentID(e)}
-                 
                     >
                       Generate Temp Student ID
                     </Button>
                   </Col>
-
                 </Row>
 
                 <Row>
@@ -1287,17 +1300,17 @@ async function  logChanges(e)
                       name="Current_Student"
                       id="Current_Student"
                       onChange={handleChange}
-                      style={{ marginRight:10}}
+                      style={{ marginRight: 10 }}
                     />
-                    <Form.Label 
-                    >
-                      Current Student
-                    </Form.Label>
+                    <Form.Label>Current Student</Form.Label>
                   </Form.Group>
                 </Row>
 
                 <Row>
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     School Name
                   </Col>
                   <Col sm={5}>
@@ -1314,7 +1327,10 @@ async function  logChanges(e)
 
                 <br></br>
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     First Name
                   </Col>
                   <Col sm={5}>
@@ -1323,13 +1339,16 @@ async function  logChanges(e)
                       name="FirstName"
                       id="FirstName"
                       onChange={handleChange}
-                      style={{ width:300}}
+                      style={{ width: 300 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     Last Name
                   </Col>
                   <Col sm={5}>
@@ -1338,13 +1357,16 @@ async function  logChanges(e)
                       name="LastName"
                       id="LastName"
                       onChange={handleChange}
-                      style={{ width:300}}
+                      style={{ width: 300 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     Date of Birth
                   </Col>
                   <Col sm={5}>
@@ -1353,28 +1375,34 @@ async function  logChanges(e)
                       name="Birthday"
                       id="Birthday"
                       onChange={handleChange}
-                      style={{ width:150}}
+                      style={{ width: 150 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     School Year
                   </Col>
                   <Col sm={5}>
-                      <input
+                    <input
                       type="text"
                       name="SchoolYear"
                       id="SchoolYear"
                       onChange={handleChange}
-                      style={{ width:300}}
+                      style={{ width: 300 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     Date Received
                   </Col>
                   <Col sm={5}>
@@ -1383,13 +1411,16 @@ async function  logChanges(e)
                       name="Date_Received"
                       id="Date_Received"
                       onChange={handleChange}
-                      style={{ width:150}}
+                      style={{ width: 150 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     Date Processed
                   </Col>
                   <Col sm={5}>
@@ -1398,21 +1429,24 @@ async function  logChanges(e)
                       name="Date_Processed"
                       id="Date_Processed"
                       onChange={handleChange}
-                      style={{ width:150}}
+                      style={{ width: 150 }}
                     ></input>
                   </Col>
                 </Row>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,marginLeft:12,width:150}}>
-                  Notes
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
+                    Notes
                   </Col>
                   <Col sm={5}>
                     <textarea
                       name="Notes"
                       id="Notes"
                       onChange={handleChange}
-                      style={{ height: "100px", width: 750}}
+                      style={{ height: "100px", width: 750 }}
                     ></textarea>
                   </Col>
                 </Row>
@@ -1464,9 +1498,9 @@ async function  logChanges(e)
                 <hr></hr>
 
                 <Row>
-                  <Form.Group as={Col}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
-                      Foods to be Ommitted
+                      Foods to be Omitted
                     </Form.Label>
                     <GenericMultiSelectCombo
                       name_ddLeft="ddFTBOList"
@@ -1495,20 +1529,19 @@ async function  logChanges(e)
                 <br></br>
 
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,width:150}}>
-                  FTBO Custom
-                </Col>
+                  <Col sm={1.75} style={{ paddingRight: 10, width: 150 }}>
+                    FTBO Custom
+                  </Col>
                   <Col sm={5}>
                     <input
                       type="text"
                       name="FTBO_Custom"
                       id="FTBO_Custom"
                       onChange={handleChange}
-                      style={{ width:300}}
+                      style={{ width: 300 }}
                     ></input>
                   </Col>
                 </Row>
-
 
                 <br></br>
 
@@ -1526,15 +1559,95 @@ async function  logChanges(e)
                   </Form.Group>
                 </Row>
 
-                <Row className="mb-6" style={{ display: "block" }}>
-                  <Form.Group as={Col}>
-                    <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
+                <br></br>
+                <Row>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                  >
+                    Menu Color
+                  </Col>
 
-                    <Form.Control
-                      as="select"
+                  <Col sm={2}>
+                    <select
                       name="ddMenuColor"
                       id="ddMenuColor"
-                      style={myStyles.ddMenuColorPaddingAndWidth}
+                      style={{ width: 300 }}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                      <option>Blue</option>
+                      <option>Red</option>
+                      <option>Green</option>
+                    </select>
+                  </Col>
+                </Row>
+
+                <br></br>
+                <Row>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                  >
+                    Menu Code
+                  </Col>
+
+                  <Col sm={2}>
+                    <select
+                      name="ddMenuCode"
+                      id="ddMenuCode"
+                      style={{ width: 300 }}
+                      onChange={handleChange}
+                    >
+                      <option></option>
+                    </select>
+                  </Col>
+                </Row>
+
+                <br></br>
+                {/*}
+               <Row>
+                 <Col sm={2} style={{paddingRight:10,width:150}}>
+                 <label>Menu Color</label>
+                 </Col>
+                 <Col sm={5}>
+                  <select
+                   name="ddMenuColor"
+                   id="ddMenuColor"
+                   style={{ width:300}}
+                   onChange={handleChange}>
+                      <option></option>
+                      <option>Blue</option>
+                      <option>Red</option>
+                      <option>Green</option>
+                  </select>
+                 </Col>
+               </Row>
+
+               <Row>
+                 <Col sm={2} style={{paddingRight:10,width:150}}>
+                 <label>Menu Code</label>
+                 </Col>
+                 <Col sm={5}>
+                  <select
+                   name="ddMenuCode"
+                   id="ddMenuCode"
+                   style={{ width:300}}
+                   onChange={handleChange}>
+                      <option></option>
+                  </select>
+                 </Col>
+                 </Row>
+                
+                
+                <Row className="mb-6" style={{ display: "block" }}>
+                  <Form.Group as={Col}>
+                 
+                  <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="ddMenuCode"
+                      id="ddMenuCode"
                       onChange={handleChange}
                     >
                       <option></option>
@@ -1560,22 +1673,43 @@ async function  logChanges(e)
                     </Form.Control>
                   </Form.Group>
                 </Row>
-
+              
                 <Row className="mb-3">
-                <Col sm={1.75} style={{paddingRight:10,width:150}}>
-                     Menu Code Custom
-                </Col>
+                  <Col sm={1.75} style={{ paddingRight: 10, width: 150 }}>
+                    Menu Code Custom
+                  </Col>
                   <Col sm={5}>
                     <input
                       type="text"
                       name="Menu_Code_Custom"
                       id="Menu_Code_Custom"
                       onChange={handleChange}
-                      style={{ width:300}}
+                      style={{ width: 300 }}
                     ></input>
                   </Col>
                 </Row>
 
+                */}
+
+<br></br>
+                <Row>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                  >
+                     MC Custom
+                  </Col>
+
+                  <Col sm={2}>
+                  <input
+                      type="text"
+                      name="Menu_Code_Custom"
+                      id="Menu_Code_Custom"
+                      onChange={handleChange}
+                      style={{ width: 300 }}
+                    ></input>
+                  </Col>
+                </Row>
 
                 <hr></hr>
 
@@ -1587,7 +1721,7 @@ async function  logChanges(e)
                 <br></br>
 
                 <Row>
-                  <Form.Group as={Col}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
                       Nutrition Supplement
                     </Form.Label>
@@ -1617,7 +1751,7 @@ async function  logChanges(e)
                 <br></br>
 
                 <Row>
-                  <Form.Group as={Col}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
                       Milk Substitute
                     </Form.Label>
@@ -1799,8 +1933,8 @@ async function  logChanges(e)
                 <Button
                   variant="primary"
                   onClick={(e) => AddOrUpdateStudentRecord(e)}
-                  id='btnAddOrUpdateStudentRecord'
-                  name='btnAddOrUpdateStudentRecord'
+                  id="btnAddOrUpdateStudentRecord"
+                  name="btnAddOrUpdateStudentRecord"
                 >
                   Save
                 </Button>
@@ -1825,7 +1959,8 @@ const myStyles = {
     position: 'absolute', 
     left: 0,
     width: '10em',
-    marginRight:'50px'
+    marginRight:'50px',
+    paddingRight:'50px'
     },
   ddMenuColorPaddingAndWidth : {
     width:'200px', 
