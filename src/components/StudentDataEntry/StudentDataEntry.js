@@ -1494,9 +1494,7 @@ async function  logChanges(e)
                   />
                   <Form.Label>Needs F/U</Form.Label>
                 </Row>
-
-                <hr></hr>
-
+      
                 <Row>
                   <Form.Group as={Col} style={{ paddingLeft: 2 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
@@ -1529,37 +1527,39 @@ async function  logChanges(e)
                 <br></br>
 
                 <Row className="mb-3">
-                  <Col sm={1.75} style={{ paddingRight: 10, width: 150 }}>
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                      >
                     FTBO Custom
                   </Col>
-                  <Col sm={5}>
+                  <Col sm={2}>
                     <input
                       type="text"
                       name="FTBO_Custom"
                       id="FTBO_Custom"
                       onChange={handleChange}
-                      style={{ width: 300 }}
+                      style={{ width: 350 }}
                     ></input>
                   </Col>
                 </Row>
 
-                <br></br>
 
-                <Row className="mb-6">
-                  <label>Allowable Substitutes</label>
-                  <Form.Group as={Col}>
-                    {/*<Form.Label>Substitution</Form.Label>*/}
-                    <Form.Control
-                      as="textarea"
-                      name="Substitution"
-                      id="Substitution"
-                      style={{ height: "100px", width: 350 }}
+                <Row className="mb-3">
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                      >
+                   Allowable Substitutes
+                  </Col>
+                  <Col sm={2}>
+                    <textarea
+                      type="text"
+                      name="FTBO_Custom"
+                      id="FTBO_Custom"
                       onChange={handleChange}
-                    />
-                  </Form.Group>
+                      style={{ width: 350 }}>
+                    </textarea>
+                  </Col>
                 </Row>
 
-                <br></br>
+      
                 <Row>
                   <Col
                     sm={1.75}
@@ -1572,7 +1572,7 @@ async function  logChanges(e)
                     <select
                       name="ddMenuColor"
                       id="ddMenuColor"
-                      style={{ width: 300 }}
+                      style={{ width: 350 }}
                       onChange={handleChange}
                     >
                       <option></option>
@@ -1582,8 +1582,9 @@ async function  logChanges(e)
                     </select>
                   </Col>
                 </Row>
-
-                <br></br>
+          
+               <br></br>
+               
                 <Row>
                   <Col
                     sm={1.75}
@@ -1596,102 +1597,15 @@ async function  logChanges(e)
                     <select
                       name="ddMenuCode"
                       id="ddMenuCode"
-                      style={{ width: 300 }}
+                      style={{ width: 350 }}
                       onChange={handleChange}
                     >
                       <option></option>
                     </select>
                   </Col>
                 </Row>
-
-                <br></br>
-                {/*}
-               <Row>
-                 <Col sm={2} style={{paddingRight:10,width:150}}>
-                 <label>Menu Color</label>
-                 </Col>
-                 <Col sm={5}>
-                  <select
-                   name="ddMenuColor"
-                   id="ddMenuColor"
-                   style={{ width:300}}
-                   onChange={handleChange}>
-                      <option></option>
-                      <option>Blue</option>
-                      <option>Red</option>
-                      <option>Green</option>
-                  </select>
-                 </Col>
-               </Row>
-
-               <Row>
-                 <Col sm={2} style={{paddingRight:10,width:150}}>
-                 <label>Menu Code</label>
-                 </Col>
-                 <Col sm={5}>
-                  <select
-                   name="ddMenuCode"
-                   id="ddMenuCode"
-                   style={{ width:300}}
-                   onChange={handleChange}>
-                      <option></option>
-                  </select>
-                 </Col>
-                 </Row>
-                
-                
-                <Row className="mb-6" style={{ display: "block" }}>
-                  <Form.Group as={Col}>
-                 
-                  <Form.Label style={myStyles.ddlabel}>Menu Color</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="ddMenuCode"
-                      id="ddMenuCode"
-                      onChange={handleChange}
-                    >
-                      <option></option>
-                      <option>Blue</option>
-                      <option>Red</option>
-                      <option>Green</option>
-                    </Form.Control>
-                  </Form.Group>
-
-                  <br></br>
-
-                  <Form.Group as={Col}>
-                    <Form.Label style={myStyles.ddlabel}>Menu Code</Form.Label>
-
-                    <Form.Control
-                      as="select"
-                      name="ddMenuCode"
-                      id="ddMenuCode"
-                      style={myStyles.ddMenuColorPaddingAndWidth}
-                      onChange={handleChange}
-                    >
-                      <option></option>
-                    </Form.Control>
-                  </Form.Group>
-                </Row>
-              
-                <Row className="mb-3">
-                  <Col sm={1.75} style={{ paddingRight: 10, width: 150 }}>
-                    Menu Code Custom
-                  </Col>
-                  <Col sm={5}>
-                    <input
-                      type="text"
-                      name="Menu_Code_Custom"
-                      id="Menu_Code_Custom"
-                      onChange={handleChange}
-                      style={{ width: 300 }}
-                    ></input>
-                  </Col>
-                </Row>
-
-                */}
-
-<br></br>
+             <br>
+             </br>
                 <Row>
                   <Col
                     sm={1.75}
@@ -1706,19 +1620,19 @@ async function  logChanges(e)
                       name="Menu_Code_Custom"
                       id="Menu_Code_Custom"
                       onChange={handleChange}
-                      style={{ width: 300 }}
+                      style={{ width: 350 }}
                     ></input>
                   </Col>
                 </Row>
 
-                <hr></hr>
+              <br></br>
 
                 <Row>
                   <label style={{ fontWeight: "bold" }}>
                     Supplements and Milk Substitute
                   </label>
                 </Row>
-                <br></br>
+           
 
                 <Row>
                   <Form.Group as={Col} style={{ paddingLeft: 2 }}>
@@ -1748,7 +1662,7 @@ async function  logChanges(e)
                     />
                   </Col>
                 </Row>
-                <br></br>
+         
 
                 <Row>
                   <Form.Group as={Col} style={{ paddingLeft: 2 }}>
@@ -1785,63 +1699,76 @@ async function  logChanges(e)
                     name="NPO"
                     id="NPO"
                     onChange={handleChange}
-                    style={{ marginLeft: 10, marginTop: 30 }}
+                    style={{ marginLeft: 5, marginTop: 10}}
                   />
-                  <Form.Label style={{ marginTop: 30 }}>NPO</Form.Label>
+                  <Form.Label style={{ marginTop: 10 }}>NPO</Form.Label>
                 </Row>
 
-                <Row className="mb-6">
-                  <label style={{ marginLeft: 10 }}>Other Supplements</label>
-                  <Form.Group as={Col} style={{ marginLeft: 10 }}>
-                    <Form.Control
+
+                <Row className="mb-3">
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                      >
+                  Other Supplements
+                  </Col>
+                  <Col sm={2}>
+                    <textarea
                       as="textarea"
                       name="SupplementNameMore"
                       id="SupplementNameMore"
                       onChange={handleChange}
-                      style={{ height: "100px", width: 350 }}
-                    />
-                  </Form.Group>
+                      style={{ height: "50px", width: 350 }}>
+                    </textarea>
+                  </Col>
                 </Row>
 
-                <hr></hr>
+
+
                 <Row>
-                  <label style={{ fontWeight: "bold" }}>
-                    Texture Modification
-                  </label>
-                </Row>
-                <Row className="mb-6">
-                  <Form.Group as={Col}>
-                    <Form.Label style={myStyles.ddlabel}>Liquids</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="Texture_Modification"
-                      id="Texture_Modification"
-                      style={myStyles.ddMenuTextureModPaddingAndWidth}
-                      onChange={handleChange}
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                  >
+                    Liquids
+                  </Col>
+
+                  <Col sm={2}>
+                    <select
+                     name="Texture_Modification"
+                     id="Texture_Modification"
+                     style={{ width: 350}}
+                     onChange={handleChange}
                     >
                       <option></option>
-                      <option>Mildly Thick Liquid (Level 2)</option>
+                       <option>Mildly Thick Liquid (Level 2)</option>
                       <option>Moderately Thick Liquid (Level 3)</option>
                       <option>Extremely Thick Liquid (Level 4)</option>
-                    </Form.Control>
-                  </Form.Group>
+                    </select>
+                  </Col>
+                </Row>
+                <br></br>
+                <Row>
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                  >
+                    Solids
+                  </Col>
 
-                  <Form.Group as={Col}>
-                    <Form.Label style={myStyles.ddlabel}>Solids</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="Texture_Modification2"
-                      id="Texture_Modification2"
-                      style={myStyles.ddMenuTextureModPaddingAndWidth}
-                      onChange={handleChange}
+                  <Col sm={2}>
+                    <select
+                       name="Texture_Modification2"
+                       id="Texture_Modification2"
+                       style={{ width: 350 }}
+                        onChange={handleChange}
                     >
-                      <option></option>
+                        <option></option>
                       <option>Soft & Bite-Sized Solids (Level 6)</option>
                       <option>Minced & Moist Solids (Level 5)</option>
                       <option>Pureed Solids (Level 4)</option>
-                    </Form.Control>
-                  </Form.Group>
+                    </select>
+                  </Col>
                 </Row>
+
               </Tab>
 
               <Tab eventKey="Documentation" title="Documentation">
