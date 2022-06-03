@@ -123,7 +123,7 @@ async function fetchInactiveStudents(e) {
         console.log(err)
       }
       setSearchResults(_SEARCH_DATA)
-      //console.log(_SEARCH_DATA)
+  
  }
 
  async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {         

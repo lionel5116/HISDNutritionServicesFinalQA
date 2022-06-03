@@ -157,9 +157,11 @@ async function archiveSchoolYear(){
        SchoolYear.value = "--Select--";
        await logChanges("Archived School Year",SchoolYear.value)
        fetchLogs();
-        setShowAlert(true)
-       setmsgBody("School Year Archived... New Student Entries will reflect new school year ")
-       setalertClassType('alert alert-success') 
+       
+       window.alert("School Year Archived... New Student Entries will reflect new school year");
+       //setShowAlert(true)
+       //setmsgBody("School Year Archived... New Student Entries will reflect new school year ")
+       //setalertClassType('alert alert-success') 
     }
     catch(err)
     {

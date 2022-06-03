@@ -393,13 +393,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
   
         }
         else{
-         
-          //openAlertError('You must have at least the following: StudentID,School,First and Last Name and School Year!!!!');
-          //setrecordSuccessShowHide('block')
-          const confirmBox = window.confirm(
-            "You must have at least the following: StudentID,School,First and Last Name and School Year"
-          )
-          if (confirmBox === true) {return} else {return;}
+          window.alert("You must have at least the following: StudentID,School,First and Last Name and School Year");
           return;
         }
 
@@ -411,21 +405,10 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      
       if(_response)
       {
-         //openAlert();
-        //setrecordSuccessShowHide('none')
-        const confirmBox = window.confirm(
-          "Record added/updated"
-        )
-        if (confirmBox === true) {return} else {return;}
-        return;
+        window.alert("Record Add/Updated");
       }
       else{
-        //openAlertError('There was a problem adding or updating the record');
-        //setrecordSuccessShowHide('block')
-        const confirmBox = window.confirm(
-          "There was a problem adding/updating the record"
-        )
-        if (confirmBox === true) {return} else {return;}
+        window.alert("There was a problem adding/updating record");
         return;
       }
 

@@ -56,28 +56,11 @@ function UploadFilesLight(props)
         _btnfetchAttach.click();
       });
 
-      /*
-      setShowAlert(true)
-      setmsgBody("File Uploaded..")
-      setalertClassType('alert alert-success') 
-      */
-      const confirmBox = window.confirm(
-        "File Uploaded"
-      )
-      if (confirmBox === true) {} else {return;}
+      window.alert("File Uploaded!");
     }
     catch(error)
     {
-      console.log(error);
-      /*
-      setShowAlert(true)
-      setmsgBody("There was an issue writing training notes")
-      setalertClassType('alert alert-danger')  
-      */
-      const confirmBox = window.confirm(
-        "There was an issue uploading file"
-      )
-      if (confirmBox === true) {} else {return;}
+      window.alert("There was an issue uploading file!");
     }
   }
    
@@ -98,28 +81,14 @@ async function deleteAttachment(id) {
     results = await myAPI.deleteAttachment(id)
     var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
     _btnfetchAttach.click();
-    /*
-    setShowAlert(true)
-    setmsgBody("File deleted.")
-    setalertClassType('alert alert-warning') 
-    */
-    const confirmBox = window.confirm(
-      "File Deleted"
-    )
-    if (confirmBox === true) {} else {return;}
+    
+    window.alert("File Deleted");
   }
   catch(err)
   {
     console.log(err)
-   /*
-    setShowAlert(true)
-    setmsgBody("There was an issue deleting the attachment!!")
-    setalertClassType('alert alert-danger') 
-    */ 
-   const confirmBox = window.confirm(
-      "There was an issue deleting the attachment!!"
-    )
-    if (confirmBox === true) {} else {return;}
+    window.alert("There was an issue deleting the attachment!!");
+   
   }
 
 }
