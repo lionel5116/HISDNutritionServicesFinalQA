@@ -5,11 +5,16 @@ import {
   Card,
   Row,
   Col} from 'react-bootstrap';
-  import {BootstrapTable,TableHeaderColumn,Grid} from "react-bootstrap-table";
+  //import {BootstrapTable,TableHeaderColumn,Grid} from "react-bootstrap-table";
   import { TrashFill,ArrowClockwise  } from 'react-bootstrap-icons';
   import studentInfoApi from '../../api/studentInfoApi';
   import Config from '../../api/config'
   import AlertSmall from '../ReusableAppComponents/AlertSmall';
+
+  //react bootstrap table next
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
 
 //https://www.filestack.com/fileschool/react/react-file-upload/
@@ -33,7 +38,7 @@ function UploadFilesLight(props)
     if(file != '') {} else {return;}
     if(props.studentID !='') {} else {return;}
 
-   // console.log(url)
+  
     const formData = new FormData();
     formData.append('file', file);
     formData.append('fileName', file.name);
@@ -51,35 +56,35 @@ function UploadFilesLight(props)
         _btnfetchAttach.click();
       });
 
+      /*
       setShowAlert(true)
       setmsgBody("File Uploaded..")
       setalertClassType('alert alert-success') 
+      */
+      const confirmBox = window.confirm(
+        "File Uploaded"
+      )
+      if (confirmBox === true) {} else {return;}
     }
     catch(error)
     {
       console.log(error);
+      /*
       setShowAlert(true)
       setmsgBody("There was an issue writing training notes")
       setalertClassType('alert alert-danger')  
+      */
+      const confirmBox = window.confirm(
+        "There was an issue uploading file"
+      )
+      if (confirmBox === true) {} else {return;}
     }
+  }
    
 
 
-     //{props.fetchAttachments(event)}
-    
-  }
-
-  function renderShowsTotal(start, to, total) {
-    return (
-        <p style={{color: 'black'}}>
-        From {start} to {to}. Total: {total}&nbsp;&nbsp;
-        </p>
-    );
-}
-
-
 async function deleteAttachment(id) {  
-  //console.log("Row ID " + id)  
+ 
 
   const confirmBox = window.confirm(
     "Do you really want to delete this item?"
@@ -93,16 +98,28 @@ async function deleteAttachment(id) {
     results = await myAPI.deleteAttachment(id)
     var _btnfetchAttach = document.getElementById('btnFetchAttachments'); 
     _btnfetchAttach.click();
+    /*
     setShowAlert(true)
     setmsgBody("File deleted.")
     setalertClassType('alert alert-warning') 
+    */
+    const confirmBox = window.confirm(
+      "File Deleted"
+    )
+    if (confirmBox === true) {} else {return;}
   }
   catch(err)
   {
     console.log(err)
+   /*
     setShowAlert(true)
     setmsgBody("There was an issue deleting the attachment!!")
     setalertClassType('alert alert-danger') 
+    */ 
+   const confirmBox = window.confirm(
+      "There was an issue deleting the attachment!!"
+    )
+    if (confirmBox === true) {} else {return;}
   }
 
 }
@@ -127,21 +144,31 @@ function CellFormatteDelete(cell, row) {
  );
 }
 
-  const options = {
-    exportCSVText: 'Export CSV',
-    insertText: 'Insert',
-    deleteText: 'Delete',
-    saveText: 'Save',
-    closeText: 'Close',
 
-    sizePerPage: 25,
-    sortOrder: 'desc',
-    prePage: 'Prev',
-    nextPage: 'Next',
-    firstPage: 'First',
-    lastPage: 'Last',
-    paginationShowsTotal: renderShowsTotal
-  };
+
+const rowStyle = {  height: '10px', padding: '2px 0' };
+
+const columns = [
+  {
+    dataField: 'id',
+    text: 'id',
+    formatter: CellFormatter
+  }, 
+  {
+    dataField: 'Student_ID',
+    text: 'Student ID'
+
+  }, 
+  {
+    dataField: 'Name',
+    text: 'Name'
+  }, 
+  {
+    dataField: 'id',
+    text: 'Delete',
+    formatter: CellFormatteDelete
+  }, 
+];
 
   return (
     <div className="UploadFilesLight" style={{display:props.displayAttachments}}>
@@ -171,6 +198,7 @@ function CellFormatteDelete(cell, row) {
                    onClick={props.fetchAttachments}
                    id={props.btnFetchAttachments}
                    name={props.btnFetchAttachments}
+                   style={{display:"none"}}
                    ><ArrowClockwise /></Button>
           </Col>
         </Row>
@@ -180,6 +208,7 @@ function CellFormatteDelete(cell, row) {
         <Row>
           <Col sm={12}> 
             <h2>Files - Attachments</h2>
+            {/*
             <BootstrapTable data={props.tblFiles} striped hover options={options}
               pagination           
             >
@@ -188,6 +217,18 @@ function CellFormatteDelete(cell, row) {
               <TableHeaderColumn row="1" width="33%" dataField="Name">Name</TableHeaderColumn>  
               <TableHeaderColumn row="1" width="33%" editable={false} dataField="id" dataFormat={CellFormatteDelete}>Delete</TableHeaderColumn>         
             </BootstrapTable>
+          */}
+                  <BootstrapTable
+                      striped
+                      hover
+                      keyField="id"
+                      data={props.tblFiles}
+                      columns={columns}
+                      pagination={paginationFactory()}
+                      rowStyle={rowStyle}
+                
+                    />
+
           </Col>
         </Row>
       </Container>

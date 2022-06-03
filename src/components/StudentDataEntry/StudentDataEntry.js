@@ -466,10 +466,11 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      _Medical_Condition.value = fieldData[0].Medical_Condition
      student.Medical_Condition = _Medical_Condition.value;
  
-     
+     /*
      var _Substitution = document.getElementById('Substitution');
      _Substitution.value = fieldData[0].Substitution
      student.Substitution = _Substitution.value;
+     */
  
      
      var _Texture_Modification = document.getElementById('Texture_Modification');
@@ -1774,7 +1775,7 @@ async function  logChanges(e)
               <Tab eventKey="Documentation" title="Documentation">
                 <br></br>
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>Current Order Date</Form.Label>
                     <Form.Control
                       type="date"
@@ -1787,8 +1788,8 @@ async function  logChanges(e)
                 </Row>
 
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
-                    <Form.Label>Physician Diet Order Notes</Form.Label>
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
+                    <Form.Label style={{ marginLeft: 5 }}>Physician Diet Order Notes</Form.Label>
                     <Form.Control
                       as="textarea"
                       name="Diet_Order_Notes"
