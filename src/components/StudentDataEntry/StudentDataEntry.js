@@ -1795,7 +1795,7 @@ async function  logChanges(e)
               <Tab eventKey="Training" title="Training">
                 <br></br>
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>School-Wide Training</Form.Label>
                     <Form.Control
                       as="textarea"
@@ -1808,7 +1808,7 @@ async function  logChanges(e)
                 </Row>
 
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>School Training Notes</Form.Label>
                     <Form.Control
                       as="textarea"
@@ -1824,7 +1824,7 @@ async function  logChanges(e)
               <Tab eventKey="Communication" title="Communication">
                 <br></br>
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>Student Communication Notes</Form.Label>
                     <Form.Control
                       as="textarea"
