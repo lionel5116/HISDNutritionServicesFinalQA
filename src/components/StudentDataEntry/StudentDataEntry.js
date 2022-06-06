@@ -1441,7 +1441,7 @@ async function  logChanges(e)
                 title="Dietary Accommodations"
               >
                 <Row className="mb-3">
-                  <Form.Group className="mb-3">
+                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>Medical Diagnosis</Form.Label>
                     <Form.Control
                       as="textarea"
@@ -1454,6 +1454,7 @@ async function  logChanges(e)
                 </Row>
 
                 <Row className="mb-3" style={{ display: "block" }}>
+                <Form.Group as={Col} style={{ marginLeft: 12 }}>
                   <input
                     type="checkbox"
                     name="Disabled"
@@ -1477,10 +1478,11 @@ async function  logChanges(e)
                     onChange={handleChange}
                   />
                   <Form.Label>Needs F/U</Form.Label>
+                  </Form.Group>
                 </Row>
       
                 <Row>
-                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20}}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
                       Foods to be Omitted
                     </Form.Label>
@@ -1496,7 +1498,7 @@ async function  logChanges(e)
                     />
                   </Form.Group>
                 </Row>
-                {/*<Row style={{display:'none'}}> */}
+            
                 <Row style={{ display: "none" }}>
                   <Col sm={6}>
                     <input
@@ -1511,7 +1513,8 @@ async function  logChanges(e)
                 <br></br>
 
                 <Row className="mb-3">
-                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                  
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                       >
                     FTBO Custom
                   </Col>
@@ -1528,7 +1531,7 @@ async function  logChanges(e)
 
 
                 <Row className="mb-3">
-                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                       >
                    Allowable Substitutes
                   </Col>
@@ -1547,7 +1550,7 @@ async function  logChanges(e)
                 <Row>
                   <Col
                     sm={1.75}
-                    style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                    style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                   >
                     Menu Color
                   </Col>
@@ -1572,7 +1575,7 @@ async function  logChanges(e)
                 <Row>
                   <Col
                     sm={1.75}
-                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                    style={{ paddingRight: 8, marginLeft: 25, width: 150 }}
                   >
                     Menu Code
                   </Col>
@@ -1593,7 +1596,7 @@ async function  logChanges(e)
                 <Row>
                   <Col
                     sm={1.75}
-                    style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
+                    style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                   >
                      MC Custom
                   </Col>
@@ -1612,14 +1615,16 @@ async function  logChanges(e)
               <br></br>
 
                 <Row>
+                <Form.Group as={Col} style={{ marginLeft: 10}}>
                   <label style={{ fontWeight: "bold" }}>
                     Supplements and Milk Substitute
                   </label>
+                  </Form.Group>
                 </Row>
            
 
                 <Row>
-                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20}}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
                       Nutrition Supplement
                     </Form.Label>
@@ -1649,7 +1654,7 @@ async function  logChanges(e)
          
 
                 <Row>
-                  <Form.Group as={Col} style={{ paddingLeft: 2 }}>
+                  <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
                       Milk Substitute
                     </Form.Label>
@@ -1678,6 +1683,10 @@ async function  logChanges(e)
                 </Row>
 
                 <Row className="mb-3" style={{ display: "block" }}>
+                <Col
+                    sm={1.75}
+                    style={{ paddingRight: 40, marginLeft: 20, width: 150 }}
+                  >
                   <input
                     type="checkbox"
                     name="NPO"
@@ -1686,12 +1695,16 @@ async function  logChanges(e)
                     style={{ marginLeft: 5, marginTop: 10}}
                   />
                   <Form.Label style={{ marginTop: 10 }}>NPO</Form.Label>
+                  </Col>
                 </Row>
 
 
                 <Row className="mb-3">
-                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 5, width: 150 }}
-                      >
+                <Col
+                    sm={1.75}
+                    style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
+                  >
+                      
                   Other Supplements
                   </Col>
                   <Col sm={2}>
@@ -1708,9 +1721,9 @@ async function  logChanges(e)
 
 
                 <Row>
-                  <Col
+                <Col
                     sm={1.75}
-                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                    style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                   >
                     Liquids
                   </Col>
@@ -1731,9 +1744,9 @@ async function  logChanges(e)
                 </Row>
                 <br></br>
                 <Row>
-                  <Col
+                <Col
                     sm={1.75}
-                    style={{ paddingRight: 8, marginLeft: 5, width: 150 }}
+                    style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                   >
                     Solids
                   </Col>
