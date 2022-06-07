@@ -29,16 +29,18 @@ export class HISDReportsMenu extends React.Component {
                     <Form>
                     <Form.Group controlId="environment">
                         <GenericHeader headertext={`Logged in User :${this.props.userProps.fullName}`} />
-                    </Form.Group>
-                        <ListGroup >
-                            <ListGroup.Item variant="primary" action onClick={() => this.runSummaryReport()}>
-                                Student Information Report
-                            </ListGroup.Item>
-                            <ListGroup.Item action onClick={() => this.runStudentInformationReportTEMPIDS()}>
-                                Temp Student ID Report
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Form>
+                        </Form.Group>
+                            
+                            <ListGroup >
+                                <ListGroup.Item variant="primary" action onClick={() => this.runSummaryReport()}>
+                                    Student Information Report
+                                </ListGroup.Item>
+                                {/*
+                                <ListGroup.Item action onClick={() => this.runStudentInformationReportTEMPIDS()}>
+                                    Temp Student ID Report
+                            </ListGroup.Item>*/}
+                            </ListGroup>
+                      </Form>
                 </Container>
             </div>
         )

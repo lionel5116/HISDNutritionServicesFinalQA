@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { useEffect } from 'react';
-import { Col, Container,Row } from 'react-bootstrap';
+import { Col, Container,Row ,Form} from 'react-bootstrap';
 //react bootstrap table next
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
@@ -9,24 +9,36 @@ import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 import studentInfoApi from '../../api/studentInfoApi';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
+
 
 function StudentInformationReportNew() {
     const [tblStudentResults, settblStudentResults] = useState([])
     const { ExportCSVButton } = CSVExport;
  
   
+    /*
     useEffect(() => {
         fetchStudentData();
     },[]);
-  
-    async function fetchStudentData()
+    */
+
+   const handleChange =(e) =>{
+     e.preventDefault();
+     console.log("In the handleChange function");
+     var _ddSchoolYear = document.getElementById('ddSchoolYears');
+     if(_ddSchoolYear.value != "--Select--") {
+      console.log(_ddSchoolYear.value);
+       fetchStudentData(_ddSchoolYear.value);
+     }
+   }
+
+    async function fetchStudentData(schoolYear)
     {
         let studentSampleData = [];
          var myAPI = new studentInfoApi;
-        studentSampleData = await myAPI.getAllSudentDataAxios()
-      
+        studentSampleData = await myAPI.getAllSudentDataAxios(schoolYear)
         settblStudentResults(studentSampleData)
-      
     }
 
     const MyExportCSV = (props) => {
@@ -112,48 +124,58 @@ function StudentInformationReportNew() {
     ];
 
 
-  
     return (
-    <div>
-     <main>
+      <div>
+        <Container>
+        <Form>
+          <Row>
+            <Col
+              sm={1.75}
+              style={{ paddingRight: 8, marginLeft: 12, width: 150 }}
+            >
+              School Year
+            </Col>
+            <Col sm={2}>
+              <SchoolYearDropDown
+                name="ddSchoolYears"
+                handleChange={(e) => handleChange(e)}
+              />
+            </Col>
+          </Row>
+        </Form>
+        </Container>
+        <br></br>
+
+        <main>
+          <ToolkitProvider
+            keyField="id"
+            data={tblStudentResults}
+            columns={columns}
+            exportCSV={{
+              onlyExportFiltered: true,
+              exportAll: false,
+            }}
+          >
+            {(props) => (
+              <div>
+              
+                <MyExportCSV {...props.csvProps} />
+                <hr />
+                <BootstrapTable
+                  {...props.baseProps}
+                  striped
+                  hover
+                  pagination={paginationFactory()}
+                  rowStyle={rowStyle}
+                  filter={filterFactory()}
+                />
+              </div>
+            )}
+          </ToolkitProvider>
+        </main>
        
-            
-               <ToolkitProvider
-                 keyField="id"
-                 data={tblStudentResults}
-                 columns={columns}
-                 exportCSV = {{
-                  onlyExportFiltered: true,
-                  exportAll:false
-                 }}
-                  >
-                 {
-                     props=> (
-                         <div>
-                              {/*<ExportCSVButton { ...props.csvProps }>Export</ExportCSVButton>*/}
-                              <MyExportCSV { ...props.csvProps } />
-                              <hr />
-                            <BootstrapTable { ...props.baseProps }
-                              striped
-                              hover 
-                              pagination={paginationFactory()}
-                              rowStyle={rowStyle}
-                              filter={ filterFactory()}
-
-                            />
-                             
-                             
-                         </div>
-                     )
-
-                 }
-
-               </ToolkitProvider>
-  
-     </main>
-
-    </div>
-  )
+      </div>
+    );
 }
 
 export default StudentInformationReportNew
