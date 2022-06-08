@@ -107,6 +107,7 @@ function StudentInformationReportNew() {
     {
         dataField: 'NeedsF_U_String',
         text: 'Needs FU',
+        style: { width: '10px'},
         filter: textFilter()
   
       },
