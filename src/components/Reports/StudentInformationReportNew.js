@@ -67,12 +67,14 @@ function StudentInformationReportNew() {
     },
     {
       dataField: 'Menu_Color',
-      text: 'Menu_Color',
+      text: 'Menu Color',
+      style: { width: '10px'},
       filter: textFilter()
     },
     {
       dataField: 'Menu_Code',
-      text: 'Menu_Code',
+      text: 'Menu Code',
+      style: { width: '10px' },
       filter: textFilter()
 
     },
@@ -104,7 +106,7 @@ function StudentInformationReportNew() {
     },
     {
         dataField: 'NeedsF_U_String',
-        text: 'NeedsF_U',
+        text: 'Needs FU',
         filter: textFilter()
   
       },
