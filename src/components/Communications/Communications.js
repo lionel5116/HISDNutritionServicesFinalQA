@@ -353,14 +353,15 @@ const selectedStudentRecord = (e,_studentID,_setstudentInfo) =>
 }
 
 function CellFormatterSearchStudent(cell, row) {
-  //build string for label to display
-  var _setstudentInfo = "Student: " + row.Student_ID;
-      _setstudentInfo += "->";
-      _setstudentInfo += row.LastName;
-      _setstudentInfo += ",";
-      _setstudentInfo += row.FirstName;
      
- 
+ var _setstudentInfo = row.LastName;
+ _setstudentInfo += ",";
+ _setstudentInfo += row.FirstName;
+ _setstudentInfo += " ";
+ _setstudentInfo += row.Student_ID; 
+ _setstudentInfo += " ";
+ _setstudentInfo +=  row.School;  //School
+
 
   return (<div><BinocularsFill 
         onClick={(e) => selectedStudentRecord(e,row.Student_ID,_setstudentInfo)}/>
@@ -387,21 +388,7 @@ function CellFormatterSearchStudent(cell, row) {
     setSearchStudents(_SEARCH_DATA)
   }
 
-  /*
-  async function fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_) {
-    let _SEARCH_DATA = [];
-    var myAPI = new studentInfoApi;
-
-    try {
-      _SEARCH_DATA = await myAPI.fetchSearchData_LIKE_CLAUSES(_SEARCH_STRING_)
-    }
-    catch (err) {
-      console.log(err)
-    }
-
-    setSearchStudents(_SEARCH_DATA)
-
-  }*/
+ 
   
   async function fetchSearchData_LIKE_CLAUSES_OBJECT(_SEARCH_STRING) {         
     let _SEARCH_DATA = [];

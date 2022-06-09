@@ -490,7 +490,8 @@ function handleChange (e){
             pathname: '/StudentDataEntry',
             search: '?id=' + student.id,
             fullName: student.LastName + ',' + student.FirstName,
-            studentID: student.Student_ID
+            studentID: student.Student_ID,
+            School: student.School
           })
           return;
       }

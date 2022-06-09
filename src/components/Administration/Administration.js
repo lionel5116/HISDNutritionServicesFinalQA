@@ -483,12 +483,20 @@ const closeAlert = (e) => {
     ];
 
       const columnsTempIDS = [
-      {
-        dataField: 'Student_ID',
-        text: 'Temp Student ID',
-        style: { width: '200px' }
-       
-      }, 
+        {
+          dataField: 'Student_ID',
+          text: 'Edit',
+          style: { color : 'red',fontWeight: 'bold' },
+          formatter: CellFormatterTempIDS,
+        }, 
+        /*
+        {
+          dataField: 'Student_ID',
+          text: 'Temp Student ID',
+          style: { width: '200px' }
+         
+        }, 
+        */
       {
         dataField: 'LastName',
         text: 'Last Name',
@@ -506,13 +514,8 @@ const closeAlert = (e) => {
       {
         dataField: 'SchoolYear',
         text: 'School Year',
-      }, 
-      {
-        dataField: 'Student_ID',
-        text: 'Edit',
-        formatter: CellFormatterTempIDS,
-       
-      }, 
+      }
+     
     ];
 
   
@@ -552,8 +555,10 @@ const closeAlert = (e) => {
       function CellFormatterTempIDS(cell, row) {
         return (
           <div>
-            <Pencil 
-              onClick={()=>showRowDetailInfoTempIDS(row.Student_ID)}/>
+           <span onClick={()=>showRowDetailInfoTempIDS(row.Student_ID)}>{row.Student_ID}</span>
+            
+            {/*<Pencil 
+              onClick={()=>showRowDetailInfoTempIDS(row.Student_ID)}/> */}
           </div>
         );
       }

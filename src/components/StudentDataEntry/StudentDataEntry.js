@@ -97,16 +97,21 @@ function StudentDataEntry() {
     {
         
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
-        var studentLabel = "Student: ";
-        studentLabel += location.studentID;
-        studentLabel += "->";
-        studentLabel += location.fullName;
-
-        setFullNameFromSearch(studentLabel)
+       
+        
         student.id = id;
        
         fetchSingeRecordByRecordID(id) ;
         setStudentID(student.Student_ID);
+        /*
+        var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
+        var _setstudentInfo = location.fullName;
+        _setstudentInfo += " ";
+        _setstudentInfo += location.studentID;
+        _setstudentInfo += " ";
+        _setstudentInfo +=  _DDSchoolListingSelect.value;
+        setFullNameFromSearch(_setstudentInfo)
+        */
     }
     else{
       //means this is a new record
@@ -151,6 +156,15 @@ function StudentDataEntry() {
     let _DD_STUDENT_RECORD_DATA = [];
     var myAPI = new studentInfoApi;
     _DD_STUDENT_RECORD_DATA = await myAPI.fetchSingeRecordByRecordID(id)
+
+    var _setstudentInfo = _DD_STUDENT_RECORD_DATA[0].LastName;
+    _setstudentInfo += ",";
+    _setstudentInfo += _DD_STUDENT_RECORD_DATA[0].FirstName;
+    _setstudentInfo += " ";
+    _setstudentInfo += _DD_STUDENT_RECORD_DATA[0].Student_ID;
+    _setstudentInfo += " ";
+    _setstudentInfo +=  _DD_STUDENT_RECORD_DATA[0].School;
+    setFullNameFromSearch(_setstudentInfo)
 
     setcurrentMedicalCondition(_DD_STUDENT_RECORD_DATA[0].Medical_Condition);
 
