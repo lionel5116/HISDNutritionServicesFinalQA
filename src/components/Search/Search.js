@@ -221,6 +221,7 @@ function handleChange (e){
                   _SEARCH_STRING += "'";
                   _SEARCH_STRING += FirstName.value;
                   _SEARCH_STRING += "'";
+                  _SEARCH_STRING += " ORDER BY LastName ASC";
 
                   fetchSearchData(_SEARCH_STRING);
 
@@ -246,6 +247,7 @@ function handleChange (e){
                 _SEARCH_STRING += "'";
                 _SEARCH_STRING += LastName.value;
                 _SEARCH_STRING += "'";
+                _SEARCH_STRING += " ORDER BY LastName ASC";
                 fetchSearchData(_SEARCH_STRING);
               }
               else if(ddLastNameSearchCrit.value == 'contains')
@@ -268,6 +270,7 @@ function handleChange (e){
               _SEARCH_STRING += "'";
               _SEARCH_STRING += SchoolYear.value;
               _SEARCH_STRING += "'";
+              _SEARCH_STRING += " ORDER BY LastName ASC";
               fetchSearchData(_SEARCH_STRING);
 
             }
@@ -276,13 +279,14 @@ function handleChange (e){
               LastName.value == "" &&
               SchoolYear.value == "--Select--" &&
               School.value != "--Select--") {
-              //Search By School Name  - WORKS!!!
+     
               console.log('Search By School Name')
               _SEARCH_STRING += "SELECT id,Student_ID,School,SchoolYear,LastName,FirstName,Current_Student FROM StudentEntryData WHERE School =";
               _SEARCH_STRING += "'";
               _SEARCH_STRING += School.value;
               _SEARCH_STRING += "'";
-              console.log(_SEARCH_STRING);
+              _SEARCH_STRING += " ORDER BY LastName ASC";
+   
               fetchSearchData(_SEARCH_STRING);
 
             }
@@ -291,8 +295,7 @@ function handleChange (e){
               LastName.value != "" &&
               SchoolYear.value == "--Select--" &&
               School.value == "--Select--") {
-              //Search By Last Name and First Name
-             // console.log('Search By Last Name and First Name')
+         
             
               _SEARCH_STRING_NEW = "LAST_FIRST_NAME";
               _SEARCH_STRING_NEW +="|";
@@ -307,9 +310,7 @@ function handleChange (e){
               LastName.value != "" &&
               SchoolYear.value == "--Select--" &&
               School.value != "--Select--") {
-              //Search By Last Name and First Name and School Name
-              //console.log('Search By Last Name and First Name and School Name')
-            
+              
 
               _SEARCH_STRING_NEW = "LAST_FIRST_NAME_SCHOOL";
               _SEARCH_STRING_NEW +="|";
@@ -342,8 +343,7 @@ function handleChange (e){
               LastName.value == "" &&
               SchoolYear.value != "--Select--" &&
               School.value != "--Select--") {
-              console.log('SCHOOL_NAME_SCHOOL_YEAR')
-            
+             
 
               _SEARCH_STRING_NEW = "SCHOOL_NAME_SCHOOL_YEAR";
               _SEARCH_STRING_NEW +="|";

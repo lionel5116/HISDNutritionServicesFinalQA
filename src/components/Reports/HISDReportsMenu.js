@@ -11,9 +11,9 @@ export class HISDReportsMenu extends React.Component {
      }
 
 
-    runStudentInformationReportTEMPIDS()
+    runStudentTrainingReport()
     {
-        this.props.history.push("/StudentInformationTempIDSReport");
+        this.props.history.push("/StudentTrainingNotesReport");
     }
 
 
@@ -35,10 +35,10 @@ export class HISDReportsMenu extends React.Component {
                                 <ListGroup.Item variant="primary" action onClick={() => this.runSummaryReport()}>
                                     Student Information Report
                                 </ListGroup.Item>
-                                {/*
-                                <ListGroup.Item action onClick={() => this.runStudentInformationReportTEMPIDS()}>
-                                    Temp Student ID Report
-                            </ListGroup.Item>*/}
+                                
+                                <ListGroup.Item action onClick={() => this.runStudentTrainingReport()}>
+                                    Student Training Notes Report
+                            </ListGroup.Item>
                             </ListGroup>
                       </Form>
                 </Container>

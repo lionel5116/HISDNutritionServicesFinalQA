@@ -50,6 +50,17 @@ export class studentInfoApi {
  
      }
 
+     async  getSchoolTrainingInformation(SchoolYear){
+        var url = Config.REST_URL + '/api/StudentEntryData/getSchoolTrainingInformation/'
+        url += SchoolYear;
+        return await axios.get(url)
+         .then(res => {
+               return res.data;
+         });
+ 
+     }
+
+
      async  getAllSudentDataTEMPIDSAxios(){
         var url = Config.REST_URL + '/api/StudentEntryData/getAllStudentInformationDataTEMPIDS/'
         return await axios.get(url)

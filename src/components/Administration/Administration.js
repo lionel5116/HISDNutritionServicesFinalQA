@@ -489,14 +489,7 @@ const closeAlert = (e) => {
           style: { color : 'red',fontWeight: 'bold' },
           formatter: CellFormatterTempIDS,
         }, 
-        /*
-        {
-          dataField: 'Student_ID',
-          text: 'Temp Student ID',
-          style: { width: '200px' }
-         
-        }, 
-        */
+      
       {
         dataField: 'LastName',
         text: 'Last Name',

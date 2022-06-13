@@ -15,6 +15,7 @@ import Search from './Search/Search';
 import Administration from './Administration/Administration';
 import StudentDataEntry from './StudentDataEntry/StudentDataEntry';
 import Communications from './Communications/Communications';
+import StudentTrainingNotesReport from './Reports/StudentTrainingNotesReport';
 
 
 function App() {
@@ -71,6 +72,11 @@ function App() {
             exact
             path='/Communications'
             component={Communications}
+          />
+           <Route
+            exact
+            path='/StudentTrainingNotesReport'
+            component={StudentTrainingNotesReport}
           />
          
         </HashRouter>
