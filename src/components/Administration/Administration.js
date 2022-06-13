@@ -410,7 +410,7 @@ async function EditStudentID(){
 async function DeleteStudentRecord(e,id){
   e.preventDefault();
   const confirmBox = window.confirm(
-    "Do you really want to delete this student record?"
+    "Are you sure you want to delete this item ?"
   )
   if (confirmBox === true) {} else {return;}
 

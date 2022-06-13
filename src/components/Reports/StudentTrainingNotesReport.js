@@ -75,8 +75,9 @@ function StudentTrainingNotesReport() {
     },
     {
       dataField: 'NoteType',
-      text: 'Training',
-      style: { width: '25x' },
+      text: 'Training Type',
+      style: { width: '15x' },
+      filter: textFilter(),
       sort: true
     },
     {
@@ -89,10 +90,7 @@ function StudentTrainingNotesReport() {
       filter: textFilter()
   
     },
-    {
-      dataField: 'SchoolYear',
-      text: 'SchoolYear',
-    }
+   
     ];
 
 
@@ -118,6 +116,7 @@ function StudentTrainingNotesReport() {
         </Container>
         <br></br>
 
+        <Container>
         <main>
           <ToolkitProvider
             keyField="id"
@@ -145,6 +144,7 @@ function StudentTrainingNotesReport() {
             )}
           </ToolkitProvider>
         </main>
+        </Container>
        
       </div>
     );

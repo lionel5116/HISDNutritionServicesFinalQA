@@ -37,7 +37,7 @@ export class HISDReportsMenu extends React.Component {
                                 </ListGroup.Item>
                                 
                                 <ListGroup.Item action onClick={() => this.runStudentTrainingReport()}>
-                                    Student Training Notes Report
+                                   Student Training Type Report
                             </ListGroup.Item>
                             </ListGroup>
                       </Form>
