@@ -103,15 +103,7 @@ function StudentDataEntry() {
        
         fetchSingeRecordByRecordID(id) ;
         setStudentID(student.Student_ID);
-        /*
-        var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
-        var _setstudentInfo = location.fullName;
-        _setstudentInfo += " ";
-        _setstudentInfo += location.studentID;
-        _setstudentInfo += " ";
-        _setstudentInfo +=  _DDSchoolListingSelect.value;
-        setFullNameFromSearch(_setstudentInfo)
-        */
+       
     }
     else{
       //means this is a new record
@@ -419,7 +411,7 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      
       if(_response)
       {
-        window.alert("Record Add/Updated");
+        window.alert("The Student Record has been successfully Added/Updated");
       }
       else{
         window.alert("There was a problem adding/updating record");
