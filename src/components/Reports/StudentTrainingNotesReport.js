@@ -82,7 +82,7 @@ function StudentTrainingNotesReport() {
     },
     {
       dataField: 'DateEntered',
-      text: 'DateEntered',
+      text: 'Date Entered',
     },
     {
       dataField: 'School',

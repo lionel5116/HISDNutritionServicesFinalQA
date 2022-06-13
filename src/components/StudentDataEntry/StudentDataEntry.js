@@ -1620,19 +1620,48 @@ async function  logChanges(e)
 
               <br></br>
 
+                {/*
                 <Row>
                 <Form.Group as={Col} style={{ marginLeft: 10}}>
                   <label style={{ fontWeight: "bold" }}>
-                    Supplements and Milk Substitute
+                    Milk Substitutes and Supplements
                   </label>
                   </Form.Group>
                 </Row>
-           
+                  */}
+                <Row>
+                  <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20 }}>
+                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>
+                      Milk Substitutes and Supplements
+                    </Form.Label>
+                    <GenericMultiSelectCombo
+                      name_ddLeft="ddMilkSubList"
+                      name_ddRight="ddMilkSubList_Selected"
+                      buttonRight="btnSelectRightMilkSub"
+                      buttonLeft="btnSelectLeftMilkSub"
+                      label_ddLeft="Available Milk Substitutes"
+                      label_ddRight="Selected Milk Substitutes"
+                      handleClickRight={(e) => handleClickRightMilkSub(e)}
+                      handleClickLeft={(e) => handleClickLeftMilkSub(e)}
+                    />
+                  </Form.Group>
+                </Row>
+
+                <Row style={{ display: "none" }}>
+                  <Col sm={6}>
+                    <input
+                      type="text"
+                      id="Milk_Sub_Name"
+                      name="Milk_Sub_Name"
+                      onChange={handleChange}
+                    />
+                  </Col>
+                </Row>
 
                 <Row>
                   <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20}}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
-                      Nutrition Supplement
+                     
                     </Form.Label>
                     <GenericMultiSelectCombo
                       name_ddLeft="ddNutSubList"
@@ -1659,34 +1688,7 @@ async function  logChanges(e)
                 </Row>
          
 
-                <Row>
-                  <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20 }}>
-                    <Form.Label style={myStyles.genericDropDownHeaderLabels}>
-                      Milk Substitute
-                    </Form.Label>
-                    <GenericMultiSelectCombo
-                      name_ddLeft="ddMilkSubList"
-                      name_ddRight="ddMilkSubList_Selected"
-                      buttonRight="btnSelectRightMilkSub"
-                      buttonLeft="btnSelectLeftMilkSub"
-                      label_ddLeft="Available Milk Substitutes"
-                      label_ddRight="Selected Milk Substitutes"
-                      handleClickRight={(e) => handleClickRightMilkSub(e)}
-                      handleClickLeft={(e) => handleClickLeftMilkSub(e)}
-                    />
-                  </Form.Group>
-                </Row>
-
-                <Row style={{ display: "none" }}>
-                  <Col sm={6}>
-                    <input
-                      type="text"
-                      id="Milk_Sub_Name"
-                      name="Milk_Sub_Name"
-                      onChange={handleChange}
-                    />
-                  </Col>
-                </Row>
+              
 
                 <Row className="mb-3" style={{ display: "block" }}>
                 <Col
@@ -1859,7 +1861,7 @@ async function  logChanges(e)
 
             <br></br>
             <Row>
-              <Col sm={12}>
+              <Col sm={12} style={{ marginLeft: 12 }}>
                 <Button
                   variant="primary"
                   onClick={(e) => AddOrUpdateStudentRecord(e)}
