@@ -964,8 +964,9 @@ const searchStudent = (e) =>
   }
   else
   {
-    openAlertError('You need to enter in a student ID to search for record in Data Warehouse !!!!');
-    setrecordSuccessShowHide('block')
+    //openAlertError('You need to enter in a student ID to search for record in Data Warehouse !!!!');
+    //setrecordSuccessShowHide('block')
+    window.alert('You need to enter in a student ID to search for record in Data Warehouse !!!!');
   }
  
 }
@@ -1002,8 +1003,9 @@ async function fetchSingleStudentByStudentNaturalKey(_studentID) {
 
   }
   else{
-    openAlertError('No records match the criteria');
-    setrecordSuccessShowHide('block')
+    window.alert('No records match the criteria');
+    //openAlertError('No records match the criteria');
+    //setrecordSuccessShowHide('block')
   }
   
 }
@@ -1620,15 +1622,7 @@ async function  logChanges(e)
 
               <br></br>
 
-                {/*
-                <Row>
-                <Form.Group as={Col} style={{ marginLeft: 10}}>
-                  <label style={{ fontWeight: "bold" }}>
-                    Milk Substitutes and Supplements
-                  </label>
-                  </Form.Group>
-                </Row>
-                  */}
+             
                 <Row>
                   <Form.Group as={Col} style={{ paddingLeft: 2,marginLeft: 20 }}>
                     <Form.Label style={myStyles.genericDropDownHeaderLabels}>
