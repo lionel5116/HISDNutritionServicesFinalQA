@@ -5,19 +5,12 @@ import {Button,
     Row,
     Col,Form,Tabs,Tab} from 'react-bootstrap';
 import { useHistory } from "react-router-dom";
-
-
-//import GenericDDSelect from '../ReusableAppComponents/GenericDDSelect'
-//import { Pencil  } from 'react-bootstrap-icons';
-
 //reusable components
 import GenericMultiSelectCombo from '../ReusableAppComponents/GenericMultiSelectCombo';
 import SchoolListDropDown from '../ReusableAppComponents/SchoolListDropDown';
 import SchoolYearDropDown from '../ReusableAppComponents/SchoolYearDropDown';
 import AlertDismissible from '../ReusableAppComponents/AlertDismissible';
 import UploadFilesLight from '../Upload/upload-files.component';
-
-
 import studentInfoApi from '../../api/studentInfoApi';
 
 //react bootstrap table next
@@ -28,11 +21,15 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import GenericModal from '../GenericModal/GenericModal';
 import { useEffect } from 'react';
 
+//redux
+import {connect} from 'react-redux';
+
 //location
 //https://www.codegrepper.com/code-examples/javascript/history.push+with+params
 import { useLocation } from 'react-router-dom';
 
-function StudentDataEntry() {
+//function StudentDataEntry({userProps}) {
+  const StudentDataEntry = ({userProps}) => {
     const location  = useLocation();
     const [storeFullNameFromSearch, setFullNameFromSearch] = useState([])
     const [recordSuccessShowHide,setrecordSuccessShowHide] = useState(['block'])
@@ -92,13 +89,13 @@ function StudentDataEntry() {
  
    //useEffect Methods ***********
    useEffect(() => {
+    console.log('Logged In User: ' + userProps.fullName)
+    console.log('Logged In User Login Id: ' + userProps.loginId)
+    console.log('User Role ' + userProps.role)
     const _queryID = location.search;
     if(_queryID != '')
     {
-        
         var id = _queryID.substring(_queryID.indexOf('=') + 1);
-       
-        
         student.id = id;
        
         fetchSingeRecordByRecordID(id) ;
@@ -141,6 +138,25 @@ function StudentDataEntry() {
   },[]);
 
   //useEffect Methods END ***********
+
+  const populateStudentLabelAddNewRecord = async ()=> {
+    var LastName = student.LastName;
+    var FirstName = student.FirstName;
+    
+    var _studentID = document.getElementById('Student_ID');
+    var Student_ID = _studentID.value;
+    var _DDSchoolListingSelect = document.getElementById('ddSchoolListings');
+    var School = _DDSchoolListingSelect.value;
+
+    var _setstudentInfo = LastName;
+    _setstudentInfo += ",";
+    _setstudentInfo += FirstName;
+    _setstudentInfo += " ";
+    _setstudentInfo += Student_ID;
+    _setstudentInfo += " ";
+    _setstudentInfo +=  School;
+    setFullNameFromSearch(_setstudentInfo)
+  }
 
 
   async function fetchSingeRecordByRecordID(id) { 
@@ -394,9 +410,8 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
         student.FirstName != '' &&
         student.LastName != '' &&
         student.schoolYear != '')
-        {
-            
-  
+        { 
+          await populateStudentLabelAddNewRecord();
         }
         else{
           window.alert("You must have at least the following: StudentID,School,First and Last Name and School Year");
@@ -781,8 +796,6 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
      // console.log(user)
     }
    
- 
-
     const populateMenuCodeDropDown = () =>
     {
       
@@ -1049,7 +1062,7 @@ async function  logChanges(e)
           logObject.studentID = student.studentID;
           logObject.schoolName = currentSchoolName;
           logObject.SchoolNotes = _txtSchoolWideTraining.value;
-          logObject.UserMakingChange = '';
+          logObject.UserMakingChange = userProps.loginId;
 
            await myAPI.insertLogData(logObject)
 
@@ -1206,8 +1219,6 @@ async function  logChanges(e)
     }
    //alert WireUp ********
 
-
-
   return (
     <div>
       <main>
@@ -1219,7 +1230,8 @@ async function  logChanges(e)
             msgBody={msgBody}
             msgBody2={msgBody2}
           />
-
+          <h2>Current Logged In User:{userProps.fullName}</h2>
+          <br></br>
           <h1>Student Record</h1>
           <Form style={{ display: recordSuccessShowHide }}>
             <Row style={{ display: "none" }}>
@@ -1431,6 +1443,24 @@ async function  logChanges(e)
                     sm={1.75}
                     style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
                   >
+                    Current Order Date
+                  </Col>
+                  <Col sm={5}>
+                    <input
+                      type="date"
+                      name="CurrentOrderDate"
+                      id="CurrentOrderDate"
+                      onChange={handleChange}
+                      style={{ width: 150 }}
+                    ></input>
+                  </Col>
+                </Row>
+
+                <Row className="mb-3">
+                  <Col
+                    sm={1.75}
+                    style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                  >
                     Notes
                   </Col>
                   <Col sm={5}>
@@ -1552,8 +1582,24 @@ async function  logChanges(e)
                       style={{ width: 350 }}>
                     </textarea>
                   </Col>
-                </Row>
+               </Row>
+              
 
+                <Row className="mb-3">
+                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
+                      >
+                   Physician Diet Order Notes
+                  </Col>
+                  <Col sm={2}>
+                    <textarea
+                      type="text"
+                      name="Diet_Order_Notes"
+                      id="Diet_Order_Notes"
+                      onChange={handleChange}
+                      style={{ width: 350 }}>
+                    </textarea>
+                  </Col>
+                </Row>
       
                 <Row>
                   <Col
@@ -1606,7 +1652,7 @@ async function  logChanges(e)
                     sm={1.75}
                     style={{ paddingRight: 40, marginLeft: 25, width: 150 }}
                   >
-                     MC Custom
+                     Menu Code Custom
                   </Col>
 
                   <Col sm={2}>
@@ -1772,32 +1818,7 @@ async function  logChanges(e)
 
               <Tab eventKey="Documentation" title="Documentation">
                 <br></br>
-                <Row className="mb-3">
-                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
-                    <Form.Label>Current Order Date</Form.Label>
-                    <Form.Control
-                      type="date"
-                      name="CurrentOrderDate"
-                      id="CurrentOrderDate"
-                      onChange={handleChange}
-                      style={{ width: 200 }}
-                    />
-                  </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} style={{ marginLeft: 12 }}>
-                    <Form.Label style={{ marginLeft: 5 }}>Physician Diet Order Notes</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      name="Diet_Order_Notes"
-                      id="Diet_Order_Notes"
-                      onChange={handleChange}
-                      style={{ height: "100px", width: 1000 }}
-                    />
-                  </Form.Group>
-                </Row>
-                <hr></hr>
+               
                 <UploadFilesLight
                   btnFetchAttachments="btnFetchAttachments"
                   displayAttachments={shouldDisplayAttachment}
@@ -1899,4 +1920,8 @@ const myStyles = {
 
 };
 
-export default StudentDataEntry
+const mapStateToProps = state => ({
+  userProps: state.userReducer.user,
+})
+
+export default connect(mapStateToProps)(StudentDataEntry)

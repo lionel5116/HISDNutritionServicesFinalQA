@@ -26,32 +26,44 @@ let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supple
 var itemTypeSelected = ''
 import studentInfoApi from '../../api/studentInfoApi';
 
+//redux
+import {connect} from 'react-redux';
+import { Fragment } from 'react';
 
 
 
-function Administration() {
-  const [tblSearchResults, setSearchResults] = useState([])
-  const [tblSearchTempIDS, setSearchResultsTempIDs] = useState([]);
-  const [tblSearchResultsLogs, setSearchResultsLogs] = useState([]);
-  const [tblSearchResultsDelete, setSearchResultsDelete] = useState([])
 
-  const [show, setShow] = useState(false);
-  const [show2, setShow2] = useState(false);
-  const [show3, setShow3] = useState(false);
+//function Administration() {
+  const Administration = ({userProps}) => { 
+    const [tblSearchResults, setSearchResults] = useState([])
+    const [tblSearchTempIDS, setSearchResultsTempIDs] = useState([]);
+    const [tblSearchResultsLogs, setSearchResultsLogs] = useState([]);
+    const [tblSearchResultsDelete, setSearchResultsDelete] = useState([])
 
-  const [disableAddNewDDItem,setDisableAddNewDDItem] = useState(true);
+    const [show, setShow] = useState(false);
+    const [show2, setShow2] = useState(false);
+    const [show3, setShow3] = useState(false);
 
-  const [_nSequenceID,setSequenceID]  = useState(0)
-  const [_ItemName,setItemName]  = useState("")
-  const [_ItemNameSelected,setItemNameSelected]  = useState("")
+    const [disableAddNewDDItem,setDisableAddNewDDItem] = useState(true);
+
+    const [_nSequenceID,setSequenceID]  = useState(0)
+    const [_ItemName,setItemName]  = useState("")
+    const [_ItemNameSelected,setItemNameSelected]  = useState("")
 
 
-  const [_studentIDTemp,setstudentIDTemp]  = useState("")
+    const [_studentIDTemp,setstudentIDTemp]  = useState("")
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [msgBody,setmsgBody] = useState('');
-  const [alertClassType,setalertClassType] = useState('alert alert-primary');
-  
+    const [showAlert, setShowAlert] = useState(false);
+    const [msgBody,setmsgBody] = useState('');
+    const [alertClassType,setalertClassType] = useState('alert alert-primary');
+
+    //security
+    const [userRole,setuserRole]=  useState("NONE");
+    
+
+   useEffect(()=>{
+    fetchUserRoleInfo(userProps.loginId)
+   },[])
 
   useEffect(() => {
     fetchLogs();
@@ -186,6 +198,39 @@ async function fetchLogs() {
   setSearchResultsLogs(_SEARCH_DATA)
 }
 
+async function fetchUserRoleInfo(adUserID) {         
+  let _SEARCH_DATA = [];
+  //async  fetchUserRoleInfo(adUserID){
+  /*  
+  oUserRoleItem = new UserNameRoleTable();
+                            oUserRoleItem.UserName = row["UserName"].ToString();
+                            oUserRoleItem.ADUserID = row["ADUserID"].ToString();
+                            oUserRoleItem. = row["Role"].ToString();
+                            lsUserNameRoleTable.Add(oUserRoleItem);
+                            */
+  var myAPI = new studentInfoApi;
+  try
+  {
+    _SEARCH_DATA = await myAPI.fetchUserRoleInfo(adUserID)
+  }
+  catch(err)
+  {
+    console.log(err)
+    setuserRole('NONE')
+  }
+
+  if (_SEARCH_DATA.length > 0)
+  {
+    console.log(_SEARCH_DATA)
+    console.log(_SEARCH_DATA[0].Role);
+    setuserRole(_SEARCH_DATA[0].Role)
+  }
+  else{
+    console.log('Role Not found...');
+    setuserRole('NONE')
+  }
+
+}
 
 function showRowDetailInfo(_name){
   
@@ -767,262 +812,288 @@ async function fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRI
           />
           <h1>Administration</h1>
           <br></br>
-          <Form>
-            <Tabs>
-              <Tab eventKey="TempStudentIDS" title="Temp Student ID">
-                <h2>Temp Student ID</h2>
-                <Row style={{ display: "none" }}>
-                  <Col sm={6}>
-                    <Button
-                      variant="primary"
-                      onClick={() => fetchStudentTempIDRecords(true)}
-                    >
-                      Show Temp IDs
-                    </Button>
-                  </Col>
-                </Row>
-
-                <br></br>
-
-                <Row>
-                  <Col sm={12}>
-                    <BootstrapTable
-                      striped
-                      hover
-                      keyField="Student_ID"
-                      data={tblSearchTempIDS}
-                      columns={columnsTempIDS}
-                      pagination={paginationFactory()}
-                      rowStyle={rowStyle}
-                    />
-                  </Col>
-                </Row>
-              </Tab>
-
-              <Tab eventKey="ManageDropdownLists" title="Manage Dropdown Lists">
-                <br></br>
-
-                <Row>
-                  <Col sm={1.75} style={{ paddingRight: 40, marginLeft: 12 }}>
-                    Choose List
-                  </Col>
-                  <Col sm={4}>
-                    <GenericDDSelect
-                      handleOnChange={onDDChanged}
-                      items={optionsDDSelections}
-                      name="selDDSelections"
-                    />
-                  </Col>
-                </Row>
-
-                <hr></hr>
-
-                <Row>
-                  <Col sm={4}>
-                    <Button
-                      variant="primary"
-                      onClick={() => setShow2(true)}
-                      disabled={disableAddNewDDItem}
-                    >
-                      Add {_ItemNameSelected}
-                    </Button>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col sm={6}>
-                    <h2></h2>
-
-                    <BootstrapTable
-                      striped
-                      hover
-                      keyField="ItemName"
-                      data={tblSearchResults}
-                      columns={columns}
-                      pagination={paginationFactory()}
-                      rowStyle={rowStyle}
-                    />
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col sm={12}>
-                    <GenericModal
-                      id="oldValue"
-                      title={_ItemNameSelected}
-                      actionLabel="Edit"
-                      showPrimaryModal={show}
-                      close="Close"
-                      Submit="Submit"
-                      delete="Delete Item"
-                      handleClosePrimary={() => closeModalPrimary}
-                      handleClickOne={() => updateDDItem}
-                      handleClickTwo={() => DeleteDDListItem}
-                      handleClickTwoVisable="block"
-                    />
-
-                    <GenericModal
-                      id="oldValue"
-                      title={_ItemNameSelected}
-                      actionLabel="Add"
-                      showPrimaryModal={show2}
-                      close="Close"
-                      Submit="Submit"
-                      handleClosePrimary={() => closeModalSecondary}
-                      handleClickOne={() => ADD_New_DDItem}
-                      //we will hide these in this dialog
-                      delete="Delete Item"
-                      handleClickTwo={() => DeleteDDListItem}
-                      handleClickTwoVisable="none"
-                    />
-
-                    <GenericModal
-                      id="oldValue"
-                      title="Temp Student ID"
-                      actionLabel="Edit"
-                      showPrimaryModal={show3}
-                      close="Close"
-                      Submit="Submit"
-                      handleClosePrimary={() => closeModalThird}
-                      handleClickOne={() => EditStudentID}
-                      //we will hide these in this dialog
-                      delete="Delete Item"
-                      handleClickTwo={() => DeleteDDListItem}
-                      handleClickTwoVisable="none"
-                    />
-                  </Col>
-                </Row>
-              </Tab>
-
-              <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
-                <h2>Archive School Year</h2>
-                <Row>
-                  <Col sm={4}>
-                    <SchoolYearDropDown name="ddSchoolYears" />
-                  </Col>
-
-                  <Col sm={3}>
-                    <Button
-                      variant="danger"
-                      onClick={() => archiveSchoolYear()}
-                    >
-                      Archive
-                    </Button>
-                  </Col>
-                </Row>
-              </Tab>
-
-              <Tab eventKey="ActivityLogs" title="Activity Logs">
-                <h2>Activity Logs</h2>
-                <Row style={{ display: "none" }}>
-                  <Col>
-                    <Button variant="primary" onClick={() => fetchLogs()}>
-                      View Logs
-                    </Button>
-                  </Col>
-                </Row>
-                <br></br>
-                <Row>
-                  <Col sm={12}>
-                    <BootstrapTable
-                      striped
-                      hover
-                      keyField="LogDate"
-                      data={tblSearchResultsLogs}
-                      columns={columnsLogs}
-                      pagination={paginationFactory()}
-                      rowStyle={rowStyle}
-                      filter={filterFactory()}
-                    />
-                  </Col>
-                </Row>
-              </Tab>
-              <Tab eventKey="DeleteStudents" title="Delete Students">
-                <Row>
-                  <Col sm={12}>
-                    <h2>Delete Students</h2>
-                    <br></br>
-                    <Row>
-                      <Col
-                        sm={1.75}
-                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
-                      >
-                        Student ID
-                      </Col>
-                      <Col sm={1.5}>
-                        <label style={{ width: 110 }}>equals</label>
-                      </Col>
-                      <Col sm={2}>
-                        <input
-                          type="text"
-                          id="txtStudentID"
-                          style={{ width: 300 }}
-                        />
-                      </Col>
-                    </Row>
-                    <br></br>
-                    <Row>
-                      <Col
-                        sm={1.75}
-                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
-                      >
-                        Last Name
-                      </Col>
-                      <Col sm={1.5}>
-                        <BootStrapSelectForSearch name="selLastName" />
-                      </Col>
-                      <Col sm={2}>
-                        <input
-                          type="text"
-                          id="txtLastName"
-                          style={{ width: 300 }}
-                        />
+          {userRole === "ADMIN" ? (
+            <Fragment>
+              <Form>
+                <Tabs>
+                  <Tab eventKey="TempStudentIDS" title="Temp Student ID">
+                    <h2>Temp Student ID</h2>
+                    <Row style={{ display: "none" }}>
+                      <Col sm={6}>
+                        <Button
+                          variant="primary"
+                          onClick={() => fetchStudentTempIDRecords(true)}
+                        >
+                          Show Temp IDs
+                        </Button>
                       </Col>
                     </Row>
 
                     <br></br>
+
+                    <Row>
+                      <Col sm={12}>
+                        <BootstrapTable
+                          striped
+                          hover
+                          keyField="Student_ID"
+                          data={tblSearchTempIDS}
+                          columns={columnsTempIDS}
+                          pagination={paginationFactory()}
+                          rowStyle={rowStyle}
+                        />
+                      </Col>
+                    </Row>
+                  </Tab>
+
+                  <Tab
+                    eventKey="ManageDropdownLists"
+                    title="Manage Dropdown Lists"
+                  >
+                    <br></br>
+
                     <Row>
                       <Col
                         sm={1.75}
-                        style={{ paddingRight: 10, marginLeft: 12, width: 150 }}
+                        style={{ paddingRight: 40, marginLeft: 12 }}
                       >
-                        First Name
+                        Choose List
                       </Col>
-                      <Col sm={1.5}>
-                        <BootStrapSelectForSearch name="selFirstName" />
-                      </Col>
-                      <Col sm={2}>
-                        <input
-                          type="text"
-                          id="txtFirstName"
-                          style={{ width: 300 }}
+                      <Col sm={4}>
+                        <GenericDDSelect
+                          handleOnChange={onDDChanged}
+                          items={optionsDDSelections}
+                          name="selDDSelections"
                         />
                       </Col>
                     </Row>
 
+                    <hr></hr>
+
+                    <Row>
+                      <Col sm={4}>
+                        <Button
+                          variant="primary"
+                          onClick={() => setShow2(true)}
+                          disabled={disableAddNewDDItem}
+                        >
+                          Add {_ItemNameSelected}
+                        </Button>
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col sm={6}>
+                        <h2></h2>
+
+                        <BootstrapTable
+                          striped
+                          hover
+                          keyField="ItemName"
+                          data={tblSearchResults}
+                          columns={columns}
+                          pagination={paginationFactory()}
+                          rowStyle={rowStyle}
+                        />
+                      </Col>
+                    </Row>
+
+                    <Row>
+                      <Col sm={12}>
+                        <GenericModal
+                          id="oldValue"
+                          title={_ItemNameSelected}
+                          actionLabel="Edit"
+                          showPrimaryModal={show}
+                          close="Close"
+                          Submit="Submit"
+                          delete="Delete Item"
+                          handleClosePrimary={() => closeModalPrimary}
+                          handleClickOne={() => updateDDItem}
+                          handleClickTwo={() => DeleteDDListItem}
+                          handleClickTwoVisable="block"
+                        />
+
+                        <GenericModal
+                          id="oldValue"
+                          title={_ItemNameSelected}
+                          actionLabel="Add"
+                          showPrimaryModal={show2}
+                          close="Close"
+                          Submit="Submit"
+                          handleClosePrimary={() => closeModalSecondary}
+                          handleClickOne={() => ADD_New_DDItem}
+                          //we will hide these in this dialog
+                          delete="Delete Item"
+                          handleClickTwo={() => DeleteDDListItem}
+                          handleClickTwoVisable="none"
+                        />
+
+                        <GenericModal
+                          id="oldValue"
+                          title="Temp Student ID"
+                          actionLabel="Edit"
+                          showPrimaryModal={show3}
+                          close="Close"
+                          Submit="Submit"
+                          handleClosePrimary={() => closeModalThird}
+                          handleClickOne={() => EditStudentID}
+                          //we will hide these in this dialog
+                          delete="Delete Item"
+                          handleClickTwo={() => DeleteDDListItem}
+                          handleClickTwoVisable="none"
+                        />
+                      </Col>
+                    </Row>
+                  </Tab>
+
+                  <Tab eventKey="ArchiveSchoolYear" title="Archive School Year">
+                    <h2>Archive School Year</h2>
+                    <Row>
+                      <Col sm={4}>
+                        <SchoolYearDropDown name="ddSchoolYears" />
+                      </Col>
+
+                      <Col sm={3}>
+                        <Button
+                          variant="danger"
+                          onClick={() => archiveSchoolYear()}
+                        >
+                          Archive
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Tab>
+
+                  <Tab eventKey="ActivityLogs" title="Activity Logs">
+                    <h2>Activity Logs</h2>
+                    <Row style={{ display: "none" }}>
+                      <Col>
+                        <Button variant="primary" onClick={() => fetchLogs()}>
+                          View Logs
+                        </Button>
+                      </Col>
+                    </Row>
                     <br></br>
                     <Row>
                       <Col sm={12}>
-                        <Button variant="outline-primary" 
-                            onClick={() => searchMixed()}>Search</Button>
+                        <BootstrapTable
+                          striped
+                          hover
+                          keyField="LogDate"
+                          data={tblSearchResultsLogs}
+                          columns={columnsLogs}
+                          pagination={paginationFactory()}
+                          rowStyle={rowStyle}
+                          filter={filterFactory()}
+                        />
                       </Col>
                     </Row>
+                  </Tab>
+                  <Tab eventKey="DeleteStudents" title="Delete Students">
+                    <Row>
+                      <Col sm={12}>
+                        <h2>Delete Students</h2>
+                        <br></br>
+                        <Row>
+                          <Col
+                            sm={1.75}
+                            style={{
+                              paddingRight: 10,
+                              marginLeft: 12,
+                              width: 150,
+                            }}
+                          >
+                            Student ID
+                          </Col>
+                          <Col sm={1.5}>
+                            <label style={{ width: 110 }}>equals</label>
+                          </Col>
+                          <Col sm={2}>
+                            <input
+                              type="text"
+                              id="txtStudentID"
+                              style={{ width: 300 }}
+                            />
+                          </Col>
+                        </Row>
+                        <br></br>
+                        <Row>
+                          <Col
+                            sm={1.75}
+                            style={{
+                              paddingRight: 10,
+                              marginLeft: 12,
+                              width: 150,
+                            }}
+                          >
+                            Last Name
+                          </Col>
+                          <Col sm={1.5}>
+                            <BootStrapSelectForSearch name="selLastName" />
+                          </Col>
+                          <Col sm={2}>
+                            <input
+                              type="text"
+                              id="txtLastName"
+                              style={{ width: 300 }}
+                            />
+                          </Col>
+                        </Row>
 
-                    <br></br>
-                    <BootstrapTable
-                      striped
-                      hover
-                      keyField="id"
-                      data={tblSearchResultsDelete}
-                      columns={columnsDeleteStudents}
-                      pagination={paginationFactory()}
-                      rowStyle={rowStyle}
-                    />
-                  </Col>
-                </Row>
-              </Tab>
-            </Tabs>
-          </Form>
+                        <br></br>
+                        <Row>
+                          <Col
+                            sm={1.75}
+                            style={{
+                              paddingRight: 10,
+                              marginLeft: 12,
+                              width: 150,
+                            }}
+                          >
+                            First Name
+                          </Col>
+                          <Col sm={1.5}>
+                            <BootStrapSelectForSearch name="selFirstName" />
+                          </Col>
+                          <Col sm={2}>
+                            <input
+                              type="text"
+                              id="txtFirstName"
+                              style={{ width: 300 }}
+                            />
+                          </Col>
+                        </Row>
+
+                        <br></br>
+                        <Row>
+                          <Col sm={12}>
+                            <Button
+                              variant="outline-primary"
+                              onClick={() => searchMixed()}
+                            >
+                              Search
+                            </Button>
+                          </Col>
+                        </Row>
+
+                        <br></br>
+                        <BootstrapTable
+                          striped
+                          hover
+                          keyField="id"
+                          data={tblSearchResultsDelete}
+                          columns={columnsDeleteStudents}
+                          pagination={paginationFactory()}
+                          rowStyle={rowStyle}
+                        />
+                      </Col>
+                    </Row>
+                  </Tab>
+                </Tabs>
+              </Form>
+            </Fragment>
+          ) : (<h4>You are not authorized to view admin section</h4>)}
         </Container>
       </main>
     </div>
@@ -1035,4 +1106,9 @@ const styles = {
   }
 };
 
-export default Administration
+//export default Administration
+const mapStateToProps = state => ({
+  userProps: state.userReducer.user,
+})
+
+export default connect(mapStateToProps)(Administration)
