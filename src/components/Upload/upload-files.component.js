@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {Fragment,useState,useEffect} from 'react';
 import axios from 'axios';
 import { Container,Button } from 'react-bootstrap';
 import {
@@ -106,12 +106,18 @@ function CellFormatter(cell, row) {
 }
 
 function CellFormatteDelete(cell, row) {
-  return ( <div>
-    <TrashFill 
-      onClick={()=>deleteAttachment(row.id)}/>
-  </div>
- );
-}
+  console.log("Role is = " + props.userRole);
+  return ( 
+    props.userRole === "ADMIN" ?
+   (<Fragment>
+    <div>
+        <TrashFill 
+          onClick={()=>deleteAttachment(row.id)}/>
+      </div>
+   </Fragment>) : (<p>_</p>)
+   )
+   };
+
 
 
 

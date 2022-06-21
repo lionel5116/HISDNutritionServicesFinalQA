@@ -45,6 +45,11 @@ import { useLocation } from 'react-router-dom';
     const [shouldDisplayAttachment,setShouldDisplayAttachment] = useState(['none'])
     const [tblFiles, setTblFileData] = useState([])
 
+    //men_color/code
+    const [_listGreen, setlistGreen] = useState([])
+    const [_listBlueCycle, setistBlueCycle] = useState([])
+    const [_listRed, setlistRed] = useState([])
+
    const history = useHistory();
 
     //CUT DOWN TO 31 FIELDS (THIS IS ALL YOU ARE USING ON THE SERVICE SIDE)
@@ -85,8 +90,10 @@ import { useLocation } from 'react-router-dom';
     const [currentMedicalCondition,setcurrentMedicalCondition]= useState('');
 
 
+    //security
+    const [userRole,setuserRole]=  useState("NONE");
 
- 
+
    //useEffect Methods ***********
    useEffect(() => {
     console.log('Logged In User: ' + userProps.fullName)
@@ -137,7 +144,65 @@ import { useLocation } from 'react-router-dom';
     setcurrentMedicalCondition(_Medical_Condition.value);
   },[]);
 
+  useEffect(()=>{
+    fetchUserRoleInfo(userProps.loginId)
+   },[])
+
+   useEffect(()=>{
+    getMenuCodeListItems()
+   },[])
+
+
   //useEffect Methods END ***********
+
+ /* MENU COLOR MENU CODE FETCHES*/
+  async function getMenuCodeListItems() {    
+    var myAPI = new studentInfoApi;    
+    let _DD_LIST_DATA = [];
+   
+    _DD_LIST_DATA = await myAPI.getMenuCodeList('Blue')
+    setistBlueCycle(_DD_LIST_DATA);
+
+    _DD_LIST_DATA = [];
+    _DD_LIST_DATA = await myAPI.getMenuCodeList('Red')
+    setlistRed(_DD_LIST_DATA);
+
+    _DD_LIST_DATA = [];
+    _DD_LIST_DATA = await myAPI.getMenuCodeList('Green')
+    setlistGreen(_DD_LIST_DATA);
+    //console.log(_DD_LIST_DATA);
+
+   }
+
+
+
+    /* MENU COLOR MENU CODE FETCHES END*/
+  
+  async function fetchUserRoleInfo(adUserID) {         
+    let _SEARCH_DATA = [];
+    
+    var myAPI = new studentInfoApi;
+    try
+    {
+      _SEARCH_DATA = await myAPI.fetchUserRoleInfo(adUserID)
+    }
+    catch(err)
+    {
+      console.log(err)
+      setuserRole('NONE')
+    }
+  
+    if (_SEARCH_DATA.length > 0)
+    {
+    
+      setuserRole(_SEARCH_DATA[0].Role)
+    }
+    else{
+      console.log('Role Not found...');
+      setuserRole('NONE')
+    }
+  
+  }
 
   const populateStudentLabelAddNewRecord = async ()=> {
     var LastName = student.LastName;
@@ -275,8 +340,7 @@ import { useLocation } from 'react-router-dom';
     for(const key in _SCHOOL_LISTING_DATA) {     
        _DDSchoolListingSelect.options[_DDSchoolListingSelect.options.length] = new Option(_SCHOOL_LISTING_DATA[key].NameOfInstitution);
     }
- 
-}
+  }
 
 
 //school wide training and communication notes
@@ -803,30 +867,40 @@ async function fetchSchoolWideTrainingNotes(_school,_year) {
       var _DDMenuCodeSelect = document.getElementById('ddMenuCode'); 
       removeOptions(_DDMenuCodeSelect);  //clear select first
 
-      //console.log("Calling populateMenuCodeDropDown method...for color " + _ddMenuColor.value);
+     /*
+      onst [_listGreen, setlistGreen] = useState([])
+       const [_listBlueCycle, setistBlueCycle] = useState([])
+      const [_listRed, setlistRed] = useState([])
+     */
+
+      /*
       const listBlueCycle = ['AF-CF','AF','AF + D','AF + D(Compliant)','AF + S','AF + S(Compliant)','CHO 60','Renal','Renal + Milk','Low PRO','Prader - Willi','Custom(with free textbox)'];
       const listGreen = ['DF','DFWEF','EF','EFDF','Poultry','Custom(with free textbox)']
       const listRed = ['WEF','Beef','SF','Citrus','Tomato','Sesame','Apples','Strawberry','Berries','Chocolate','Cinnamon','Pineapple','Carrot','Beans/ Peas/ Lentils',,'Coconut','Custom(with free textbox)'];
-     
+      */
+      const listBlueCycle = _listBlueCycle;
+      const listGreen = _listGreen;
+      const listRed = _listRed;
+
       switch( _ddMenuColor.value) {
         case 'Blue':
           _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
           for(const key in listBlueCycle) {     
-            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listBlueCycle[key]);
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listBlueCycle[key].MenuCode);
           }
         break;
 
         case 'Red':
           _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
           for(const key in listRed) {     
-            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listRed[key]);
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listRed[key].MenuCode);
           }
         break;
 
         case 'Green':
           _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option('--Select--');
           for(const key in listGreen) {     
-            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listGreen[key]);
+            _DDMenuCodeSelect.options[_DDMenuCodeSelect.options.length] = new Option(listGreen[key].MenuCode);
           }
         break;
 
@@ -1230,7 +1304,8 @@ async function  logChanges(e)
             msgBody={msgBody}
             msgBody2={msgBody2}
           />
-          <h2>Current Logged In User:{userProps.fullName}</h2>
+         
+          <span style={{ fontWeight:'bold' }}>Current Logged In User:{userProps.fullName}</span>
           <br></br>
           <h1>Student Record</h1>
           <Form style={{ display: recordSuccessShowHide }}>
@@ -1824,6 +1899,7 @@ async function  logChanges(e)
                   displayAttachments={shouldDisplayAttachment}
                   studentID={_studentid_}
                   tblFiles={tblFiles}
+                  userRole={userRole}
                   fetchAttachments={(e) => fetchAttachments(e)}
                 />
               </Tab>

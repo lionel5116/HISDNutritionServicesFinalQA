@@ -21,7 +21,7 @@ import AlertSmall from '../ReusableAppComponents/AlertSmall';
 import BootStrapSelectForSearch from '../ReusableAppComponents/BootStrapSelectForSearch';
     
 
-let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types'];
+let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types','Menu Color Blue','Menu Color Red','Menu Color Green'];
 
 var itemTypeSelected = ''
 import studentInfoApi from '../../api/studentInfoApi';
@@ -78,23 +78,32 @@ import { Fragment } from 'react';
   {
     var _ItemTypeSelect = document.getElementById('selDDSelections');
 
+    setSearchResults([]);
     fetchSearchDDListData(_ItemTypeSelect.value)
     
-    
-    //let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplement', 'Milk Substitute', 'Training Types'];
+    //let optionsDDSelections = ['--Select--','Foods To Be Omitted', 'Nutrition Supplements', 'Milk Substitutes', 'Training Types','Menu Color Blue','Menu Color Red','Menu Color Green'];
     switch (_ItemTypeSelect.value) {
-      case 'Foods To Be Omitted':
-        setItemNameSelected('Food To Be Omitted');
+      case "Foods To Be Omitted":
+        setItemNameSelected("Food To Be Omitted");
         break;
-      case 'Nutrition Supplements':
-        setItemNameSelected('Nutrition Supplement');
+      case "Nutrition Supplements":
+        setItemNameSelected("Nutrition Supplement");
         break;
-      case 'Milk Substitutes':
-        setItemNameSelected('Milk Substitute');
+      case "Milk Substitutes":
+        setItemNameSelected("Milk Substitute");
         break;
-        case 'Training Types':
-          setItemNameSelected('Training Type');
-          break;
+      case "Training Types":
+        setItemNameSelected("Training Type");
+        break;
+      case "Menu Color Blue":
+        setItemNameSelected("Menu Color Blue");
+        break;
+      case "Menu Color Red":
+        setItemNameSelected("Menu Color Red");
+        break;
+      case "Menu Color Green":
+        setItemNameSelected("Menu Color Green");
+        break;
       default:
         break;
     }
@@ -131,7 +140,6 @@ import { Fragment } from 'react';
     var myAPI = new studentInfoApi;
     _DD_LIST_DATA = await myAPI.fetchSearchDDListData(itemTypeSelected)
     setSearchResults(_DD_LIST_DATA)
- 
 
 }
 
@@ -200,14 +208,7 @@ async function fetchLogs() {
 
 async function fetchUserRoleInfo(adUserID) {         
   let _SEARCH_DATA = [];
-  //async  fetchUserRoleInfo(adUserID){
-  /*  
-  oUserRoleItem = new UserNameRoleTable();
-                            oUserRoleItem.UserName = row["UserName"].ToString();
-                            oUserRoleItem.ADUserID = row["ADUserID"].ToString();
-                            oUserRoleItem. = row["Role"].ToString();
-                            lsUserNameRoleTable.Add(oUserRoleItem);
-                            */
+  
   var myAPI = new studentInfoApi;
   try
   {
@@ -258,28 +259,37 @@ async function updateDDItem(){
   //grab the old value from what was set when the item was selected - DEBBI CHANGE
   var oldValue = _ItemName;  //const [_ItemName,setItemName]  = useState("")
  
-
   //Whatever they overwrite from the single field (is the new value)
   var _ItemNameNew  = document.getElementById('oldValue').value;
  
-  
-
   var DDType = '';
  
 
   switch (_ItemTypeSelect.value) {
-    case 'Foods To Be Omitted':
-      DDType = 'FTBO'
+    case "Foods To Be Omitted":
+      DDType = "FTBO";
       break;
-    case 'Nutrition Supplements':
-      DDType = 'NUTR_SUB'
+    case "Nutrition Supplements":
+      DDType = "NUTR_SUB";
       break;
-    case 'Milk Substitutes':
-      DDType = 'MILK_SUB'
+    case "Milk Substitutes":
+      DDType = "MILK_SUB";
       break;
-      case 'Training Types':
-        DDType = 'TRAINING'
-        break;
+    case "Training Types":
+      DDType = "TRAINING";
+      break;
+
+    case "Menu Color Blue":
+      DDType = "MenuColor_Blue";
+      break;
+
+    case "Menu Color Red":
+      DDType = "MenuColor_Red";
+      break;
+
+    case "Menu Color Green":
+      DDType = "MenuColor_Green";
+      break;
     default:
       break;
   }
@@ -322,18 +332,29 @@ async function DeleteDDListItem(){
  
 
   switch (_ItemTypeSelect.value) {
-    case 'Foods To Be Omitted':
-      DDType = 'FTBO'
+    case "Foods To Be Omitted":
+      DDType = "FTBO";
       break;
-    case 'Nutrition Supplements':
-      DDType = 'NUTR_SUB'
+    case "Nutrition Supplements":
+      DDType = "NUTR_SUB";
       break;
-    case 'Milk Substitutes':
-      DDType = 'MILK_SUB'
+    case "Milk Substitutes":
+      DDType = "MILK_SUB";
       break;
-      case 'Training Types':
-        DDType = 'TRAINING'
-        break;
+    case "Training Types":
+      DDType = "TRAINING";
+      break;
+    case "Menu Color Blue":
+      DDType = "MenuColor_Blue";
+      break;
+
+    case "Menu Color Red":
+      DDType = "MenuColor_Red";
+      break;
+
+    case "Menu Color Green":
+      DDType = "MenuColor_Green";
+      break;
     default:
       break;
   }
@@ -366,6 +387,7 @@ async function ADD_New_DDItem(){
 
   //this is for the item DD type we are updating
   var _ItemTypeSelect = document.getElementById('selDDSelections');
+  console.log(_ItemTypeSelect.value)
 
   var _ItemNameNew  = document.getElementById('oldValue').value;
 
@@ -391,24 +413,36 @@ async function ADD_New_DDItem(){
     case 'Milk Substitutes':
       DDType = 'MILK_SUB'
       break;
-      case 'Training Types':
+    case 'Training Types':
         DDType = 'TRAINING'
         break;
+    case "Menu Color Blue":
+      DDType = "MenuColor_Blue";
+      break;
+    case "Menu Color Red":
+      DDType = "MenuColor_Red";
+      break;
+    case "Menu Color Green":
+      DDType = "MenuColor_Green";
+      break;
     default:
       break;
   }
 
+  console.log('DDType:' + DDType);
 
   var argument  = '';
 
    if (_ItemNameNew.length > 0
    )
    {
-      argument += _ItemNameNew
+      argument += _ItemNameNew.replace('+','')
       argument += "|";
       argument += DDType
    } 
    
+   console.log('Argument: ' + argument);
+
 
    await logChanges("ADD_DDItem",argument)
 
@@ -500,7 +534,7 @@ async function  logChanges(sChangeType,changeNote)
           logObject.studentID = '';
           logObject.schoolName = '';
           logObject.SchoolNotes = '';
-          logObject.UserMakingChange = '';
+          logObject.UserMakingChange = userProps.loginId;;
 
            await myAPI.insertLogData(logObject)
      
