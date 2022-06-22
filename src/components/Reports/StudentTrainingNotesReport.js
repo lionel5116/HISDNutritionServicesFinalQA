@@ -20,10 +20,10 @@ function StudentTrainingNotesReport() {
    
    const handleChange =(e) =>{
      e.preventDefault();
-     console.log("In the handleChange function");
+     //console.log("In the handleChange function");
      var _ddSchoolYear = document.getElementById('ddSchoolYears');
      if(_ddSchoolYear.value != "--Select--") {
-      console.log(_ddSchoolYear.value);
+      //console.log(_ddSchoolYear.value);
        fetchStudentData(_ddSchoolYear.value);
      }
    }
@@ -59,13 +59,20 @@ function StudentTrainingNotesReport() {
         csvExport: false
     },
     {
+      dataField: 'SchoolYear',
+      text: 'Year',
+      style: { width: '75x' },
+   },
+    {
       dataField: 'LastName',
       text: 'Last Name',
+      filter: textFilter(),
       sort: true
     },
     {
       dataField: 'FirstName',
       text: 'First Name',
+      filter: textFilter(),
       sort: true
     },
     {

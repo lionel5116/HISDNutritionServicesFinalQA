@@ -1651,8 +1651,8 @@ async function  logChanges(e)
                   <Col sm={2}>
                     <textarea
                       type="text"
-                      name="FTBO_Custom"
-                      id="FTBO_Custom"
+                      name="Substitution"
+                      id="Substitution"
                       onChange={handleChange}
                       style={{ width: 350 }}>
                     </textarea>

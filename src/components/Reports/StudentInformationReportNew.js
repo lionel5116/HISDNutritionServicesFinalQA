@@ -17,18 +17,13 @@ function StudentInformationReportNew() {
     const { ExportCSVButton } = CSVExport;
  
   
-    /*
-    useEffect(() => {
-        fetchStudentData();
-    },[]);
-    */
 
    const handleChange =(e) =>{
      e.preventDefault();
-     console.log("In the handleChange function");
+     //console.log("In the handleChange function");
      var _ddSchoolYear = document.getElementById('ddSchoolYears');
      if(_ddSchoolYear.value != "--Select--") {
-      console.log(_ddSchoolYear.value);
+      //console.log(_ddSchoolYear.value);
        fetchStudentData(_ddSchoolYear.value);
      }
    }
@@ -55,14 +50,21 @@ function StudentInformationReportNew() {
     const rowStyle = {  height: '10px', padding: '2px 0' };
 
     const columns = [
+      {
+        dataField: 'SchoolYear',
+        text: 'Year',
+        style: { width: '10px' },
+     },
     {
       dataField: 'LastName',
       text: 'Last Name',
+      filter: textFilter(),
       sort: true
     },
     {
       dataField: 'FirstName',
       text: 'First Name',
+      filter: textFilter(),
       sort: true
     },
     {
@@ -86,23 +88,26 @@ function StudentInformationReportNew() {
     },
     {
       dataField: 'Texture_Modification',
-      text: 'Texture Modification',
+      text: 'Liquids',
+      style: { width: '100px' },
       filter: textFilter()
-  
+    },
+    {
+      dataField: 'Texture_Modification2',
+      text: 'Solids',
+      style: { width: '100px' },
+      filter: textFilter()
     },
     {
       dataField: 'SupplementName',
       text: 'SupplementName',
       filter: textFilter()
-
-  
     },
     {
       dataField: 'Milk_Sub_Name',
       text: 'Milk Sub Name',
       filter: textFilter()
 
-  
     },
     {
         dataField: 'NeedsF_U_String',
@@ -117,13 +122,46 @@ function StudentInformationReportNew() {
       filter: textFilter()
 
     },
+   
     {
-        dataField: 'id',
-        text: 'id',
-        style: { width: '10px' },
-        hidden :true,
-        csvExport: false
-      },
+      dataField: 'LTA_String',
+      text: 'LTA',
+      style: { width: '10px' },
+   
+    },
+    {
+      dataField: 'NPO_String',
+      text: 'NPO',
+      style: { width: '10px' },
+ 
+    },
+    {
+      dataField: 'Menu_Code_Custom',
+      text: 'Menu Code Custom',
+      style: { width: '100px' },
+  
+    },
+    {
+      dataField: 'FTBO_Custom',
+      text: 'FTBO Custom',
+      style: { width: '100px' },
+    },
+    {
+      dataField: 'Substitution',
+      text: 'Substitution'
+    },
+    {
+      dataField: 'Medical_Condition',
+      text: 'Medical Condition',
+    },
+     
+    {
+      dataField: 'id',
+      text: 'id',
+      style: { width: '10px' },
+      hidden :true,
+      csvExport: false
+    },
     ];
 
 

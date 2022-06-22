@@ -13,6 +13,9 @@ import {TrashFill}from 'react-bootstrap-icons';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import ToolkitProvider, {CSVExport} from 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit';
+import 'react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css';
+import 'react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css';
 
 //for modal
 import GenericModal from '../GenericModal/GenericModal';
@@ -801,7 +804,16 @@ async function fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRI
           }
       }  
      
-
+      const MyExportCSV = (props) => {
+        const handleClick = () => {
+          props.onExport();
+        };
+        return (
+          <div>
+            <button className="btn btn-success" onClick={ handleClick }>Export to CSV</button>
+          </div>
+        );
+      };
 
  const columnsDeleteStudents = [
   {
@@ -1011,7 +1023,7 @@ async function fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRI
                     <br></br>
                     <Row>
                       <Col sm={12}>
-                        <BootstrapTable
+                        {/*<BootstrapTable
                           striped
                           hover
                           keyField="LogDate"
@@ -1019,8 +1031,33 @@ async function fetchSearchData_LIKE_CLAUSES_SearchObjectCurrentYear(_SEARCH_STRI
                           columns={columnsLogs}
                           pagination={paginationFactory()}
                           rowStyle={rowStyle}
-                          filter={filterFactory()}
-                        />
+                          filter={filterFactory()} 
+                      /> */}
+                      <ToolkitProvider
+                        keyField="LogDate"
+                        data={tblSearchResultsLogs}
+                        columns={columnsLogs}
+                        exportCSV={{
+                          onlyExportFiltered: true,
+                          exportAll: false,
+                        }}
+                      >
+                        {(props) => (
+                          <div>
+                          
+                            <MyExportCSV {...props.csvProps} />
+                            <hr />
+                            <BootstrapTable
+                              {...props.baseProps}
+                              striped
+                              hover
+                              pagination={paginationFactory()}
+                              rowStyle={rowStyle}
+                              filter={filterFactory()}
+                            />
+                          </div>
+                        )}
+                      </ToolkitProvider>
                       </Col>
                     </Row>
                   </Tab>
