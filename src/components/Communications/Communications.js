@@ -128,9 +128,10 @@ function Communications() {
       setalertClassType('alert alert-primary')  //alert alert-success
       setmsgBody("")
     } else {
-      setShowAlert(true)
-      setalertClassType('alert alert-danger')
-      setmsgBody("Need Valid: school, Year, notes entered and training(s) selected!!!!...")
+      //setShowAlert(true)
+      //setalertClassType('alert alert-danger')
+      //setmsgBody("Need Valid: school, Year, notes entered and training(s) selected!!!!...")
+      window.alert("Need Valid: school, Year, notes entered and training(s) selected!!!!.");
       return;
     }
 
@@ -203,9 +204,10 @@ function Communications() {
     setalertClassType('alert alert-primary')  //alert alert-success
     setmsgBody("")
   } else {
-    setShowAlert(true)
-    setalertClassType('alert alert-danger')
-    setmsgBody("Need Valid: Year, notes and studentID selected/entered !!...")
+    //setShowAlert(true)
+    //setalertClassType('alert alert-danger')
+    //setmsgBody("Need Valid: Year, notes and studentID selected/entered !!...")
+    window.alert("Need Valid: Year, notes and studentID selected/entered !!....");
     return;
   }
 
@@ -286,13 +288,15 @@ function Communications() {
       if(_response == 0)
       {
         setShowAlert(true)
-        setmsgBody("There was an issue writing training or communication notes")
-        setalertClassType('alert alert-danger')  
+        //setmsgBody("There was an issue writing training or communication notes")
+       // setalertClassType('alert alert-danger')  
+       window.alert("There was an issue writing training or communication notes");
       }
       else if (_response == 1 ){
-        setShowAlert(true)
-        setmsgBody("Note(s) added...")
-        setalertClassType('alert alert-success')  
+       // setShowAlert(true)
+        //setmsgBody("Note(s) added...")
+        //setalertClassType('alert alert-success')  
+        window.alert("Note(s) added...");
       }
   }
 

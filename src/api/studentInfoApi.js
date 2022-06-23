@@ -329,6 +329,23 @@ export class studentInfoApi {
  
      }
 
+     async  fetchForExisingStudent(studentID){
+        var url = Config.REST_URL + '/api/StudentEntryData/fetchForExisingStudent/'
+        url +=studentID;
+        try
+        {
+            return await axios.get(url)
+            .then(res => {
+                return res.data;
+            });
+        } catch (err)
+        {
+          console.log("Issue fetching data.. possible url invalid character sent: " + err)
+          return -1
+        }
+ 
+     }
+
      async  DeleteDDListItem(strFieldValues){
         var url = Config.REST_URL + '/api/Admin/DeleteDDListItem/'
         url +=strFieldValues;

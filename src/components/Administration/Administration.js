@@ -247,7 +247,7 @@ function showRowDetailInfo(_name){
 }
 
 function showRowDetailInfoTempIDS(_studentID){
-  //console.log("TempIDS  - Data from row from an external function",_studentID)
+ 
   setstudentIDTemp(_studentID)//const [_studentIDTemp,setstudentIDTemp]  = useState("")
   setShow3(true)
   setTimeout(() => {  document.getElementById('oldValue').setAttribute('value',_studentID); }, 500);
@@ -460,31 +460,47 @@ async function ADD_New_DDItem(){
 }
 async function EditStudentID(){
 
+  var myAPI = new studentInfoApi;
 
-  var _ItemNameNew  = document.getElementById('oldValue').value;
+  //when a row is clicked in the grid on an item, useState is called to set the variable _studentIDTemp (tied to column formatter)
+  //function showRowDetailInfoTempIDS(_studentID){
 
+  var _ItemNameNew  = document.getElementById('oldValue').value; //this becomes the new value that the user enters
+
+  //need to check for existing student before we make the change
+  var nExistingRecordCount = 0;
+  nExistingRecordCount = await myAPI.fetchForExisingStudent(_ItemNameNew)
+ if(nExistingRecordCount > 0 || nExistingRecordCount === -1)
+ {
+   window.alert("There was a problem adding this saving this new student ID, or this student ID already exists in the system");
+   return;
+ }
 
   var argument  = '';
 
    if (_ItemNameNew.length > 0
    )
    {
-     
-      argument += _studentIDTemp
+      argument += _studentIDTemp   //original value when the item in the row was selected
       argument += "|";
-      argument += _ItemNameNew
+      argument += _ItemNameNew     //new value he user entered
    } 
    
 
-   await logChanges("EditStudentID",argument)
-
-  var myAPI = new studentInfoApi;
-  await myAPI.UpdateStudentTempID(argument)
-  
-  setShow3(false);
-  fetchStudentTempIDRecords();
-  fetchLogs();
-    
+   
+   if(nExistingRecordCount > 0 || nExistingRecordCount === -1)
+   {
+       return;
+   }
+   else{
+      await logChanges("EditStudentID",argument)
+      await myAPI.UpdateStudentTempID(argument)
+      setShow3(false);
+      fetchStudentTempIDRecords();
+      fetchLogs();
+      
+   }
+   
 }
 
 

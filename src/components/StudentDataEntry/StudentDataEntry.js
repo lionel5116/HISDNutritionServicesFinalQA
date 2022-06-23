@@ -152,6 +152,10 @@ import { useLocation } from 'react-router-dom';
     getMenuCodeListItems()
    },[])
 
+   useEffect(() => {
+    setStudentID(student.studentID)
+  },[student.studentID]);
+
 
   //useEffect Methods END ***********
 
@@ -264,10 +268,12 @@ import { useLocation } from 'react-router-dom';
       await fetchSchoolWideTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School,_DD_STUDENT_RECORD_DATA[0].SchoolYear);
     }
 
+    /*
     if(_DD_STUDENT_RECORD_DATA[0].School != "")
     {
       await fetchSchoolTrainingNotes(_DD_STUDENT_RECORD_DATA[0].School);
     }
+    */
     
     if(_DD_STUDENT_RECORD_DATA[0].Student_ID != "")
     {
@@ -1175,7 +1181,8 @@ async function  logChanges(e)
       student.Student_ID = studentIDField.value;
 
      
-      setStudentID(student.studentID)
+      setStudentID(studentIDField.value);
+
       if(student.studentID != '')
       {
         _btnGenerateStudentId.disabled = true;
@@ -1919,7 +1926,7 @@ async function  logChanges(e)
                   </Form.Group>
                 </Row>
 
-                <Row className="mb-3">
+                <Row className="mb-3" style={{ display: 'none' }}>
                   <Form.Group as={Col} style={{ marginLeft: 12 }}>
                     <Form.Label>School Training Notes</Form.Label>
                     <Form.Control
